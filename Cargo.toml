@@ -1,0 +1,2 @@
+[workspace]
+members = ["prepare_data/gesture_extractor"]

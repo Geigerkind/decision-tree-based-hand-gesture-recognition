@@ -30,7 +30,7 @@ fn main() {
                     for brightness in &brightness_fix {
                         for additonal in &additional_fix {
                             for number in &number_fix {
-                                if let Ok(mut parsed_gestures) = parse_gestures(&format!("../data{}/{}_{}_{}cm{}{}{}-annotated.csv", folder, direction, object, distance, brightness, additonal, number)) {
+                                if let Ok(mut parsed_gestures) = parse_gestures(&format!("./prepare_data/data{}/{}_{}_{}cm{}{}{}-annotated.csv", folder, direction, object, distance, brightness, additonal, number)) {
                                     gestures.append(&mut parsed_gestures);
                                 }
                             }

@@ -31,7 +31,7 @@ def evaluate_predicted(predicted, y_test):
 
 # Import all the data
 # Generated from the extractor
-storage_path = "../prepare_data/gesture_extractor/model_data"
+storage_path = "./model_data"
 result = pd.read_csv(storage_path + "/result", dtype=int).values.flatten()
 lsos_x = pd.read_csv(storage_path + "/LocalSumOfSlopesX", dtype=int)
 lsos_y = pd.read_csv(storage_path + "/LocalSumOfSlopesY", dtype=int)
