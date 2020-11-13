@@ -21,11 +21,10 @@ def evaluate_predicted(predicted, y_test):
     for gesture_type in [1, 2, 3, 4, 9]:
         amount_of_gesture = y_test.tolist().count(gesture_type)
         print("GestureType: " + str(gesture_type))
-        if amount_of_gesture == 0:
-            return
-        print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
-        print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
-        amount_correct += true_positive[gesture_type]
+        if amount_of_gesture > 0:
+            print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
+            print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
+            amount_correct += true_positive[gesture_type]
     print("Total accuracy: %.3f" % (100 * (amount_correct / total_gestures)))
 
 
@@ -58,9 +57,13 @@ average_amplitude_change = pd.read_csv(storage_path + "/AverageAmplitudeChange",
 direction_map_x = pd.read_csv(storage_path + "/DirectionMapX", dtype=int)
 direction_map_y = pd.read_csv(storage_path + "/DirectionMapY", dtype=int)
 sum_of_slopes = pd.read_csv(storage_path + "/SumOfSlopes", dtype=int)
+center_of_gravity_distribution_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionX", dtype=int)
+center_of_gravity_distribution_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionY", dtype=int)
+center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX", dtype=float)
+center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY", dtype=float)
 
 # Specifying the features
-X = pd.concat([lsos_x, lsos_y, darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history], axis=1).values
+X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
 y = result
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
@@ -70,7 +73,7 @@ def decision_tree(X_train, y_train, X_test, y_test):
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X_train, y_train)
 
-    plt.figure()
+    plt.figure(figsize=(40, 40))
     tree.plot_tree(clf)
     plt.savefig('tree.png', format='png')
 
@@ -93,4 +96,4 @@ def random_forest(X_train, y_train, X_test, y_test):
 
 
 decision_tree(X_train, y_train, X_test, y_test)
-# random_forest(X_train, y_train, X_test, y_test)
+random_forest(X_train, y_train, X_test, y_test)

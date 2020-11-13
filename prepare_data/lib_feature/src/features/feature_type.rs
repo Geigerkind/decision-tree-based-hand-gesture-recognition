@@ -1,5 +1,6 @@
 use lib_gesture::entities::Gesture;
 
+use crate::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, CenterOfGravityDistributionX, CenterOfGravityDistributionY};
 use crate::features::{AverageAmplitudeChange, BrightnessDistribution3X, BrightnessDistribution3Y, BrightnessDistribution6X, BrightnessDistribution6XY, BrightnessDistribution6XYGeom, BrightnessDistribution6XYQuadrant, BrightnessDistribution6Y, DarknessDistribution3X, DarknessDistribution3Y, DarknessDistribution6X, DarknessDistribution6XY, DarknessDistribution6XYGeom, DarknessDistribution6XYQuadrant, DarknessDistribution6Y, DirectionMapX, DirectionMapY, Feature, LocalSumOfSlopeX, LocalSumOfSlopeY, MaximumValue, MeanValue, MinimumValue, MotionHistory, StandardDeviation, SumOfSlopes};
 
 #[derive(Debug, EnumIter, Display)]
@@ -29,6 +30,10 @@ pub enum FeatureType {
     DirectionMapX,
     DirectionMapY,
     SumOfSlopes,
+    CenterOfGravityDistributionX,
+    CenterOfGravityDistributionFloatX,
+    CenterOfGravityDistributionY,
+    CenterOfGravityDistributionFloatY,
 }
 
 impl FeatureType {
@@ -59,6 +64,10 @@ impl FeatureType {
             FeatureType::DirectionMapX => Box::new(DirectionMapX::calculate(gesture)),
             FeatureType::DirectionMapY => Box::new(DirectionMapY::calculate(gesture)),
             FeatureType::SumOfSlopes => Box::new(SumOfSlopes::calculate(gesture)),
+            FeatureType::CenterOfGravityDistributionX => Box::new(CenterOfGravityDistributionX::calculate(gesture)),
+            FeatureType::CenterOfGravityDistributionFloatX => Box::new(CenterOfGravityDistributionFloatX::calculate(gesture)),
+            FeatureType::CenterOfGravityDistributionY => Box::new(CenterOfGravityDistributionY::calculate(gesture)),
+            FeatureType::CenterOfGravityDistributionFloatY => Box::new(CenterOfGravityDistributionFloatY::calculate(gesture)),
         }
     }
 }

@@ -46,6 +46,7 @@ fn main() {
     println!("Elapsed: {}ms", start.elapsed().as_millis());
     println!("Gestures found: {}", gestures.len());
     println!("Exporting features");
+    let _ = std::fs::create_dir("./model_data");
     for feature_type in FeatureType::iter() {
         let mut file = File::create(&format!("model_data/{}", feature_type)).unwrap();
         for gesture in gestures.iter() {

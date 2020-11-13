@@ -4,7 +4,7 @@
 from sklearn.tree import _tree
 
 
-def tree_to_code(tree, feature_names=range(0, 28)):
+def tree_to_code(tree, feature_names=range(0, 40)):
     file = open("decision_tree.c", "w")
 
     nspaces = 4

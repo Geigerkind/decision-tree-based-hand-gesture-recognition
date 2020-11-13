@@ -26,6 +26,10 @@ pub use self::minimum_value::MinimumValue;
 pub use self::motion_history::MotionHistory;
 pub use self::standard_deviation::StandardDeviation;
 pub use self::sum_of_slopes::SumOfSlopes;
+pub use self::center_of_gravity_distribution_x::CenterOfGravityDistributionX;
+pub use self::center_of_gravity_distribution_float_x::CenterOfGravityDistributionFloatX;
+pub use self::center_of_gravity_distribution_y::CenterOfGravityDistributionY;
+pub use self::center_of_gravity_distribution_float_y::CenterOfGravityDistributionFloatY;
 
 mod local_sum_of_slopes_x;
 mod local_sum_of_slopes_y;
@@ -55,6 +59,10 @@ mod average_amplitude_change;
 mod direction_map_x;
 mod direction_map_y;
 mod sum_of_slopes;
+mod center_of_gravity_distribution_x;
+mod center_of_gravity_distribution_float_x;
+mod center_of_gravity_distribution_y;
+mod center_of_gravity_distribution_float_y;
 
 pub trait Feature {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized;
