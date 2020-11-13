@@ -32,6 +32,7 @@ train_standard_deviation = pd.read_csv(storage_path + "/train/StandardDeviation"
 train_average_amplitude_change = pd.read_csv(storage_path + "/train/AverageAmplitudeChange", dtype=int)
 train_direction_map_x = pd.read_csv(storage_path + "/train/DirectionMapX", dtype=int)
 train_direction_map_y = pd.read_csv(storage_path + "/train/DirectionMapY", dtype=int)
+train_sum_of_slopes = pd.read_csv(storage_path + "/train/SumOfSlopes", dtype=int)
 
 validate_result = pd.read_csv(storage_path + "/validate/result", dtype=int).values.flatten()
 validate_lsos_x = pd.read_csv(storage_path + "/validate/LocalSumOfSlopesX", dtype=int)
@@ -59,6 +60,7 @@ validate_standard_deviation = pd.read_csv(storage_path + "/validate/StandardDevi
 validate_average_amplitude_change = pd.read_csv(storage_path + "/validate/AverageAmplitudeChange", dtype=int)
 validate_direction_map_x = pd.read_csv(storage_path + "/validate/DirectionMapX", dtype=int)
 validate_direction_map_y = pd.read_csv(storage_path + "/validate/DirectionMapY", dtype=int)
+validate_sum_of_slopes = pd.read_csv(storage_path + "/validate/SumOfSlopes", dtype=int)
 
 # Create the decision tree and train it
 # clf = tree.DecisionTreeClassifier()

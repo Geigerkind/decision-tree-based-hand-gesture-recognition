@@ -38,7 +38,7 @@ fn main() {
     let number_fix = vec!["", "_0", "_1", "_2", "_3"];
 
     let start = Instant::now();
-    let mut gestures: Vec<Gesture> = Vec::with_capacity(500);
+    let mut gestures: Vec<Gesture> = Vec::with_capacity(4500);
     for folder in &folder_fix {
         for direction in &direction_fix {
             for object in &object_fix {

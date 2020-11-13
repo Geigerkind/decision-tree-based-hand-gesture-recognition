@@ -25,6 +25,7 @@ pub use self::standard_deviation::StandardDeviation;
 pub use self::average_amplitude_change::AverageAmplitudeChange;
 pub use self::direction_map_x::DirectionMapX;
 pub use self::direction_map_y::DirectionMapY;
+pub use self::sum_of_slopes::SumOfSlopes;
 
 mod local_sum_of_slopes_x;
 mod local_sum_of_slopes_y;
@@ -53,6 +54,7 @@ mod standard_deviation;
 mod average_amplitude_change;
 mod direction_map_x;
 mod direction_map_y;
+mod sum_of_slopes;
 
 pub trait Feature {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized;
