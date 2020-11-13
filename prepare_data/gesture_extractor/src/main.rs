@@ -13,7 +13,7 @@ use lib_gesture::tools::parse_gestures;
 use crate::strum::IntoEnumIterator;
 
 fn main() {
-    let folder_fix = vec!["Dymel_EvaGarbage", "Eva9pixel", "Eva16pixel"];
+    let folder_fix = vec!["Eva9pixel", "Eva16pixel"];
     let direction_fix = vec!["LRRL", "TBBT", "Garbage"];
     let object_fix = vec!["hand", "finger", "lt"];
     let distance_fix = vec![3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];

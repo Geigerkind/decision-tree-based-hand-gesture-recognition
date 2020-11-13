@@ -4,6 +4,8 @@ from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
+from tree_to_code import *
+
 
 def evaluate_predicted(predicted, y_test):
     true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -77,6 +79,8 @@ def decision_tree(X_train, y_train, X_test, y_test):
     print("Evaluating DecisionTreeClassifier:")
     evaluate_predicted(predicted, y_test)
 
+    tree_to_code(clf)
+
 
 def random_forest(X_train, y_train, X_test, y_test):
     clf = RandomForestClassifier(criterion='entropy', n_estimators=64, random_state=1, n_jobs=16)
@@ -89,4 +93,4 @@ def random_forest(X_train, y_train, X_test, y_test):
 
 
 decision_tree(X_train, y_train, X_test, y_test)
-random_forest(X_train, y_train, X_test, y_test)
+# random_forest(X_train, y_train, X_test, y_test)
