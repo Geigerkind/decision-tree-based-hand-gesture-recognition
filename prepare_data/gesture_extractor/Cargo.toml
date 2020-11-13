@@ -5,9 +5,6 @@ authors = ["Tom Dymel <tom.dymel@tuhh.de>"]
 edition = "2018"
 
 [dependencies]
-num-traits = "0.2"
-num-derive = "0.2"
+lib_gesture = { path = "../lib_gesture", version = "*" }
+lib_feature = { path = "../lib_feature", version = "*" }
 strum = "0.19"
-strum_macros = "0.19"
-plotters = "0.3"
-rand = "0.7"

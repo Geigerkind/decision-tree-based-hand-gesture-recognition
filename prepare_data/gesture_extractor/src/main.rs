@@ -1,32 +1,16 @@
-#![allow(unused_imports)]
-
-#[macro_use]
-extern crate num_derive;
-extern crate num_traits;
-extern crate plotters;
+extern crate lib_feature;
+extern crate lib_gesture;
 extern crate strum;
-#[macro_use]
-extern crate strum_macros;
 
 use std::fs::File;
 use std::io::Write;
 use std::time::Instant;
-use rand::thread_rng;
-use rand::seq::SliceRandom;
 
-use plotters::prelude::*;
+use lib_feature::FeatureType;
+use lib_gesture::entities::Gesture;
+use lib_gesture::tools::parse_gestures;
 
-use tools::parse_gestures;
-
-use crate::entities::Gesture;
 use crate::strum::IntoEnumIterator;
-use crate::value_objects::GestureType;
-use crate::features::{LocalSumOfSlopeX, Feature, FeatureType};
-
-mod value_objects;
-mod entities;
-mod tools;
-mod features;
 
 fn main() {
     let folder_fix = vec!["Dymel_EvaGarbage", "Eva9pixel", "Eva16pixel"];
@@ -61,12 +45,6 @@ fn main() {
 
     println!("Elapsed: {}ms", start.elapsed().as_millis());
     println!("Gestures found: {}", gestures.len());
-    /*
-    println!("\nFeatures:");
-    create_chart_local_sum_of_slopes_x(&gestures);
-    create_chart_local_sum_of_slopes_y(&gestures);
-    create_chart_local_sum_of_slopes_avg_x_y(&gestures);
-     */
     println!("Exporting features");
     for feature_type in FeatureType::iter() {
         let mut file = File::create(&format!("model_data/{}", feature_type)).unwrap();
@@ -81,89 +59,3 @@ fn main() {
         file.write_all(&[10]).unwrap();
     }
 }
-/*
-fn get_chart_color_for_gesture(gesture_type: GestureType) -> ShapeStyle {
-    match gesture_type {
-        GestureType::LeftToRight => GREEN.filled(),
-        GestureType::RightToLeft => RED.filled(),
-        GestureType::TopToBottom => BLUE.filled(),
-        GestureType::BottomToTop => YELLOW.filled(),
-        _ => BLACK.filled()
-    }
-}
-
-fn create_chart_local_sum_of_slopes_x(gestures: &Vec<Gesture>) {
-    println!("Local Sum of Slopes - x");
-    let root = BitMapBackend::new("plots/local_sum_of_slopes_x.png", (1280, 960)).into_drawing_area();
-    root.fill(&WHITE).unwrap();
-    let mut chart = ChartBuilder::on(&root)
-        .margin(20)
-        .caption("Local Sum of Slopes - x", ("sans-serif", 40))
-        .build_cartesian_3d(-100..100, -100..100, -100..100)
-        .unwrap();
-    for gesture_type in GestureType::iter() {
-        if gesture_type == GestureType::NotGesture || gesture_type == GestureType::NotGesture
-            || gesture_type == GestureType::TopToBottom || gesture_type == GestureType::BottomToTop {
-            continue;
-        }
-
-        let points: Vec<[i16; 3]> = gestures.iter().filter(|gesture| gesture.gesture_type == gesture_type)
-            .map(|gesture| gesture.calc_feature_sum_of_slopes_x()).collect();
-        chart.draw_series(points.iter().map(|[x1, x2, x3]|
-            Circle::new((*x1 as i32, *x2 as i32, *x3 as i32), 2, get_chart_color_for_gesture(gesture_type)))).unwrap();
-    }
-    chart.configure_axes().draw().unwrap();
-}
-
-fn create_chart_local_sum_of_slopes_y(gestures: &Vec<Gesture>) {
-    println!("Local Sum of Slopes - y");
-    let root = BitMapBackend::new("plots/local_sum_of_slopes_y.png", (1280, 960)).into_drawing_area();
-    root.fill(&WHITE).unwrap();
-    let mut chart = ChartBuilder::on(&root)
-        .margin(20)
-        .caption("Local Sum of Slopes - y", ("sans-serif", 40))
-        .build_cartesian_3d(-100..100, -100..100, -100..100)
-        .unwrap();
-    for gesture_type in GestureType::iter() {
-        if gesture_type == GestureType::NotGesture || gesture_type == GestureType::NotGesture
-            || gesture_type == GestureType::LeftToRight || gesture_type == GestureType::RightToLeft {
-            continue;
-        }
-
-        let points: Vec<[i16; 3]> = gestures.iter().filter(|gesture| gesture.gesture_type == gesture_type)
-            .map(|gesture| gesture.calc_feature_sum_of_slopes_y()).collect();
-        chart.draw_series(points.iter().map(|[x1, x2, x3]|
-            Circle::new((*x1 as i32, *x2 as i32, *x3 as i32), 2, get_chart_color_for_gesture(gesture_type)))).unwrap();
-    }
-    chart.configure_axes().draw().unwrap();
-}
-
-fn create_chart_local_sum_of_slopes_avg_x_y(gestures: &Vec<Gesture>) {
-    println!("Local Sum of Slopes Avg - X vs. Y ");
-    let root = BitMapBackend::new("plots/local_sum_of_slopes_avg_x_y.png", (1280, 960)).into_drawing_area();
-    root.fill(&WHITE).unwrap();
-    let mut chart = ChartBuilder::on(&root)
-        .margin(20)
-        .caption("Local Sum of Slopes Avg. - X vs. Y", ("sans-serif", 40))
-        .build_cartesian_2d(-100..100, -100..100)
-        .unwrap();
-    for gesture_type in GestureType::iter() {
-        if gesture_type == GestureType::NotGesture || gesture_type == GestureType::NotGesture {
-            continue;
-        }
-
-        let mut result: Vec<(i16, i16)> = Vec::new();
-        let points_x: Vec<i16> = gestures.iter().filter(|gesture| gesture.gesture_type == gesture_type)
-            .map(|gesture| gesture.calc_feature_sum_of_slopes_x()).map(|[x1, x2, x3]| (x1 + x2 + x3) / 3).collect();
-        let points_y: Vec<i16> = gestures.iter().filter(|gesture| gesture.gesture_type == gesture_type)
-            .map(|gesture| gesture.calc_feature_sum_of_slopes_y()).map(|[x1, x2, x3]| (x1 + x2 + x3) / 3).collect();
-        for i in 0..points_x.len() {
-            result.push((points_x[i], points_y[i]));
-        }
-
-        chart.draw_series(result.into_iter().map(|(x, y)|
-            Circle::new((x as i32, y as i32), 2, get_chart_color_for_gesture(gesture_type)))).unwrap();
-    }
-    chart.configure_mesh().draw().unwrap();
-}
- */

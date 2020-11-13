@@ -306,15 +306,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "gesture_extractor"
-version = "0.1.0"
-dependencies = [
- "lib_feature",
- "lib_gesture",
- "strum",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"

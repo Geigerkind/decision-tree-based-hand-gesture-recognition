@@ -19,6 +19,8 @@ def evaluate_predicted(predicted, y_test):
     for gesture_type in [1, 2, 3, 4, 9]:
         amount_of_gesture = y_test.tolist().count(gesture_type)
         print("GestureType: " + str(gesture_type))
+        if amount_of_gesture == 0:
+            return
         print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
         print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
         amount_correct += true_positive[gesture_type]
