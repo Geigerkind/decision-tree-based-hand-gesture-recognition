@@ -68,32 +68,17 @@ fn main() {
     create_chart_local_sum_of_slopes_avg_x_y(&gestures);
      */
     println!("Exporting features");
-    gestures.shuffle(&mut thread_rng());
-    let amount_train = gestures.len() / 2;
-    let train_gestures: Vec<&Gesture> = gestures.iter().take(amount_train).collect();
-    let validate_gestures: Vec<&Gesture> = gestures.iter().skip(amount_train).collect();
     for feature_type in FeatureType::iter() {
-        let mut train_file = File::create(&format!("model_data/train/{}", feature_type)).unwrap();
-        for gesture in &train_gestures {
-            train_file.write_all(feature_type.to_feature(gesture).marshal().as_bytes()).unwrap();
-            train_file.write_all(&[10]).unwrap();
-        }
-
-        let mut validate_file = File::create(&format!("model_data/validate/{}", feature_type)).unwrap();
-        for gesture in &validate_gestures {
-            validate_file.write_all(feature_type.to_feature(gesture).marshal().as_bytes()).unwrap();
-            validate_file.write_all(&[10]).unwrap();
+        let mut file = File::create(&format!("model_data/{}", feature_type)).unwrap();
+        for gesture in gestures.iter() {
+            file.write_all(feature_type.to_feature(gesture).marshal().as_bytes()).unwrap();
+            file.write_all(&[10]).unwrap();
         }
     }
-    let mut train_file = File::create("model_data/train/result").unwrap();
-    let mut validate_file = File::create("model_data/validate/result").unwrap();
-    for gesture in &train_gestures {
-        train_file.write_all(format!("{}", gesture.gesture_type as u8).as_bytes()).unwrap();
-        train_file.write_all(&[10]).unwrap();
-    }
-    for gesture in &validate_gestures {
-        validate_file.write_all(format!("{}", gesture.gesture_type as u8).as_bytes()).unwrap();
-        validate_file.write_all(&[10]).unwrap();
+    let mut file = File::create("model_data/result").unwrap();
+    for gesture in gestures.iter() {
+        file.write_all(format!("{}", gesture.gesture_type as u8).as_bytes()).unwrap();
+        file.write_all(&[10]).unwrap();
     }
 }
 /*
