@@ -1,11 +1,28 @@
 import pandas as pd
+from matplotlib import pyplot as plt
+from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
-# from sklearn import tree
-# from matplotlib import pyplot as plt
 
-# Import all the training and validation data
+def evaluate_predicted(predicted, y_test):
+    true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    false_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(y_test)):
+        if predicted[i] == y_test[i]:
+            true_positive[predicted[i]] += 1
+        else:
+            false_positive[predicted[i]] += 1
+
+    total_gestures = len(y_test)
+    for gesture_type in [1, 2, 3, 4, 9]:
+        amount_of_gesture = y_test.tolist().count(gesture_type)
+        print("GestureType: " + str(gesture_type))
+        print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
+        print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
+
+
+# Import all the data
 # Generated from the extractor
 storage_path = "../prepare_data/gesture_extractor/model_data"
 result = pd.read_csv(storage_path + "/result", dtype=int).values.flatten()
@@ -40,19 +57,31 @@ X = pd.concat([lsos_x, lsos_y, darkness_dist_6xy_geom, brightness_dist_6xy_geom,
 y = result
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
+
 # Create the decision tree and train it
-# clf = tree.DecisionTreeClassifier()
-clf = RandomForestClassifier(criterion='entropy', n_estimators=64, random_state=1, n_jobs=16)
-clf = clf.fit(X_train, y_train)
+def decision_tree(X_train, y_train, X_test, y_test):
+    clf = tree.DecisionTreeClassifier()
+    clf = clf.fit(X_train, y_train)
 
-# plt.figure()
-# tree.plot_tree(clf)
-# plt.savefig('tree.png', format='png')
+    plt.figure()
+    tree.plot_tree(clf)
+    plt.savefig('tree.png', format='png')
 
-# Testing the validation set for accuracy
-predicted = clf.predict(X_test)
-correct = 0
-for i in range(len(y_test)):
-    if predicted[i] == y_test[i]:
-        correct = correct + 1
-print(100 * (correct / len(y_test)))
+    predicted = clf.predict(X_test)
+
+    print("Evaluating DecisionTreeClassifier:")
+    evaluate_predicted(predicted, y_test)
+
+
+def random_forest(X_train, y_train, X_test, y_test):
+    clf = RandomForestClassifier(criterion='entropy', n_estimators=64, random_state=1, n_jobs=16)
+    clf = clf.fit(X_train, y_train)
+
+    predicted = clf.predict(X_test)
+
+    print("Evaluating RandomForestClassifier:")
+    evaluate_predicted(predicted, y_test)
+
+
+decision_tree(X_train, y_train, X_test, y_test)
+random_forest(X_train, y_train, X_test, y_test)
