@@ -44,9 +44,9 @@ mod test {
     use std::ops::Deref;
     use std::str::FromStr;
 
-    use crate::entities::{Frame, Gesture};
+    use lib_gesture::entities::{Frame, Gesture};
     use crate::features::{Feature, StandardDeviation};
-    use crate::value_objects::GestureType;
+    use lib_gesture::value_objects::GestureType;
 
     #[test]
     fn test_calculate() {

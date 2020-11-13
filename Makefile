@@ -21,10 +21,15 @@ setup: install_rust_nightly
 
 ## Development tasks
 
-all: gen_features gen_tree test_tree
+all: gen_features gen_tree test_gen_features test_tree
+
+test: test_gen_features test_tree
 
 gen_features: install_rust_nightly
 	$(CARGO) run --release
+
+test_gen_features:
+	$(CARGO) test
 
 gen_tree:
 	$(PYTHON) proof_of_concept/decision_tree.py
