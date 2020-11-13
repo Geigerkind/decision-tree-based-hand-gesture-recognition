@@ -29,9 +29,9 @@ mod tools;
 mod features;
 
 fn main() {
-    let folder_fix = vec![9, 16];
-    let direction_fix = vec!["LRRL", "TBBT"];
-    let object_fix = vec!["hand", "finger"];
+    let folder_fix = vec!["Dymel_EvaGarbage", "Eva9pixel", "Eva16pixel"];
+    let direction_fix = vec!["LRRL", "TBBT", "Garbage"];
+    let object_fix = vec!["hand", "finger", "lt"];
     let distance_fix = vec![3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
     let brightness_fix = vec!["_lowBrightness", "_highBrightness", "_fullBrightness", "_halfBrightness", "_monotop", "_monotop_60"];
     let additional_fix = vec!["", "_fast", "_white", "_slow"];
@@ -46,7 +46,7 @@ fn main() {
                     for brightness in &brightness_fix {
                         for additonal in &additional_fix {
                             for number in &number_fix {
-                                if let Ok(mut parsed_gestures) = parse_gestures(&format!("../dataEva{}pixel/{}_{}_{}cm{}{}{}-annotated.csv", folder, direction, object, distance, brightness, additonal, number)) {
+                                if let Ok(mut parsed_gestures) = parse_gestures(&format!("../data{}/{}_{}_{}cm{}{}{}-annotated.csv", folder, direction, object, distance, brightness, additonal, number)) {
                                     gestures.append(&mut parsed_gestures);
                                 }
                             }
@@ -56,6 +56,8 @@ fn main() {
             }
         }
     }
+    // TODO: Create Garbage data from normal data, e.g. split at half and repeat in reverse
+    // TODO: Syntetic data, i.e. scaling, rotation(?), noise(?), offsets?
 
     println!("Elapsed: {}ms", start.elapsed().as_millis());
     println!("Gestures found: {}", gestures.len());

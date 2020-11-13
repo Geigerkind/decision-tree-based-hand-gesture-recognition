@@ -3,7 +3,7 @@ use std::ops::Deref;
 use crate::entities::Gesture;
 use crate::features::Feature;
 
-pub struct AverageAmplitudeChange(i32);
+pub struct AverageAmplitudeChange(pub i32);
 
 impl Deref for AverageAmplitudeChange {
     type Target = i32;
@@ -23,7 +23,7 @@ impl Feature for AverageAmplitudeChange {
             }
             last_frame = frame;
         }
-        let len = (gesture.frames.len() * 9) as f64;
+        let len = ((gesture.frames.len() - 1) * 9) as f64;
         result = ((result as f64) / len) as i32;
         AverageAmplitudeChange(result)
     }
@@ -31,4 +31,43 @@ impl Feature for AverageAmplitudeChange {
     fn marshal(&self) -> String {
         self.deref().to_string()
     }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::features::{AverageAmplitudeChange, Feature};
+    use crate::entities::{Frame, Gesture};
+    use std::str::FromStr;
+    use crate::value_objects::GestureType;
+    use std::ops::Deref;
+
+    #[test]
+    fn test_calculate() {
+        // Arrange
+        let frame1 = Frame::from_str("100,100,100,100,100,100,100,100,100,1").unwrap();
+        let frame2 = Frame::from_str("110,110,110,110,110,110,110,110,110,1").unwrap();
+        let mut gesture = Gesture::default();
+        gesture.frames.push(frame1);
+        gesture.frames.push(frame2);
+        gesture.gesture_type = GestureType::LeftToRight;
+
+        // Act
+        let feature = AverageAmplitudeChange::calculate(&gesture);
+
+        // Assert
+        assert_eq!(*feature.deref(), 10);
+    }
+
+    #[test]
+    fn test_marshal() {
+        // Arrange
+        let feature = AverageAmplitudeChange(10);
+
+        // Act
+        let marshaled = feature.marshal();
+
+        // Assert
+        assert_eq!(marshaled, String::from("10"));
+    }
+
 }

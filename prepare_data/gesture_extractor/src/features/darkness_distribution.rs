@@ -18,7 +18,7 @@ pub fn calc_darkness_distribution_float_x(length: usize, gesture: &Gesture) -> V
     let mut perma_result = Vec::with_capacity(length);
     for i in 0..result.len() {
         values.push(result[i]);
-        if (i as f64) < merge_threshold * (perma_result.len() as f64) {
+        if ((i + 1) as f64) < merge_threshold * ((perma_result.len() + 1) as f64) {
             continue;
         }
         perma_result.push((values.iter().sum::<usize>() as f64) / (values.len() as f64));
@@ -43,7 +43,7 @@ pub fn calc_darkness_distribution_float_y(length: usize, gesture: &Gesture) -> V
     let mut perma_result = Vec::with_capacity(length);
     for i in 0..result.len() {
         values.push(result[i]);
-        if (i as f64) < merge_threshold * (perma_result.len() as f64) {
+        if ((i + 1) as f64) < merge_threshold * ((perma_result.len() + 1) as f64) {
             continue;
         }
         perma_result.push((values.iter().sum::<usize>() as f64) / (values.len() as f64));
@@ -65,7 +65,7 @@ pub fn calc_darkness_distribution_float_xy(length: usize, gesture: &Gesture) -> 
     let mut perma_result = Vec::with_capacity(length);
     for i in 0..result.len() {
         values.push(result[i]);
-        if (i as f64) < merge_threshold * (perma_result.len() as f64) {
+        if ((i + 1) as f64) < merge_threshold * ((perma_result.len() + 1) as f64) {
             continue;
         }
         perma_result.push(values.iter().max().cloned().unwrap());
@@ -99,7 +99,7 @@ pub fn calc_darkness_distribution_float_xy_geom(length: usize, gesture: &Gesture
     let mut perma_result = Vec::with_capacity(length);
     for i in 0..result.len() {
         values.push(result[i]);
-        if (i as f64) < merge_threshold * (perma_result.len() as f64) {
+        if ((i + 1) as f64) < merge_threshold * ((perma_result.len() + 1) as f64) {
             continue;
         }
         let (x, y) = values.iter().fold((0, 0), |(acc_x, acc_y), (x, y)| (acc_x + x, acc_y + y));
@@ -144,7 +144,7 @@ pub fn calc_darkness_distribution_float_xy_quadrant(length: usize, gesture: &Ges
     let mut perma_result = Vec::with_capacity(length);
     for i in 0..result.len() {
         values.push(result[i]);
-        if (i as f64) < merge_threshold * (perma_result.len() as f64) {
+        if ((i + 1) as f64) < merge_threshold * ((perma_result.len() + 1) as f64) {
             continue;
         }
         let (x, y) = values.iter().fold((0, 0), |(acc_x, acc_y), (x, y)| (acc_x + x, acc_y + y));

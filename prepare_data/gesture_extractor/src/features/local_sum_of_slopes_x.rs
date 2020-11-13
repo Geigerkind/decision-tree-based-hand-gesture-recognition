@@ -2,7 +2,7 @@ use crate::features::Feature;
 use crate::entities::Gesture;
 use std::ops::Deref;
 
-pub struct LocalSumOfSlopeX([i16; 3]);
+pub struct LocalSumOfSlopeX(pub [i16; 3]);
 
 impl Deref for LocalSumOfSlopeX {
     type Target = [i16; 3];
@@ -43,5 +43,44 @@ impl Feature for LocalSumOfSlopeX {
 
     fn marshal(&self) -> String {
         self.deref().iter().map(i16::to_string).collect::<Vec<String>>().join(",")
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use std::ops::Deref;
+    use std::str::FromStr;
+
+    use crate::entities::{Frame, Gesture};
+    use crate::features::{LocalSumOfSlopeX, Feature};
+    use crate::value_objects::GestureType;
+
+    #[test]
+    fn test_calculate() {
+        // Arrange
+        let frame1 = Frame::from_str("100,100,100,100,100,100,100,100,100,1").unwrap();
+        let frame2 = Frame::from_str("110,110,110,110,110,110,110,110,110,1").unwrap();
+        let mut gesture = Gesture::default();
+        gesture.frames.push(frame1);
+        gesture.frames.push(frame2);
+        gesture.gesture_type = GestureType::LeftToRight;
+
+        // Act
+        let feature = LocalSumOfSlopeX::calculate(&gesture);
+
+        // Assert
+        assert_eq!(feature.deref(), &[-10,-10,-10]);
+    }
+
+    #[test]
+    fn test_marshal() {
+        // Arrange
+        let feature = LocalSumOfSlopeX([0, 1, 2]);
+
+        // Act
+        let marshaled = feature.marshal();
+
+        // Assert
+        assert_eq!(marshaled, String::from("0,1,2"));
     }
 }
