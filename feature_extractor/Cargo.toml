@@ -9,3 +9,4 @@ lib_gesture = { path = "../lib_gesture", version = "*" }
 lib_feature = { path = "../lib_feature", version = "*" }
 lib_data_set = { path = "../lib_data_set", version = "*" }
 strum = "0.19"
+rand = "0.7.3"

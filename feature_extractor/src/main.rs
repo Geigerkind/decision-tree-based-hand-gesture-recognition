@@ -2,6 +2,7 @@ extern crate lib_feature;
 extern crate lib_gesture;
 extern crate lib_data_set;
 extern crate strum;
+extern crate rand;
 
 use std::fs::File;
 use std::io::Write;
@@ -14,6 +15,8 @@ use lib_data_set::data_sets::klisch::{KLISCH_TEST, KLISCH_DATA};
 
 use crate::strum::IntoEnumIterator;
 use lib_data_set::value_objects::ParsingMethod;
+use rand::thread_rng;
+use rand::seq::SliceRandom;
 
 fn main() {
     let data_sets = vec![
@@ -26,16 +29,22 @@ fn main() {
     ];
 
     let mut gestures: Vec<Gesture> = Vec::new();
+    let mut synthetic_rotations: Vec<Gesture> = Vec::new();
+    let mut synthetic_garbage: Vec<Gesture> = Vec::new();
     for data_set in data_sets {
         for data_set_entry in data_set {
             gestures.append(&mut data_set_entry.gestures().clone());
-            /*
             for gesture in data_set_entry.gestures() {
-                gestures.append(&mut gesture.infer_rotations());
+                synthetic_rotations.append(&mut gesture.infer_rotations());
+                synthetic_garbage.append(&mut gesture.infer_garbage());
             }
-             */
         }
     }
+
+    synthetic_rotations.shuffle(&mut thread_rng());
+    synthetic_garbage.shuffle(&mut thread_rng());
+
+    gestures.append(&mut synthetic_garbage[0..(gestures.len() / 4)].to_vec());
 
     println!("Gestures found: {}", gestures.len());
     println!("Exporting features");

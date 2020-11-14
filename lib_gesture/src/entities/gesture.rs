@@ -92,7 +92,15 @@ impl Gesture {
     }
 
     pub fn infer_garbage(&self) -> Vec<Self> {
-        unimplemented!()
+        let splitting_point = self.frames.len() / 2;
+        self.infer_rotations().into_iter()
+            .map(|mut gesture| {
+                gesture.gesture_type = GestureType::NotGesture;
+                for i in splitting_point..self.frames.len() {
+                    gesture.frames[i] = self.frames[i].clone();
+                }
+                gesture
+            }).collect()
     }
 
     fn rotate_to_left_to_right(&self) -> Self {
