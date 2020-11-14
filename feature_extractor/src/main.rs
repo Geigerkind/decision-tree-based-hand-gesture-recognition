@@ -9,7 +9,8 @@ use std::io::Write;
 use lib_feature::FeatureType;
 use lib_gesture::entities::Gesture;
 use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
-use lib_data_set::data_sets::kubik::KUBIK_TRAINING;
+use lib_data_set::data_sets::kubik::{KUBIK_TRAINING, KUBIK_TEST};
+use lib_data_set::data_sets::klisch::{KLISCH_TEST, KLISCH_DATA};
 
 use crate::strum::IntoEnumIterator;
 use lib_data_set::value_objects::ParsingMethod;
@@ -19,12 +20,20 @@ fn main() {
         EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap(),
+        KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
+        KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
+        KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
     ];
 
     let mut gestures: Vec<Gesture> = Vec::new();
     for data_set in data_sets {
         for data_set_entry in data_set {
             gestures.append(&mut data_set_entry.gestures().clone());
+            /*
+            for gesture in data_set_entry.gestures() {
+                gestures.append(&mut gesture.infer_rotations());
+            }
+             */
         }
     }
 

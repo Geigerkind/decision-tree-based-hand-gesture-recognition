@@ -67,7 +67,7 @@ center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGr
 # Specifying the features
 X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
 y = result
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=0)
 
 
 def evaluate_tree(id):
