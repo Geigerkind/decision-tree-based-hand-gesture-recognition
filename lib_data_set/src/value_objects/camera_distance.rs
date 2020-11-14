@@ -1,0 +1,27 @@
+#[derive(Debug)]
+pub enum CameraDistance {
+    CM3,
+    CM5,
+    CM5To10,
+    CM10,
+    CM15,
+    CM20,
+    CM25,
+    CM30,
+    CM40,
+    CM50,
+    CM60,
+    CM70,
+    CM80,
+    CM90,
+    CM100,
+    CM110,
+    CM120,
+    CM130,
+    CM140,
+    CM150,
+    D1,
+    D2,
+    D3,
+    Unknown
+}

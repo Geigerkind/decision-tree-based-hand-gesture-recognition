@@ -24,7 +24,7 @@ impl FromStr for Frame {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parts: Vec<&str> = s.trim_end_matches('\n').split(",").collect();
-        if parts.len() != 10 {
+        if parts.len() < 10 {
             return Err(ExtractorFailure::ParseFrame);
         }
 

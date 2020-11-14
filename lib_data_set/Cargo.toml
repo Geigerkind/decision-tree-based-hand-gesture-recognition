@@ -1,0 +1,12 @@
+[package]
+name = "lib_data_set"
+version = "0.1.0"
+authors = ["Tom Dymel <td@wps.de>"]
+edition = "2018"
+
+[dependencies]
+lib_gesture = { path = "../prepare_data/lib_gesture", version = "*" }
+derive-getters = "0.2.0"
+lazy_static = "1.4.0"
+strum = "0.19"
+strum_macros = "0.19"

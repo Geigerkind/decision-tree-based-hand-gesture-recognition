@@ -70,7 +70,7 @@ impl GestureReader {
                 self.record_gesture = false;
 
                 // We require at least 6 frames!
-                if self.gesture_buffer.frames.len() >= 6 {
+                if (self.pad_gesture && self.gesture_buffer.frames.len() + self.pad_buffer.len() >= 6) || self.gesture_buffer.frames.len() >= 6 {
                     let mut result = Gesture::default();
                     std::mem::swap(&mut self.gesture_buffer, &mut result);
                     if self.pad_gesture {
@@ -80,6 +80,10 @@ impl GestureReader {
                         result.frames = padded_result;
                     }
                     return Some(result);
+                } else {
+                    // Dismiss otherwise, I guess
+                    self.gesture_buffer = Gesture::default();
+                    self.pad_buffer = VecDeque::with_capacity(3);
                 }
             }
 

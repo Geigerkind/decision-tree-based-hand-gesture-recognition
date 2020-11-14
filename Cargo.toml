@@ -1,2 +1,2 @@
 [workspace]
-members = ["prepare_data/gesture_extractor", "simulation"]
+members = ["prepare_data/gesture_extractor", "simulation", "lib_data_set"]

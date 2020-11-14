@@ -10,7 +10,7 @@ pub fn parse_gestures_by_threshold(path: &String) -> io::Result<Vec<Gesture>> {
     let reader = BufReader::new(file);
 
     let mut result = Vec::with_capacity(1500);
-    let mut gesture_reader = GestureReader::new(0.01, 0.01, 0.02, true);
+    let mut gesture_reader = GestureReader::new(0.01, 0.01, 0.1, true);
     for line in reader.lines() {
         if let Ok(line) = line {
             if let Ok(frame) = Frame::from_str(&line) {
