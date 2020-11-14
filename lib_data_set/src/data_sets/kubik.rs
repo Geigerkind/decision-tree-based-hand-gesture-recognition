@@ -5,8 +5,8 @@ use strum::IntoEnumIterator;
 use crate::entities::DataSetEntry;
 use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod};
 
-const PATH_TEST: &str = "../data/testKubik";
-const PATH_TRAINING: &str = "../data/trainingKubik";
+const PATH_TEST: &str = "data/testKubik";
+const PATH_TRAINING: &str = "data/trainingKubik";
 
 lazy_static! {
     // TODO: Do we consider the CameraType?

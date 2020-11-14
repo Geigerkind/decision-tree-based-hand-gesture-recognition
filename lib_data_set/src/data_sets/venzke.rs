@@ -5,7 +5,7 @@ use strum::IntoEnumIterator;
 use crate::entities::DataSetEntry;
 use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod};
 
-const PATH_TRAINING: &str = "../data/trainingVenzke";
+const PATH_TRAINING: &str = "data/trainingVenzke";
 
 lazy_static! {
     pub static ref VENZKE_TRAINING: HashMap<ParsingMethod, Vec<DataSetEntry>> = {

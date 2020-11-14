@@ -1,5 +1,5 @@
 [package]
-name = "gesture_extractor"
+name = "feature_extractor"
 version = "0.1.0"
 authors = ["Tom Dymel <tom.dymel@tuhh.de>"]
 edition = "2018"
@@ -7,4 +7,5 @@ edition = "2018"
 [dependencies]
 lib_gesture = { path = "../lib_gesture", version = "*" }
 lib_feature = { path = "../lib_feature", version = "*" }
+lib_data_set = { path = "../lib_data_set", version = "*" }
 strum = "0.19"

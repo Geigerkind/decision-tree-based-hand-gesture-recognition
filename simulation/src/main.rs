@@ -22,7 +22,7 @@ fn main() {
             args.append(&mut center_of_gravity_y.deref().to_vec());
             total_gestures += 1;
 
-            let decision_tree = Command::new("./../decision_tree")
+            let decision_tree = Command::new("./decision_tree")
                 .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
                 .output()
                 .unwrap();

@@ -5,8 +5,8 @@ use strum::IntoEnumIterator;
 use crate::entities::DataSetEntry;
 use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod, AdditionalSpecification};
 
-const PATH_DATA_9PIXEL: &str = "../data/dataEva9pixel";
-const PATH_DATA_16PIXEL: &str = "../data/dataEva16pixel";
+const PATH_DATA_9PIXEL: &str = "data/dataEva9pixel";
+const PATH_DATA_16PIXEL: &str = "data/dataEva16pixel";
 
 lazy_static! {
     pub static ref EVA_9PIXEL: HashMap<ParsingMethod, Vec<DataSetEntry>> = {

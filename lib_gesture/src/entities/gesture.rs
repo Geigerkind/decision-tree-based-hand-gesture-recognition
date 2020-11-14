@@ -1,7 +1,7 @@
 use crate::entities::Frame;
 use crate::value_objects::GestureType;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Gesture {
     pub frames: Vec<Frame>,
     pub gesture_type: GestureType,
