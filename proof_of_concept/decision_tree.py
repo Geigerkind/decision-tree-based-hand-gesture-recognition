@@ -1,9 +1,10 @@
+import multiprocessing
+
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-
 from tree_to_code import *
 
 
@@ -68,24 +69,48 @@ y = result
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 
-# Create the decision tree and train it
-def decision_tree(X_train, y_train, X_test, y_test):
+def evaluate_tree(id):
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X_train, y_train)
+
+    predicted = clf.predict(X_test)
+
+    correct = 0
+    for i in range(len(y_test)):
+        if predicted[i] == y_test[i]:
+            correct += 1
+
+    accuracy = correct / len(y_test)
+
+    return clf, accuracy
+
+
+# Create the decision tree and train it
+def decision_tree():
+    amount_tests = 1024
+    print("Test " + str(amount_tests) + " different trees, and cherry pick best...")
+    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
+    trees = pool.map(evaluate_tree, range(amount_tests))
+
+    clf = 0
+    max_accuracy = 0
+    for (tree_clf, accuracy) in trees:
+        if accuracy > max_accuracy:
+            max_accuracy = accuracy
+            clf = tree_clf
 
     plt.figure(figsize=(40, 40))
     tree.plot_tree(clf)
     plt.savefig('tree.png', format='png')
 
-    predicted = clf.predict(X_test)
-
     print("Evaluating DecisionTreeClassifier:")
+    predicted = clf.predict(X_test)
     evaluate_predicted(predicted, y_test)
 
     tree_to_code(clf)
 
 
-def random_forest(X_train, y_train, X_test, y_test):
+def random_forest():
     clf = RandomForestClassifier(criterion='entropy', n_estimators=64, random_state=1, n_jobs=16)
     clf = clf.fit(X_train, y_train)
 
@@ -95,5 +120,5 @@ def random_forest(X_train, y_train, X_test, y_test):
     evaluate_predicted(predicted, y_test)
 
 
-decision_tree(X_train, y_train, X_test, y_test)
-random_forest(X_train, y_train, X_test, y_test)
+decision_tree()
+random_forest()
