@@ -1,0 +1,10 @@
+[package]
+name = "simulation"
+version = "0.1.0"
+authors = ["Tom Dymel <tom.dymel@tuhh.de>"]
+edition = "2018"
+
+[dependencies]
+lib_gesture = { path = "../prepare_data/lib_gesture", version = "*" }
+lib_feature = { path = "../prepare_data/lib_feature", version = "*" }
+strum = "0.19"

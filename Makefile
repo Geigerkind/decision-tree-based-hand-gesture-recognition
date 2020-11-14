@@ -26,7 +26,7 @@ all: gen_features gen_tree test_gen_features test_tree
 test: test_gen_features test_tree
 
 gen_features: install_rust_nightly
-	$(CARGO) run --release
+	$(CARGO) run --release --bin gesture_extractor
 
 test_gen_features:
 	$(CARGO) test

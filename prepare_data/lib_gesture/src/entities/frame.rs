@@ -4,7 +4,7 @@ use num_traits::FromPrimitive;
 
 use crate::value_objects::{ExtractorFailure, GestureType};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Frame {
     pub pixel: [i16; 9],
     pub gesture_type: GestureType,
@@ -43,6 +43,19 @@ impl FromStr for Frame {
             gesture_type: parts[9].parse::<i16>().map_err(|_| ExtractorFailure::ParseFrame)
                 .map(|number| FromPrimitive::from_i16(number).expect("Gesture should have been defined!"))?,
         })
+    }
+}
+
+impl Frame {
+    // Note: the original implementation normalized the weights between 0 and 1, this implementation does not
+    pub fn mean(&self) -> f64 {
+        self.pixel.iter().map(|value| (*value as f64) / 1024.0).sum::<f64>() / 9.0
+    }
+
+    // Checks if there is any pixel, whose difference to the other surpasses the threshold
+    // Note: the original implementation normalized the weights between 0 and 1, this implementation does not
+    pub fn any_pixel_difference_higher_than_threshold(&self, other: &Self, threshold: f64) -> bool {
+        self.pixel.iter().enumerate().any(|(index, value)| (((*value as f64) / 1024.0) - ((other.pixel[index] as f64) / 1024.0)).abs() > threshold)
     }
 }
 

@@ -7,7 +7,7 @@ use crate::entities::{Frame, Gesture};
 use crate::value_objects::GestureType;
 use std::cmp::Ordering;
 
-pub fn parse_gestures(path: &String) -> io::Result<Vec<Gesture>> {
+pub fn parse_gestures_by_annotation(path: &String) -> io::Result<Vec<Gesture>> {
     let file = File::open(path)?;
     let reader = BufReader::new(file);
 
@@ -47,13 +47,13 @@ pub fn parse_gestures(path: &String) -> io::Result<Vec<Gesture>> {
 
 #[cfg(test)]
 mod test {
-    use crate::tools::parse_gestures;
+    use crate::tools::parse_gestures_by_annotation;
     use crate::value_objects::GestureType;
 
     #[test]
     fn test_parse_gestures_none() {
         // Act
-        let gestures = parse_gestures(&String::from("test/parse_none"));
+        let gestures = parse_gestures_by_annotation(&String::from("test/parse_none"));
 
         // Assert
         assert!(gestures.is_ok());
@@ -64,7 +64,7 @@ mod test {
     #[test]
     fn test_parse_gestures_left_to_right() {
         // Act
-        let gestures = parse_gestures(&String::from("test/parse_left_to_right"));
+        let gestures = parse_gestures_by_annotation(&String::from("test/parse_left_to_right"));
 
         // Assert
         assert!(gestures.is_ok());
@@ -78,7 +78,7 @@ mod test {
     #[test]
     fn test_parse_gestures_right_to_left() {
         // Act
-        let gestures = parse_gestures(&String::from("test/parse_right_to_left"));
+        let gestures = parse_gestures_by_annotation(&String::from("test/parse_right_to_left"));
 
         // Assert
         assert!(gestures.is_ok());
@@ -92,7 +92,7 @@ mod test {
     #[test]
     fn test_parse_gestures_top_to_bottom() {
         // Act
-        let gestures = parse_gestures(&String::from("test/parse_top_to_bottom"));
+        let gestures = parse_gestures_by_annotation(&String::from("test/parse_top_to_bottom"));
 
         // Assert
         assert!(gestures.is_ok());
@@ -106,7 +106,7 @@ mod test {
     #[test]
     fn test_parse_gestures_bottom_to_top() {
         // Act
-        let gestures = parse_gestures(&String::from("test/parse_bottom_to_top"));
+        let gestures = parse_gestures_by_annotation(&String::from("test/parse_bottom_to_top"));
 
         // Assert
         assert!(gestures.is_ok());
@@ -120,7 +120,7 @@ mod test {
     #[test]
     fn test_parse_gestures_note_gesture() {
         // Act
-        let gestures = parse_gestures(&String::from("test/parse_not_gesture"));
+        let gestures = parse_gestures_by_annotation(&String::from("test/parse_not_gesture"));
 
         // Assert
         assert!(gestures.is_ok());

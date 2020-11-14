@@ -1,2 +1,2 @@
 [workspace]
-members = ["prepare_data/gesture_extractor"]
+members = ["prepare_data/gesture_extractor", "simulation"]

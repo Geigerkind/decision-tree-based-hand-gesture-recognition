@@ -15,3 +15,12 @@ impl Default for Gesture {
         }
     }
 }
+
+impl Gesture {
+    pub fn add_frame(&mut self, frame: Frame) {
+        if self.gesture_type == GestureType::None {
+            self.gesture_type = frame.gesture_type;
+        }
+        self.frames.push(frame);
+    }
+}
