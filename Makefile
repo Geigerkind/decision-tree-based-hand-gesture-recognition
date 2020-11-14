@@ -26,14 +26,14 @@ all: gen_features gen_tree test_gen_features test_tree
 test: test_gen_features test_tree
 
 gen_features: install_rust_nightly
-	$(CARGO) run --release --bin feature_extractor
+	DATA_PATH="." $(CARGO) run --release --bin feature_extractor
 
 test_gen_features:
-	$(CARGO) test
+	DATA_PATH=".." $(CARGO) test
 
 gen_tree:
 	$(PYTHON) proof_of_concept/decision_tree.py
 	$(GCC) -O3 decision_tree.c -o decision_tree
 
 test_tree:
-	$(CARGO) run --release --bin simulation
+	DATA_PATH=".." $(CARGO) test --bin simulation -- --nocapture
