@@ -1,2 +1,2 @@
 [workspace]
-members = ["feature_extractor", "simulation", "lib_data_set", "lib_gesture", "lib_feature"]
+members = ["feature_extractor", "simulation", "lib_data_set", "lib_gesture", "lib_feature", "lib_evaluation"]

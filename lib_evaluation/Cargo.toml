@@ -1,0 +1,10 @@
+[package]
+name = "lib_evaluation"
+version = "0.1.0"
+authors = ["Tom Dymel <tom@dymel.de>"]
+edition = "2018"
+
+[dependencies]
+lib_data_set = { path = "../lib_data_set", version = "*" }
+derive-getters = "0.2.0"
+
