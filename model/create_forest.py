@@ -1,0 +1,25 @@
+from tree_to_code import *
+
+
+def create_forest(file, trees, num_trees):
+    for i in range(num_trees):
+        tree_to_code(file, trees[i][0], "tree" + str(i))
+        file.write("\n")
+
+    file.write("#include <stdio.h>\n")
+    file.write("int main(int argc, char** argv) {\n")
+    file.write("float args[12];\n")
+    file.write("for (unsigned char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
+    file.write("unsigned int results[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n")
+    for i in range(num_trees):
+        file.write("++results[tree" + str(i) + "(args)];\n")
+    file.write("unsigned char max_index = 0;\n")
+    file.write("unsigned int max_value = 0;\n")
+    file.write("for (unsigned char i = 0; i < 10; ++i) {\n")
+    file.write("if (max_value < results[i]) {\n")
+    file.write("max_value = results[i];\n")
+    file.write("max_index = i;\n")
+    file.write("}\n")
+    file.write("}\n")
+    file.write("return max_index;\n")
+    file.write("}\n")

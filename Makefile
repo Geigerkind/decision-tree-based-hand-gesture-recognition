@@ -32,8 +32,12 @@ test_gen_features:
 	DATA_PATH=".." $(CARGO) test
 
 gen_tree:
-	$(PYTHON) proof_of_concept/decision_tree.py
+	$(PYTHON) model/decision_tree.py
 	$(GCC) -O3 decision_tree.c -o decision_tree
+	$(GCC) -O3 decision_forest.c -o decision_forest
 
 test_tree:
 	DATA_PATH=".." $(CARGO) test --bin simulation -- --nocapture
+
+test_tree_kubik:
+	DATA_PATH=".." $(CARGO) test test_kubik_test_by_annotation --bin simulation -- --nocapture

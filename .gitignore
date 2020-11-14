@@ -3,3 +3,5 @@ Cargo.lock
 decision_tree.c
 tree.png
 decision_tree
+decision_forest.c
+decision_forest

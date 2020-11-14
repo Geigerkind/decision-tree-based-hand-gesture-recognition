@@ -22,7 +22,7 @@ mod test {
     use lib_evaluation::value_objects::EvaluationEntryKey;
     use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature};
 
-    fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName) {
+    fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName, program: &str) {
         let mut evaluation = Evaluation::new(data_set_name);
         for data_set_entry in data_set.iter() {
             let evaluation_entry_key = EvaluationEntryKey::new(*data_set_entry.covering_object(), *data_set_entry.camera_distance(),
@@ -34,7 +34,7 @@ mod test {
                 args.append(&mut center_of_gravity_x.deref().to_vec());
                 args.append(&mut center_of_gravity_y.deref().to_vec());
 
-                let decision_tree = Command::new("./../decision_tree")
+                let decision_tree = Command::new(&format!("./../{}", program))
                     .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
                     .output()
                     .unwrap();
@@ -51,72 +51,142 @@ mod test {
     }
 
     #[test]
-    fn test_kubik_test_by_annotation() {
-        evaluate_data_set(KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KubikTest);
+    fn test_kubik_test_by_annotation_decision_tree() {
+        evaluate_data_set(KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KubikTest, "decision_tree");
     }
 
     #[test]
-    fn test_kubik_test_by_threshold() {
-        evaluate_data_set(KUBIK_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KubikTest);
+    fn test_kubik_test_by_threshold_decision_tree() {
+        evaluate_data_set(KUBIK_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KubikTest, "decision_tree");
     }
 
     #[test]
-    fn test_kubik_training_by_annotation() {
-        evaluate_data_set(KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KubikTraining);
+    fn test_kubik_training_by_annotation_decision_tree() {
+        evaluate_data_set(KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KubikTraining, "decision_tree");
     }
 
     #[test]
-    fn test_kubik_training_by_threshold() {
-        evaluate_data_set(KUBIK_TRAINING.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KubikTraining);
+    fn test_kubik_training_by_threshold_decision_tree() {
+        evaluate_data_set(KUBIK_TRAINING.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KubikTraining, "decision_tree");
     }
 
     #[test]
-    fn test_klisch_data_by_annotation() {
-        evaluate_data_set(KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KlischData);
+    fn test_klisch_data_by_annotation_decision_tree() {
+        evaluate_data_set(KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KlischData, "decision_tree");
     }
 
     #[test]
-    fn test_klisch_data_by_threshold() {
-        evaluate_data_set(KLISCH_DATA.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischData);
+    fn test_klisch_data_by_threshold_decision_tree() {
+        evaluate_data_set(KLISCH_DATA.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischData, "decision_tree");
     }
 
     #[test]
-    fn test_klisch_test_by_annotation() {
-        evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KlischTest);
+    fn test_klisch_test_by_annotation_decision_tree() {
+        evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KlischTest, "decision_tree");
     }
 
     #[test]
-    fn test_klisch_test_by_threshold() {
-        evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischTest);
+    fn test_klisch_test_by_threshold_decision_tree() {
+        evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischTest, "decision_tree");
     }
 
     #[test]
-    fn test_venzke_training_by_annotation() {
-        evaluate_data_set(VENZKE_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::VenzkeTraining);
+    fn test_venzke_training_by_annotation_decision_tree() {
+        evaluate_data_set(VENZKE_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::VenzkeTraining, "decision_tree");
     }
 
     #[test]
-    fn test_venzke_training_by_threshold() {
-        evaluate_data_set(VENZKE_TRAINING.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::VenzkeTraining);
+    fn test_venzke_training_by_threshold_decision_tree() {
+        evaluate_data_set(VENZKE_TRAINING.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::VenzkeTraining, "decision_tree");
     }
 
     #[test]
-    fn test_eva_16_pixel_by_annotation() {
-        evaluate_data_set(EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::Eva16pixelData);
+    fn test_eva_16_pixel_by_annotation_decision_tree() {
+        evaluate_data_set(EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::Eva16pixelData, "decision_tree");
     }
 
     #[test]
-    fn test_eva_16_pixel_by_threshold() {
-        evaluate_data_set(EVA_16PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva16pixelData);
+    fn test_eva_16_pixel_by_threshold_decision_tree() {
+        evaluate_data_set(EVA_16PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva16pixelData, "decision_tree");
     }
 
     #[test]
-    fn test_eva_9_pixel_by_annotation() {
-        evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::Eva9pixelData);
+    fn test_eva_9_pixel_by_annotation_decision_tree() {
+        evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::Eva9pixelData, "decision_tree");
     }
 
     #[test]
-    fn test_eva_9_pixel_by_threshold() {
-        evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva9pixelData);
+    fn test_eva_9_pixel_by_threshold_decision_tree() {
+        evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva9pixelData, "decision_tree");
+    }
+
+    #[test]
+    fn test_kubik_test_by_annotation_decision_forest() {
+        evaluate_data_set(KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KubikTest, "decision_forest");
+    }
+
+    #[test]
+    fn test_kubik_test_by_threshold_decision_forest() {
+        evaluate_data_set(KUBIK_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KubikTest, "decision_forest");
+    }
+
+    #[test]
+    fn test_kubik_training_by_annotation_decision_forest() {
+        evaluate_data_set(KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KubikTraining, "decision_forest");
+    }
+
+    #[test]
+    fn test_kubik_training_by_threshold_decision_forest() {
+        evaluate_data_set(KUBIK_TRAINING.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KubikTraining, "decision_forest");
+    }
+
+    #[test]
+    fn test_klisch_data_by_annotation_decision_forest() {
+        evaluate_data_set(KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KlischData, "decision_forest");
+    }
+
+    #[test]
+    fn test_klisch_data_by_threshold_decision_forest() {
+        evaluate_data_set(KLISCH_DATA.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischData, "decision_forest");
+    }
+
+    #[test]
+    fn test_klisch_test_by_annotation_decision_forest() {
+        evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::KlischTest, "decision_forest");
+    }
+
+    #[test]
+    fn test_klisch_test_by_threshold_decision_forest() {
+        evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischTest, "decision_forest");
+    }
+
+    #[test]
+    fn test_venzke_training_by_annotation_decision_forest() {
+        evaluate_data_set(VENZKE_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::VenzkeTraining, "decision_forest");
+    }
+
+    #[test]
+    fn test_venzke_training_by_threshold_decision_forest() {
+        evaluate_data_set(VENZKE_TRAINING.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::VenzkeTraining, "decision_forest");
+    }
+
+    #[test]
+    fn test_eva_16_pixel_by_annotation_decision_forest() {
+        evaluate_data_set(EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::Eva16pixelData, "decision_forest");
+    }
+
+    #[test]
+    fn test_eva_16_pixel_by_threshold_decision_forest() {
+        evaluate_data_set(EVA_16PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva16pixelData, "decision_forest");
+    }
+
+    #[test]
+    fn test_eva_9_pixel_by_annotation_decision_forest() {
+        evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap().deref(), DataSetName::Eva9pixelData, "decision_forest");
+    }
+
+    #[test]
+    fn test_eva_9_pixel_by_threshold_decision_forest() {
+        evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva9pixelData, "decision_forest");
     }
 }

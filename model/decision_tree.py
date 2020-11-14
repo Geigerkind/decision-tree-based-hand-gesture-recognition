@@ -5,7 +5,8 @@ from matplotlib import pyplot as plt
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from tree_to_code import *
+from create_tree import *
+from create_forest import *
 
 
 def evaluate_predicted(predicted, y_test):
@@ -91,13 +92,9 @@ def decision_tree():
     print("Test " + str(amount_tests) + " different trees, and cherry pick best...")
     pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
     trees = pool.map(evaluate_tree, range(amount_tests))
+    trees.sort(key=lambda x: x[1], reverse=True)
 
-    clf = 0
-    max_accuracy = 0
-    for (tree_clf, accuracy) in trees:
-        if accuracy > max_accuracy:
-            max_accuracy = accuracy
-            clf = tree_clf
+    clf = trees[0][0]
 
     plt.figure(figsize=(40, 40))
     tree.plot_tree(clf)
@@ -107,7 +104,13 @@ def decision_tree():
     predicted = clf.predict(X_test)
     evaluate_predicted(predicted, y_test)
 
-    tree_to_code(clf)
+    file = open("decision_tree.c", "w")
+    create_tree(file, clf)
+    file.close()
+
+    file = open("decision_forest.c", "w")
+    create_forest(file, trees, 64)
+    file.close()
 
 
 def random_forest():
