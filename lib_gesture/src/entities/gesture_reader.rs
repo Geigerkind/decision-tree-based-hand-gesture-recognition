@@ -84,6 +84,7 @@ impl GestureReader {
                     // Dismiss otherwise, I guess
                     self.gesture_buffer = Gesture::default();
                     self.pad_buffer = VecDeque::with_capacity(3);
+                    self.record_gesture = false;
                 }
             }
 
@@ -113,7 +114,6 @@ impl GestureReader {
             if self.record_gesture && self.pad_gesture {
                 self.padding_counter = 3;
             } else {
-                self.padding_counter = 2;
                 self.gesture_buffer.add_frame(frame.clone());
                 self.record_gesture = true;
             }

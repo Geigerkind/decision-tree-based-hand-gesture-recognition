@@ -105,11 +105,19 @@ def decision_tree():
     evaluate_predicted(predicted, y_test)
 
     file = open("decision_tree.c", "w")
-    create_tree(file, clf)
+    create_tree_native_main(file, clf)
+    file.close()
+
+    file = open("ino_tree/decision_tree.ino", "w")
+    create_tree_ino_evaluate(file, clf)
     file.close()
 
     file = open("decision_forest.c", "w")
-    create_forest(file, trees, 64)
+    create_forest_native_main(file, trees, 64)
+    file.close()
+
+    file = open("ino_tree/decision_forest.ino", "w")
+    create_forest_ino_evaluate(file, trees, 32)
     file.close()
 
 
