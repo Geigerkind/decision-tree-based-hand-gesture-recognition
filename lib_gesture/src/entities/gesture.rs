@@ -27,6 +27,10 @@ impl Gesture {
     // Dont flame me for this implementation
     // its 19:43, and I've been coding already for almost 13 hours
     pub fn infer_rotations(&self) -> Vec<Self> {
+        if self.gesture_type == GestureType::NotGesture || self.gesture_type == GestureType::None {
+            return Vec::new();
+        }
+
         let mut result = Vec::new();
         let left_to_right = self.rotate_to_left_to_right();
 
@@ -92,6 +96,10 @@ impl Gesture {
     }
 
     pub fn infer_garbage(&self) -> Vec<Self> {
+        if self.gesture_type == GestureType::NotGesture || self.gesture_type == GestureType::None {
+            return Vec::new();
+        }
+
         let splitting_point = self.frames.len() / 2;
         self.infer_rotations().into_iter()
             .map(|mut gesture| {
@@ -157,7 +165,10 @@ impl Gesture {
                 }).collect();
                 gesture
             }
-            _ => unreachable!()
+            _ => {
+                println!("{:?}", self);
+                unreachable!()
+            }
         }
     }
 }

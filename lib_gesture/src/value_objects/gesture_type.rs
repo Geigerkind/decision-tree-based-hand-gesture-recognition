@@ -6,5 +6,6 @@ pub enum GestureType {
     RightToLeft = 2,
     TopToBottom = 3,
     BottomToTop = 4,
-    NotGesture = 9
+    NotGesture = 9,
+    NotLabeled = 99
 }

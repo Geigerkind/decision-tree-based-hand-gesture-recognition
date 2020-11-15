@@ -16,6 +16,10 @@ pub fn parse_gestures_by_annotation(path: &String) -> io::Result<Vec<Gesture>> {
     for line in reader.lines() {
         if let Ok(line) = line {
             if let Ok(frame) = Frame::from_str(&line) {
+                if frame.gesture_type == GestureType::NotLabeled {
+                    continue;
+                }
+
                 match current_gesture.gesture_type.cmp(&frame.gesture_type) {
                     Ordering::Equal => {
                         if current_gesture.gesture_type == GestureType::None {

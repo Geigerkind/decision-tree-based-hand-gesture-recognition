@@ -44,7 +44,7 @@ fn main() {
     synthetic_rotations.shuffle(&mut thread_rng());
     synthetic_garbage.shuffle(&mut thread_rng());
 
-    gestures.append(&mut synthetic_garbage[0..(gestures.len() / 4)].to_vec());
+    //gestures.append(&mut synthetic_garbage[0..(gestures.len() / 4)].to_vec());
 
     println!("Gestures found: {}", gestures.len());
     println!("Exporting features");

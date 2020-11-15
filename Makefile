@@ -23,6 +23,8 @@ setup: install_rust_nightly
 
 all: gen_features gen_tree test_gen_features test_tree
 
+gen: gen_features gen_tree
+
 test: test_gen_features test_tree
 
 gen_features: install_rust_nightly
@@ -41,3 +43,6 @@ test_tree:
 
 test_tree_kubik:
 	DATA_PATH=".." $(CARGO) test test_kubik_test_by_annotation --bin simulation -- --nocapture
+
+playground:
+	DATA_PATH="." $(CARGO) run --release --bin simulation

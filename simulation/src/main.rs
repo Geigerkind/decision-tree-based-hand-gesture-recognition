@@ -2,9 +2,75 @@ extern crate lib_data_set;
 extern crate lib_evaluation;
 extern crate lib_feature;
 extern crate lib_gesture;
+extern crate serialport;
+extern crate num_traits;
+
+use std::io::{Write, Read};
+use std::path::Path;
+use std::time::Duration;
+
+use serialport::{DataBits, FlowControl, Parity, SerialPortSettings, StopBits};
+use lib_gesture::entities::{GestureReader, Frame, Gesture};
+use std::str::FromStr;
+use std::process::Command;
+use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature};
+use std::ops::Deref;
+use lib_gesture::value_objects::GestureType;
+use num_traits::FromPrimitive;
+
+fn calculate_features(gesture: &Gesture) -> Vec<f64> {
+    let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
+    let mut args = Vec::with_capacity(12);
+    args.append(&mut center_of_gravity_x.deref().to_vec());
+    args.append(&mut center_of_gravity_y.deref().to_vec());
+    args
+}
 
 fn main() {
-    // TODO: Create application that is fed by Arduino and waits for input
+    let mut port = serialport::posix::TTYPort::open(&Path::new("/dev/ttyACM0"), &SerialPortSettings {
+        baud_rate: 115_200,
+        data_bits: DataBits::Eight,
+        flow_control: FlowControl::None,
+        parity: Parity::None,
+        stop_bits: StopBits::One,
+        timeout: Duration::from_millis(10),
+    }).expect("Failed to open port");
+
+    let mut serial_buf: Vec<u8> = vec![0; 1];
+    let _ = port.flush();
+    // Read until first end of line
+    loop {
+        if port.read(&mut serial_buf).is_ok() {
+            if serial_buf[0] == 10 {
+                break;
+            }
+        }
+    }
+
+    let mut gesture_reader = GestureReader::new(0.01, 0.01, 0.1, true);
+    let mut line = Vec::with_capacity(28);
+    loop {
+        if port.read(&mut serial_buf).is_ok() {
+            line.push(serial_buf[0]);
+            if serial_buf[0] == 10 {
+                if let Ok(line) = std::str::from_utf8(&line) {
+                    if let Ok(frame) = Frame::from_str(line.trim_end_matches("\r\n")) {
+                        if let Some(gesture) = gesture_reader.feed_frame(frame) {
+                            let args = calculate_features(&gesture);
+                            let decision_tree = Command::new("./decision_forest")
+                                .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
+                                .output()
+                                .unwrap();
+                            let gesture_type: GestureType = FromPrimitive::from_i32(decision_tree.status.code().unwrap()).unwrap();
+                            println!("Recognized gesture: {:?}", gesture_type);
+                        }
+                    }
+                }
+                line.clear();
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -20,7 +86,7 @@ mod test {
     use lib_data_set::value_objects::{DataSetName, ParsingMethod};
     use lib_evaluation::entities::Evaluation;
     use lib_evaluation::value_objects::EvaluationEntryKey;
-    use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature};
+    use crate::calculate_features;
 
     fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName, program: &str) {
         let mut evaluation = Evaluation::new(data_set_name);
@@ -28,12 +94,7 @@ mod test {
             let evaluation_entry_key = EvaluationEntryKey::new(*data_set_entry.covering_object(), *data_set_entry.camera_distance(),
                                                                *data_set_entry.brightness_level(), *data_set_entry.additional_specification());
             for gesture in data_set_entry.gestures() {
-                let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
-                let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
-                let mut args = Vec::with_capacity(12);
-                args.append(&mut center_of_gravity_x.deref().to_vec());
-                args.append(&mut center_of_gravity_y.deref().to_vec());
-
+                let args = calculate_features(&gesture);
                 let decision_tree = Command::new(&format!("./../{}", program))
                     .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
                     .output()

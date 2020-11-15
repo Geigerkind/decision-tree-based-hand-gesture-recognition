@@ -4,6 +4,7 @@ use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 
 use crate::entities::{Frame, Gesture, GestureReader};
+use crate::value_objects::GestureType;
 
 pub fn parse_gestures_by_threshold(path: &String) -> io::Result<Vec<Gesture>> {
     let file = File::open(path)?;
@@ -14,6 +15,9 @@ pub fn parse_gestures_by_threshold(path: &String) -> io::Result<Vec<Gesture>> {
     for line in reader.lines() {
         if let Ok(line) = line {
             if let Ok(frame) = Frame::from_str(&line) {
+                if frame.gesture_type == GestureType::NotLabeled {
+                    continue;
+                }
                 if let Some(gesture) = gesture_reader.feed_frame(frame) {
                     result.push(gesture);
                 }

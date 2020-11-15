@@ -24,7 +24,7 @@ impl FromStr for Frame {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parts: Vec<&str> = s.trim_end_matches('\n').split(",").collect();
-        if parts.len() < 10 {
+        if parts.len() < 9 {
             return Err(ExtractorFailure::ParseFrame);
         }
 
@@ -40,8 +40,8 @@ impl FromStr for Frame {
                 parts[7].parse::<i16>().map_err(|_| ExtractorFailure::ParseFrame)?,
                 parts[8].parse::<i16>().map_err(|_| ExtractorFailure::ParseFrame)?,
             ],
-            gesture_type: parts[9].parse::<i16>().map_err(|_| ExtractorFailure::ParseFrame)
-                .map(|number| FromPrimitive::from_i16(number).expect("Gesture should have been defined!"))?,
+            gesture_type: if parts.len() == 9 { GestureType::NotLabeled } else { parts[9].parse::<i16>().map_err(|_| ExtractorFailure::ParseFrame)
+                .map(|number| FromPrimitive::from_i16(number).expect("Gesture should have been defined!"))? },
         })
     }
 }
