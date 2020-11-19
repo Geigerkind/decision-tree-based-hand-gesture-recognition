@@ -81,7 +81,7 @@ fn main() {
             line.push(serial_buf[0]);
             if serial_buf[0] == ASCII_NEW_LINE {
                 if let Ok(line) = std::str::from_utf8(&line) {
-                    //println!("{}", line);
+                    println!("{}", line);
                     if let Ok(frame) = Frame::from_str(line.trim_end_matches("\r\n")) {
                         if let Some(gesture) = gesture_reader.feed_frame(frame) {
                             println!("#Frames: {}", gesture.frames.len());

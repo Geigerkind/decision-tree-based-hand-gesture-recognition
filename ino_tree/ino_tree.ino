@@ -233,12 +233,12 @@ int pixel_total(int buffer[3][3]) {
 // Hence we will calculate it in place
 void center_of_gravity_distribution_x(float buffer[6]) {
     // We collect a minimum of 6 frames per gesture, hence this will be >0
-    unsigned char merge_amount = num_recorded_frames / 6;
+    float merge_amount = ((float)num_recorded_frames) / 6.0;
     unsigned char gesture_index = calculate_pad_index(0);
+    float j = 1.0;
     for (unsigned char i = 0; i < 6; ++i) {
         buffer[i] = 0.0;
-        // TODO: Last few frames may not be processed due to rounding!
-        for (unsigned char j = 0; j < merge_amount; ++j) {
+        for (; j <= (merge_amount * ((float)(i + 1))); j += 1.0) {
             int total = pixel_total(gesture[gesture_index]);
             if (total > 0)
                 buffer[i] += (float)(gesture[gesture_index][0][0] + gesture[gesture_index][1][0] + gesture[gesture_index][2][0] - gesture[gesture_index][0][2] - gesture[gesture_index][1][2] - gesture[gesture_index][2][2]) / ((float)total);
@@ -249,12 +249,12 @@ void center_of_gravity_distribution_x(float buffer[6]) {
 }
 
 void center_of_gravity_distribution_y(float buffer[6]) {
-    unsigned char merge_amount = num_recorded_frames / 6;
+    float merge_amount = ((float)num_recorded_frames) / 6.0;
     unsigned char gesture_index = calculate_pad_index(0);
+    float j = 1.0;
     for (unsigned char i = 0; i < 6; ++i) {
         buffer[i] = 0.0;
-        // TODO: Last few frames may not be processed due to rounding!
-        for (unsigned char j = 0; j < merge_amount; ++j) {
+        for (; j <= (merge_amount * ((float)(i + 1))); j += 1.0) {
             int total = pixel_total(gesture[gesture_index]);
             if (total > 0)
                 buffer[i] += (float)(gesture[gesture_index][0][0] + gesture[gesture_index][0][1] + gesture[gesture_index][0][2] - gesture[gesture_index][2][0] - gesture[gesture_index][2][1] - gesture[gesture_index][2][2]) / ((float)total);
@@ -276,6 +276,8 @@ void loop() {
     // Gesture is parsed
     // Evaluate the features
     float args[12];
+    Serial.print("Number recorded frames: ");
+    Serial.println(num_recorded_frames);
     center_of_gravity_distribution_x(args);
     center_of_gravity_distribution_y(args + 6);
     for (int i=0; i<12; ++i) {
