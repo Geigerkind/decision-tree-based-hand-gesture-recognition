@@ -68,7 +68,10 @@ center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGr
 # Specifying the features
 X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
 y = result
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=0)
+X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=0.15, random_state=0)
+
+# For cherry picking we will optimize on XX_opt and later validate on XX_test
+XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_opt, test_size=0.5, random_state=0)
 
 
 # This function is used to fit the decision tree classifier to the training set
@@ -76,14 +79,14 @@ def evaluate_tree(id):
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X_train, y_train)
 
-    predicted = clf.predict(X_test)
+    predicted = clf.predict(XX_opt)
 
     correct = 0
-    for i in range(len(y_test)):
-        if predicted[i] == y_test[i]:
+    for i in range(len(yy_opt)):
+        if predicted[i] == yy_opt[i]:
             correct += 1
 
-    accuracy = correct / len(y_test)
+    accuracy = correct / len(yy_opt)
 
     return clf, accuracy
 
@@ -105,8 +108,8 @@ def decision_tree():
     plt.savefig('tree.png', format='png')
 
     print("Evaluating DecisionTreeClassifier:")
-    predicted = clf.predict(X_test)
-    evaluate_predicted(predicted, y_test)
+    predicted = clf.predict(XX_test)
+    evaluate_predicted(predicted, yy_test)
 
     file = open("decision_tree.c", "w")
     create_tree_native_main(file, clf)
@@ -129,10 +132,10 @@ def random_forest():
     clf = RandomForestClassifier(criterion='entropy', n_estimators=64, random_state=1, n_jobs=16)
     clf = clf.fit(X_train, y_train)
 
-    predicted = clf.predict(X_test)
+    predicted = clf.predict(XX_test)
 
     print("Evaluating RandomForestClassifier:")
-    evaluate_predicted(predicted, y_test)
+    evaluate_predicted(predicted, yy_test)
 
 
 decision_tree()

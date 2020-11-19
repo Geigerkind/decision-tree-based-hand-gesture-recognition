@@ -1,4 +1,4 @@
-# Decision Tree based gesture recognition
+# Decision tree based gesture recognition
 ## Introduction
 This project is split into several sub projects to abstract from the domain of gesture recognition on the Arduino Uno. 
 
