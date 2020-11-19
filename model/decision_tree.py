@@ -69,7 +69,7 @@ center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGr
 # X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history, center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
 X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
 y = result
-X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=0.15, random_state=0)
+X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=0.3, random_state=0)
 
 # For cherry picking we will optimize on XX_opt and later validate on XX_test
 XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_opt, test_size=0.5, random_state=0)

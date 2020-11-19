@@ -36,7 +36,7 @@ fn main() {
         EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
-        //KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
+        KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
     ];
 
