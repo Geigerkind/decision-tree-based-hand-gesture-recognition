@@ -5,10 +5,10 @@ use lib_gesture::entities::Gesture;
 /// Calculates the average center of gravity for 6 time slots, i.e. if more than 6 samples are obtained, they
 /// are squished into 6 values by applying the average of the sum.
 /// x_g = (left_row - right_row) / total_of_all_pixel
-pub struct CenterOfGravityDistributionFloatX(pub [f64; 6]);
+pub struct CenterOfGravityDistributionFloatX(pub [f32; 6]);
 
 impl Deref for CenterOfGravityDistributionFloatX {
-    type Target = [f64; 6];
+    type Target = [f32; 6];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -26,20 +26,20 @@ impl Feature for CenterOfGravityDistributionFloatX {
             }
 
             let amount = frame.pixel[0] + frame.pixel[3] + frame.pixel[6] - frame.pixel[2] - frame.pixel[5] - frame.pixel[8];
-            center_of_gravities.push((amount as f64) / (total_brightness as f64));
+            center_of_gravities.push((amount as f32) / (total_brightness as f32));
         }
 
-        let merge_threshold = center_of_gravities.len() as f64 / 6.0;
+        let merge_threshold = center_of_gravities.len() as f32 / 6.0;
         let mut values = Vec::new();
-        let mut perma_result: [f64; 6] = [0.0; 6];
+        let mut perma_result: [f32; 6] = [0.0; 6];
         let mut perma_result_index = 0;
         for i in 0..center_of_gravities.len() {
             values.push(center_of_gravities[i]);
-            if ((i + 1) as f64) < merge_threshold * ((perma_result_index + 1) as f64) {
+            if ((i + 1) as f32) < merge_threshold * ((perma_result_index + 1) as f32) {
                 continue;
             }
 
-            perma_result[perma_result_index] = values.iter().sum::<f64>() / (values.len() as f64);
+            perma_result[perma_result_index] = values.iter().sum::<f32>() / (values.len() as f32);
             perma_result_index += 1;
             values.clear();
         }

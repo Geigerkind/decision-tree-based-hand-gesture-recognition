@@ -23,9 +23,9 @@ impl Feature for MeanValue {
                 result[i] += frame.pixel[i] as i32;
             }
         }
-        let len = gesture.frames.len() as f64;
+        let len = gesture.frames.len() as f32;
         for i in 0..9 {
-            result[i] = ((result[i] as f64) / len) as i32;
+            result[i] = ((result[i] as f32) / len) as i32;
         }
         MeanValue(result)
     }

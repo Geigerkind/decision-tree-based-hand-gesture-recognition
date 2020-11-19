@@ -5,6 +5,8 @@ and finally feeds it into the decision tree or decision forest that is generated
 Furthermore, it tests the aforementioned tree classifier on the data sets and prints out `Evaluation`s for each data set parsed `ByAnnotation` and `ByThreshold`.
 */
 
+#![allow(unused_imports)]
+
 extern crate lib_feature;
 extern crate lib_gesture;
 extern crate lib_data_set;

@@ -6,10 +6,10 @@ use crate::features::darkness_distribution::calc_darkness_distribution_float_x;
 use crate::features::Feature;
 
 /// See calc_darkness_distribution_float_x
-pub struct DarknessDistribution3X(pub [f64; 3]);
+pub struct DarknessDistribution3X(pub [f32; 3]);
 
 impl Deref for DarknessDistribution3X {
-    type Target = [f64; 3];
+    type Target = [f32; 3];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -23,7 +23,7 @@ impl Feature for DarknessDistribution3X {
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(f64::to_string).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(f32::to_string).collect::<Vec<String>>().join(",")
     }
 }
 

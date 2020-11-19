@@ -25,8 +25,8 @@ impl Feature for AverageAmplitudeChange {
             }
             last_frame = frame;
         }
-        let len = ((gesture.frames.len() - 1) * 9) as f64;
-        result = ((result as f64) / len) as i32;
+        let len = ((gesture.frames.len() - 1) * 9) as f32;
+        result = ((result as f32) / len) as i32;
         AverageAmplitudeChange(result)
     }
 

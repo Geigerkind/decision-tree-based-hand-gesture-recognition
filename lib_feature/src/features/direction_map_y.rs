@@ -44,7 +44,7 @@ impl Feature for DirectionMapY {
             prev_frame.pixel[4] - prev_frame.pixel[7],
             prev_frame.pixel[5] - prev_frame.pixel[8]]);
 
-        let threshold = (directions.len() as f64) / 6.0;
+        let threshold = (directions.len() as f32) / 6.0;
         let mut current_value = [0; 3];
         let mut perma_result = [0; 6];
         let mut index = 0;
@@ -52,7 +52,7 @@ impl Feature for DirectionMapY {
             current_value[0] += directions[i][0];
             current_value[1] += directions[i][1];
             current_value[2] += directions[i][2];
-            if (i as f64) < threshold * (index as f64) {
+            if (i as f32) < threshold * (index as f32) {
                 continue;
             }
             perma_result[index] = (current_value[0] + current_value[1] + current_value[2]) / 3;

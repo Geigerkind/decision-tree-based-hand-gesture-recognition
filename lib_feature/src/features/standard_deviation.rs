@@ -5,10 +5,10 @@ use lib_gesture::entities::Gesture;
 use crate::features::{Feature, MeanValue};
 
 /// Calculates the standard deviation of each pixel.
-pub struct StandardDeviation(pub [f64; 9]);
+pub struct StandardDeviation(pub [f32; 9]);
 
 impl Deref for StandardDeviation {
-    type Target = [f64; 9];
+    type Target = [f32; 9];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -17,26 +17,26 @@ impl Deref for StandardDeviation {
 
 impl Feature for StandardDeviation {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized {
-        let mut result: [f64; 9] = [0.0; 9];
+        let mut result: [f32; 9] = [0.0; 9];
         let average = MeanValue::calculate(gesture);
 
         for frame in gesture.frames.iter() {
             for i in 0..9 {
-                let difference = (frame.pixel[i] as i32 - average.deref()[i]) as f64;
+                let difference = (frame.pixel[i] as i32 - average.deref()[i]) as f32;
                 result[i] += difference * difference;
             }
         }
 
-        let result_len = gesture.frames.len() as f64;
+        let result_len = gesture.frames.len() as f32;
         for i in 0..9 {
-            result[i] = ((1.0 / result_len) * (result[i] as f64)).sqrt();
+            result[i] = ((1.0 / result_len) * (result[i] as f32)).sqrt();
         }
 
         StandardDeviation(result)
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(f64::to_string).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(f32::to_string).collect::<Vec<String>>().join(",")
     }
 }
 

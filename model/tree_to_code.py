@@ -22,7 +22,7 @@ def tree_to_code(file, tree, function_name, feature_names=range(0, 40)):
             name = feature_name[node]
             threshold = tree_.threshold[node]
 
-            file.write("\n{}if (features[{}] <= {:0.2f})".format(indent, name, threshold) + " {")
+            file.write("\n{}if (features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
 
             recurse(tree_.children_left[node], depth + 1)
 

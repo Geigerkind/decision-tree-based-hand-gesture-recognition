@@ -27,19 +27,19 @@ impl Feature for CenterOfGravityDistributionY {
                 continue;
             }
             let amount = frame.pixel[0] + frame.pixel[1] + frame.pixel[2] - frame.pixel[6] - frame.pixel[7] - frame.pixel[8];
-            center_of_gravities.push((amount as f64) / (total_brightness as f64));
+            center_of_gravities.push((amount as f32) / (total_brightness as f32));
         }
 
-        let merge_threshold = center_of_gravities.len() as f64 / 6.0;
+        let merge_threshold = center_of_gravities.len() as f32 / 6.0;
         let mut values = Vec::new();
         let mut perma_result: [i8; 6] = [0; 6];
         let mut perma_result_index = 0;
         for i in 0..center_of_gravities.len() {
             values.push(center_of_gravities[i]);
-            if ((i + 1) as f64) < merge_threshold * ((perma_result_index + 1) as f64) {
+            if ((i + 1) as f32) < merge_threshold * ((perma_result_index + 1) as f32) {
                 continue;
             }
-            perma_result[perma_result_index] = (values.iter().sum::<f64>() / (values.len() as f64)).round() as i8;
+            perma_result[perma_result_index] = (values.iter().sum::<f32>() / (values.len() as f32)).round() as i8;
             perma_result_index += 1;
             values.clear();
         }

@@ -6,10 +6,10 @@ use crate::features::brightness_distribution::calc_brightness_distribution_float
 use crate::features::Feature;
 
 /// See the calc_brightness_distribution_float_y
-pub struct BrightnessDistribution3Y(pub [f64; 3]);
+pub struct BrightnessDistribution3Y(pub [f32; 3]);
 
 impl Deref for BrightnessDistribution3Y {
-    type Target = [f64; 3];
+    type Target = [f32; 3];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -23,7 +23,7 @@ impl Feature for BrightnessDistribution3Y {
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(f64::to_string).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(f32::to_string).collect::<Vec<String>>().join(",")
     }
 }
 
