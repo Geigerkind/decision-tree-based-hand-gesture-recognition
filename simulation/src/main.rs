@@ -3,6 +3,8 @@ A utility using above libraries to extract all defined features from specified d
 is created with the feature's structure name. `result` is the `GestureType` that was annotated in the test data.
 */
 
+#![allow(unused_imports)]
+
 extern crate lib_data_set;
 extern crate lib_evaluation;
 extern crate lib_feature;
@@ -18,7 +20,7 @@ use serialport::{DataBits, FlowControl, Parity, SerialPortSettings, StopBits};
 use lib_gesture::entities::{GestureReader, Frame, Gesture};
 use std::str::FromStr;
 use std::process::Command;
-use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature};
+use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature, DarknessDistribution6XYGeom, BrightnessDistribution6XYGeom, MotionHistory};
 use std::ops::Deref;
 use lib_gesture::value_objects::GestureType;
 use num_traits::FromPrimitive;
@@ -27,9 +29,20 @@ const ASCII_NEW_LINE: u8 = 10;
 
 /// This function calculates the currently selected features that are used by the decision tree and decision forest.
 fn calculate_features(gesture: &Gesture) -> Vec<f32> {
+    /*
+    let mut args: Vec<f32> = Vec::with_capacity(33);
+    let darkness_dist_geom = DarknessDistribution6XYGeom::calculate(gesture);
+    let brightness_dist_geom = BrightnessDistribution6XYGeom::calculate(gesture);
+    let motion_history = MotionHistory::calculate(gesture);
+
+    args.append(&mut darkness_dist_geom.deref().iter().map(|val| *val as f32).collect());
+    args.append(&mut brightness_dist_geom.deref().iter().map(|val| *val as f32).collect());
+    args.append(&mut motion_history.deref().iter().map(|val| *val as f32).collect());
+     */
+
+    let mut args: Vec<f32> = Vec::with_capacity(12);
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
-    let mut args = Vec::with_capacity(12);
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
     args
@@ -68,14 +81,17 @@ fn main() {
             line.push(serial_buf[0]);
             if serial_buf[0] == ASCII_NEW_LINE {
                 if let Ok(line) = std::str::from_utf8(&line) {
+                    //println!("{}", line);
                     if let Ok(frame) = Frame::from_str(line.trim_end_matches("\r\n")) {
                         if let Some(gesture) = gesture_reader.feed_frame(frame) {
+                            println!("#Frames: {}", gesture.frames.len());
                             let args = calculate_features(&gesture);
                             let decision_tree = Command::new("./decision_forest")
                                 .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
                                 .output()
                                 .unwrap();
                             let gesture_type: GestureType = FromPrimitive::from_i32(decision_tree.status.code().unwrap()).unwrap();
+                            //gesture.print();
                             println!("Recognized gesture: {:?}", gesture_type);
                         }
                     }

@@ -61,6 +61,11 @@ impl Frame {
     pub fn any_pixel_difference_higher_than_threshold(&self, other: &Self, threshold: f64) -> bool {
         self.pixel.iter().enumerate().any(|(index, value)| (((*value as f64) / 1024.0) - ((other.pixel[index] as f64) / 1024.0)).abs() > threshold)
     }
+
+    /// Helper function to print the frame.
+    pub fn print(&self) {
+        println!("{:?}", self.pixel);
+    }
 }
 
 #[cfg(test)]

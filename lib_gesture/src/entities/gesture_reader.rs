@@ -72,7 +72,6 @@ impl GestureReader {
                 self.trigger_mean = frame.mean();
                 self.threshold_low = self.trigger_mean * (1.0 - self.margin);
                 self.threshold_high = self.trigger_mean * (1.0 + self.margin);
-                println!("Finish recording");
 
                 // We require at least 6 frames!
                 if (self.pad_gesture && self.gesture_buffer.frames.len() + self.pad_buffer.len() >= 6) || self.gesture_buffer.frames.len() >= 6 {
@@ -103,7 +102,6 @@ impl GestureReader {
                 self.padding_counter = 3;
                 self.record_gesture = false;
                 self.finished_recording = true;
-                println!("Stop recording");
             }
 
             if !self.finished_recording && !self.record_gesture && self.pad_gesture {
@@ -124,7 +122,6 @@ impl GestureReader {
                 } else if !self.record_gesture {
                     self.gesture_buffer.add_frame(frame.clone());
                     self.record_gesture = true;
-                    println!("Start recording");
                 }
             }
         }
@@ -136,7 +133,6 @@ impl GestureReader {
         }
 
         if self.gesture_buffer.frames.len() == 100 {
-            println!("Dismissing gesture!");
             self.finished_recording = false;
             self.record_gesture = false;
             self.padding_counter = 3;

@@ -177,4 +177,11 @@ impl Gesture {
             }
         }
     }
+
+    /// Helfer function to simply print each frame
+    pub fn print(&self) {
+        for frame in self.frames.iter() {
+            frame.print();
+        }
+    }
 }
