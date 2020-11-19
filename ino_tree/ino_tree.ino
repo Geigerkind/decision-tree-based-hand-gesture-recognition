@@ -1,3 +1,5 @@
+#include "decision_tree.h"
+
 // NOTE: We cant access variables from other files
 
 // Number of milliseconds between each frame

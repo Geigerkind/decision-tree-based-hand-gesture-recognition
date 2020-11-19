@@ -116,7 +116,11 @@ def decision_tree():
     create_tree_native_main(file, clf)
     file.close()
 
-    file = open("ino_tree/decision_tree.ino", "w")
+    file = open("ino_tree/decision_tree.cpp", "w")
+    create_tree_ino_evaluate(file, clf)
+    file.close()
+
+    file = open("ino_tree2/decision_tree.cpp", "w")
     create_tree_ino_evaluate(file, clf)
     file.close()
 
@@ -124,7 +128,11 @@ def decision_tree():
     create_forest_native_main(file, trees, 64)
     file.close()
 
-    file = open("ino_tree/decision_forest.ino", "w")
+    file = open("ino_tree/decision_forest.cpp", "w")
+    create_forest_ino_evaluate(file, trees, 32)
+    file.close()
+
+    file = open("ino_tree2/decision_forest.cpp", "w")
     create_forest_ino_evaluate(file, trees, 32)
     file.close()
 
