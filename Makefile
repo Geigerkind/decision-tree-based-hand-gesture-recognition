@@ -49,3 +49,6 @@ playground:
 
 doc:
 	DATA_PATH="." $(CARGO) doc --open --no-deps
+
+reader:
+	DATA_PATH="." $(CARGO) run --release --bin serial_reader

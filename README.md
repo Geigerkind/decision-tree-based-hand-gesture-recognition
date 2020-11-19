@@ -47,6 +47,9 @@ Furthermore, it tests the aforementioned tree classifier on the data sets and pr
 This project is the final product. It combines all the work and provides the chain of gesture candidate parsing, feature extraction and classification using either 
 the decision tree or decision forest. It finally outputs its prediction to the serial interface.
 
+### serial_reader
+This program only prints each line that it encounters in the serial data stream from the Arduino.
+
 ## Toolchain
 * Cargo nightly (I used `cargo 1.49.0-nightly (79b397d72 2020-10-15)`)
 * Python 3.8 (also matplotlib, scikit-learn etc.)
@@ -82,6 +85,9 @@ Executes test_gen_features, then test_tree
 
 ### playground
 Starts the `simulation` program and listens for frames from the Arduino Uno.
+
+### reader
+Starts the `serial_reader` program and prints the serial output from the Arduino Uno.
 
 ### all
 Executes in this order: gen_features, gen_tree, test_gen_features, test_tree

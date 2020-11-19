@@ -1,0 +1,8 @@
+[package]
+name = "serial_reader"
+version = "0.1.0"
+authors = ["Tom Dymel <tom.dymel@tuhh.de>"]
+edition = "2018"
+
+[dependencies]
+serialport = "3.3.0"
