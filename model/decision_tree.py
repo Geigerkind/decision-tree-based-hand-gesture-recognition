@@ -129,11 +129,11 @@ def decision_tree():
     file.close()
 
     file = open("ino_tree/decision_forest.cpp", "w")
-    create_forest_ino_evaluate(file, trees, 32)
+    create_forest_ino_evaluate(file, trees, 16)
     file.close()
 
     file = open("ino_tree2/decision_forest.cpp", "w")
-    create_forest_ino_evaluate(file, trees, 32)
+    create_forest_ino_evaluate(file, trees, 16)
     file.close()
 
 
