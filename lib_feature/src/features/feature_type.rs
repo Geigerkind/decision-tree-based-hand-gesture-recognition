@@ -3,6 +3,7 @@ use lib_gesture::entities::Gesture;
 use crate::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, CenterOfGravityDistributionX, CenterOfGravityDistributionY};
 use crate::features::{AverageAmplitudeChange, BrightnessDistribution3X, BrightnessDistribution3Y, BrightnessDistribution6X, BrightnessDistribution6XY, BrightnessDistribution6XYGeom, BrightnessDistribution6XYQuadrant, BrightnessDistribution6Y, DarknessDistribution3X, DarknessDistribution3Y, DarknessDistribution6X, DarknessDistribution6XY, DarknessDistribution6XYGeom, DarknessDistribution6XYQuadrant, DarknessDistribution6Y, DirectionMapX, DirectionMapY, Feature, LocalSumOfSlopeX, LocalSumOfSlopeY, MaximumValue, MeanValue, MinimumValue, MotionHistory, StandardDeviation, SumOfSlopes};
 
+/// This enum lists all available features.
 #[derive(Debug, EnumIter, Display)]
 pub enum FeatureType {
     LocalSumOfSlopesX,
@@ -37,6 +38,7 @@ pub enum FeatureType {
 }
 
 impl FeatureType {
+    /// This is a helper function to easily iterate over the enum and calculate each feature for a gesture.
     pub fn to_feature(&self, gesture: &Gesture) -> Box<dyn Feature> {
         match self {
             FeatureType::LocalSumOfSlopesX => Box::new(LocalSumOfSlopeX::calculate(gesture)),

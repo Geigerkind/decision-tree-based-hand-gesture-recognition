@@ -1,6 +1,7 @@
 use crate::entities::DataSetEntry;
 use std::ops::Deref;
 
+/// A data set is a collection of DataSetEntry.
 #[derive(Debug)]
 pub struct DataSet(Vec<DataSetEntry>);
 

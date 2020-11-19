@@ -5,6 +5,7 @@ use lib_gesture::entities::Gesture;
 use crate::features::darkness_distribution::calc_darkness_distribution_float_xy_geom;
 use crate::features::Feature;
 
+/// See calc_darkness_distribution_float_xy_geom
 pub struct DarknessDistribution6XYGeom(pub [usize; 6]);
 
 impl Deref for DarknessDistribution6XYGeom {

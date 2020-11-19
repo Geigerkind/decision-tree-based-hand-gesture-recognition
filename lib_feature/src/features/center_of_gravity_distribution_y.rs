@@ -4,6 +4,9 @@ use lib_gesture::entities::Gesture;
 
 use crate::Feature;
 
+/// Calculates the average center of gravity for 6 time slots, i.e. if more than 6 samples are obtained, they
+/// are squished into 6 values by applying the average of the sum.
+/// y_g = (top_row - bottom_row) / total_of_all_pixel
 pub struct CenterOfGravityDistributionY(pub [i8; 6]);
 
 impl Deref for CenterOfGravityDistributionY {

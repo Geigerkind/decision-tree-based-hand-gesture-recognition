@@ -1,6 +1,7 @@
 use crate::entities::Frame;
 use crate::value_objects::GestureType;
 
+/// A gesture (candidate) is defined as a sequence of frames and is a assigned a gesture type.
 #[derive(Debug, Clone)]
 pub struct Gesture {
     pub frames: Vec<Frame>,
@@ -17,6 +18,7 @@ impl Default for Gesture {
 }
 
 impl Gesture {
+    /// Pushes a frame and if the gesture (candidates)'s gesture type is None, assign to to the parsed one.
     pub fn add_frame(&mut self, frame: Frame) {
         if self.gesture_type == GestureType::None {
             self.gesture_type = frame.gesture_type;
@@ -24,6 +26,7 @@ impl Gesture {
         self.frames.push(frame);
     }
 
+    /// Infer rotations of the gesture by rotating it first to the LeftToRight and then rotate it 3 times.
     // Dont flame me for this implementation
     // its 19:43, and I've been coding already for almost 13 hours
     pub fn infer_rotations(&self) -> Vec<Self> {
@@ -95,6 +98,8 @@ impl Gesture {
         result
     }
 
+    /// Infer garbage by inferring the rotations and splitting them at the half.
+    /// Stich together the original gesture's first half and the second half from the rotation.
     pub fn infer_garbage(&self) -> Vec<Self> {
         if self.gesture_type == GestureType::NotGesture || self.gesture_type == GestureType::None {
             return Vec::new();
@@ -111,6 +116,7 @@ impl Gesture {
             }).collect()
     }
 
+    /// Helper function to rotate a gesture into left to right position.
     fn rotate_to_left_to_right(&self) -> Self {
         match self.gesture_type {
             GestureType::LeftToRight => self.clone(),

@@ -5,6 +5,7 @@ use lib_gesture::entities::Gesture;
 use crate::features::brightness_distribution::calc_brightness_distribution_float_xy_geom;
 use crate::features::Feature;
 
+/// See the calc_brightness_distribution_float_xy_geom
 pub struct BrightnessDistribution6XYGeom(pub [usize; 6]);
 
 impl Deref for BrightnessDistribution6XYGeom {

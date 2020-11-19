@@ -4,6 +4,7 @@ use num_traits::FromPrimitive;
 
 use crate::value_objects::{ExtractorFailure, GestureType};
 
+/// Each frame in the data sets contain a value for each pixel and its gesture type.
 #[derive(Debug, Clone)]
 pub struct Frame {
     pub pixel: [i16; 9],
@@ -22,6 +23,8 @@ impl Default for Frame {
 impl FromStr for Frame {
     type Err = ExtractorFailure;
 
+    /// Parses a frame of the form p20,p21,p22,p10,p11,p12,p00,p01,p02(,gesture_type).
+    /// If the gesture type is not given, it is categorized as "NonLabeled".
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parts: Vec<&str> = s.trim_end_matches('\n').split(",").collect();
         if parts.len() < 9 {
@@ -47,13 +50,14 @@ impl FromStr for Frame {
 }
 
 impl Frame {
-    // Note: the original implementation normalized the weights between 0 and 1, this implementation does not
+    /// Helper function to calculate the mean of all pixel.
+    /// Note: the original implementation normalized the weights between 0 and 1, this implementation does not
     pub fn mean(&self) -> f64 {
         self.pixel.iter().map(|value| (*value as f64) / 1024.0).sum::<f64>() / 9.0
     }
 
-    // Checks if there is any pixel, whose difference to the other surpasses the threshold
-    // Note: the original implementation normalized the weights between 0 and 1, this implementation does not
+    /// Checks if there is any pixel, whose difference to the other surpasses the threshold
+    /// Note: the original implementation normalized the weights between 0 and 1, this implementation does not
     pub fn any_pixel_difference_higher_than_threshold(&self, other: &Self, threshold: f64) -> bool {
         self.pixel.iter().enumerate().any(|(index, value)| (((*value as f64) / 1024.0) - ((other.pixel[index] as f64) / 1024.0)).abs() > threshold)
     }
@@ -83,7 +87,7 @@ mod test {
     #[test]
     fn test_from_str_too_short() {
         // Arrange
-        let sample = "642,751,838,444,630,815,247,424,565";
+        let sample = "642,751,838,444,630,815,247,424";
 
         // Act
         let frame = Frame::from_str(sample);

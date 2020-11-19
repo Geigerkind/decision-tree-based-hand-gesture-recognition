@@ -6,6 +6,7 @@ use crate::entities::DataSetEntry;
 use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod};
 
 lazy_static! {
+    /// Automatically parses the trainingVenzke data set, once this constant is imported.
     pub static ref VENZKE_TRAINING: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_training: String = format!("{}/data/trainingVenzke", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();

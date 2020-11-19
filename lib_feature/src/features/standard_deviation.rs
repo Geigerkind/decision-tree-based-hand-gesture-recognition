@@ -4,6 +4,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::{Feature, MeanValue};
 
+/// Calculates the standard deviation of each pixel.
 pub struct StandardDeviation(pub [f64; 9]);
 
 impl Deref for StandardDeviation {

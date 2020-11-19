@@ -5,6 +5,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// For each pixel find the maximum value
 pub struct MaximumValue(pub [i16; 9]);
 
 impl Deref for MaximumValue {

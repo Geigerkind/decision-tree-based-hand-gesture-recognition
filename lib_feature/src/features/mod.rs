@@ -64,7 +64,10 @@ mod center_of_gravity_distribution_float_x;
 mod center_of_gravity_distribution_y;
 mod center_of_gravity_distribution_float_y;
 
+/// This trait defines a common interface that all features have to implement.
 pub trait Feature {
+    /// Calculates for a gesture the feature.
     fn calculate(gesture: &Gesture) -> Self where Self: Sized;
+    /// Implements a way to serialize the feature.
     fn marshal(&self) -> String;
 }

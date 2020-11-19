@@ -4,6 +4,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// Calculate the mean value of each pixel.
 pub struct MeanValue(pub [i32; 9]);
 
 impl Deref for MeanValue {

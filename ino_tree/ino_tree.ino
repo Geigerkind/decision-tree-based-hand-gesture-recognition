@@ -89,8 +89,7 @@ void setup_serial() {
 
 // Constants
 #define ALPHA 0.01
-#define PIXEL_THRESHOLD 10
-#define MARGIN 0.1
+#define MARGIN 0.15
 #define PAD_GESTURE true
 #define RING_BUFFER_SIZE 60
 

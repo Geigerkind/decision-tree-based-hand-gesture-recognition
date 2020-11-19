@@ -4,6 +4,9 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// Calculates for 6 time frames the direction average from left to right.
+/// First for all frames and columns the difference is summed from first to last frame.
+/// Afterwards the average of each column is squished as average into one of the 6 time frames.
 pub struct DirectionMapX(pub [i16; 6]);
 
 impl Deref for DirectionMapX {

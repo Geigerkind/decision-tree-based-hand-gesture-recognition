@@ -6,6 +6,7 @@ use crate::entities::DataSetEntry;
 use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod, AdditionalSpecification};
 
 lazy_static! {
+    /// Automatically parses the dataEva9pixel data set, once this constant is imported.
     pub static ref EVA_9PIXEL: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_data_9pixel: String = format!("{}/data/dataEva9pixel", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();
@@ -176,6 +177,7 @@ lazy_static! {
 }
 
 lazy_static! {
+    /// Automatically parses the dataEva16pixel data set, once this constant is imported.
     pub static ref EVA_16PIXEL: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_data_16pixel: String = format!("{}/data/dataEva16pixel", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();

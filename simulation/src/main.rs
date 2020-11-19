@@ -1,3 +1,8 @@
+/*!
+A utility using above libraries to extract all defined features from specified data sets and puts them into `model_data`. For each feature a file
+is created with the feature's structure name. `result` is the `GestureType` that was annotated in the test data.
+*/
+
 extern crate lib_data_set;
 extern crate lib_evaluation;
 extern crate lib_feature;
@@ -18,6 +23,9 @@ use std::ops::Deref;
 use lib_gesture::value_objects::GestureType;
 use num_traits::FromPrimitive;
 
+const ASCII_NEW_LINE: u8 = 10;
+
+/// This function calculates the currently selected features that are used by the decision tree and decision forest.
 fn calculate_features(gesture: &Gesture) -> Vec<f64> {
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
@@ -28,6 +36,7 @@ fn calculate_features(gesture: &Gesture) -> Vec<f64> {
 }
 
 fn main() {
+    // The Arduino serial sends to the /dev/ttyACM0 port.
     let mut port = serialport::posix::TTYPort::open(&Path::new("/dev/ttyACM0"), &SerialPortSettings {
         baud_rate: 115_200,
         data_bits: DataBits::Eight,
@@ -37,12 +46,16 @@ fn main() {
         timeout: Duration::from_millis(10),
     }).expect("Failed to open port");
 
+    // We read each byte individually and clear the buffer once we encounter a newline
+    // If so, we assume its a frame and attempt to parse it.
+    // This frame is then fed to the gesture reader to find a gesture candidate
+    // Which is then fed to the decision tree.
     let mut serial_buf: Vec<u8> = vec![0; 1];
     let _ = port.flush();
     // Read until first end of line
     loop {
         if port.read(&mut serial_buf).is_ok() {
-            if serial_buf[0] == 10 {
+            if serial_buf[0] == ASCII_NEW_LINE {
                 break;
             }
         }
@@ -53,9 +66,8 @@ fn main() {
     loop {
         if port.read(&mut serial_buf).is_ok() {
             line.push(serial_buf[0]);
-            if serial_buf[0] == 10 {
+            if serial_buf[0] == ASCII_NEW_LINE {
                 if let Ok(line) = std::str::from_utf8(&line) {
-                    println!("{}", line);
                     if let Ok(frame) = Frame::from_str(line.trim_end_matches("\r\n")) {
                         if let Some(gesture) = gesture_reader.feed_frame(frame) {
                             let args = calculate_features(&gesture);

@@ -5,6 +5,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// For each pixel find the minimum value
 pub struct MinimumValue(pub [i16; 9]);
 
 impl Deref for MinimumValue {

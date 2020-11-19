@@ -6,6 +6,9 @@ use std::str::FromStr;
 use crate::entities::{Frame, Gesture, GestureReader};
 use crate::value_objects::GestureType;
 
+/// Uses Kubik's threshold function to attempt to parse gestures from a file.
+/// It also collects the gesture type specified in the annotation but may not fully parse the gesture compared to the parse by annotation method.
+/// This is used for simulation purposes.
 pub fn parse_gestures_by_threshold(path: &String) -> io::Result<Vec<Gesture>> {
     let file = File::open(path)?;
     let reader = BufReader::new(file);

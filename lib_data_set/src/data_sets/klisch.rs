@@ -6,6 +6,7 @@ use crate::entities::DataSetEntry;
 use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod};
 
 lazy_static! {
+    /// Automatically parses the dataKlisch data set, once this constant is imported.
     pub static ref KLISCH_DATA: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_data: String = format!("{}/data/dataKlisch", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();
@@ -23,6 +24,7 @@ lazy_static! {
 
 lazy_static! {
     // TODO: Consider CameraType?
+    /// Automatically parses the testKlisch data set, once this constant is imported.
     pub static ref KLISCH_TEST: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_test: String = format!("{}/data/testKlisch", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();

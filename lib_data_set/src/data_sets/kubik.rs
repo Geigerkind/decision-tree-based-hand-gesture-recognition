@@ -7,6 +7,7 @@ use crate::value_objects::{BrightnessLevel, CameraDistance, CoveringObject, Data
 
 lazy_static! {
     // TODO: Do we consider the CameraType?
+    /// Automatically parses the testKubik data set, once this constant is imported.
     pub static ref KUBIK_TEST: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_test: String = format!("{}/data/testKubik", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();
@@ -36,6 +37,7 @@ lazy_static! {
 
 lazy_static! {
     // TODO: Do we consider the CameraType?
+    /// Automatically parses the trainingKubik data set, once this constant is imported.
     pub static ref KUBIK_TRAINING: HashMap<ParsingMethod, Vec<DataSetEntry>> = {
         let path_training: String = format!("{}/data/trainingKubik", std::env::var("DATA_PATH").unwrap());
         let mut result = HashMap::new();

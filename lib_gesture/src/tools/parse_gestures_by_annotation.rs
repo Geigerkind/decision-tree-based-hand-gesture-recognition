@@ -7,6 +7,8 @@ use crate::entities::{Frame, Gesture};
 use crate::value_objects::GestureType;
 use std::cmp::Ordering;
 
+/// Parses all gestures that are annotated in a file.
+/// A new gesture is recognized if the gesture type changes.
 pub fn parse_gestures_by_annotation(path: &String) -> io::Result<Vec<Gesture>> {
     let file = File::open(path)?;
     let reader = BufReader::new(file);

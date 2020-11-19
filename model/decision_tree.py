@@ -1,14 +1,15 @@
 import multiprocessing
 
 import pandas as pd
+from create_forest import *
+from create_tree import *
 from matplotlib import pyplot as plt
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from create_tree import *
-from create_forest import *
 
 
+# This is a helper function to quickly print some results of the tree's performance.
 def evaluate_predicted(predicted, y_test):
     true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     false_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -70,6 +71,7 @@ y = result
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=0)
 
 
+# This function is used to fit the decision tree classifier to the training set
 def evaluate_tree(id):
     clf = tree.DecisionTreeClassifier()
     clf = clf.fit(X_train, y_train)
@@ -88,12 +90,14 @@ def evaluate_tree(id):
 
 # Create the decision tree and train it
 def decision_tree():
+    # Fit a bunch of trees in parallel
     amount_tests = 1024
     print("Test " + str(amount_tests) + " different trees, and cherry pick best...")
     pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
     trees = pool.map(evaluate_tree, range(amount_tests))
     trees.sort(key=lambda x: x[1], reverse=True)
 
+    # Take the best
     clf = trees[0][0]
 
     plt.figure(figsize=(40, 40))

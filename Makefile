@@ -46,3 +46,6 @@ test_tree_kubik:
 
 playground:
 	DATA_PATH="." $(CARGO) run --release --bin simulation
+
+doc:
+	DATA_PATH="." $(CARGO) doc --open --no-deps

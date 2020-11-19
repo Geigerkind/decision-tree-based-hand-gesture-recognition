@@ -1,6 +1,8 @@
 use crate::entities::{Gesture, Frame};
 use std::collections::VecDeque;
 
+/// This is a reimplementation of the threshold function defined by Kubik.
+/// See his thesis for a detailed explanation.
 #[derive(Debug)]
 pub struct GestureReader {
     threshold_low: f64,
@@ -38,12 +40,12 @@ impl GestureReader {
         }
     }
 
-    // This function continuously updates its current frame mean
-    // If a frame is beyond the mean, the recording is started
-    // If it is beyond the mean again, the recording is stopped
-    // Additionally, we collect the 3 events before and after the recorded events
-    // This is configurable at the reader
-    // Note: This function is similar to the original in frameBuffer.py, but only at its threshold calculation
+    /// This function continuously updates its current frame mean
+    /// If a frame is beyond the mean, the recording is started
+    /// If it is beyond the mean again, the recording is stopped
+    /// Additionally, we collect the 3 events before and after the recorded events
+    /// This is configurable at the reader
+    /// Note: This function is similar to the original in frameBuffer.py, but only at its threshold calculation
     pub fn feed_frame(&mut self, frame: Frame) -> Option<Gesture> {
         // I guess an initialization step
         if self.last_frame.is_none() {

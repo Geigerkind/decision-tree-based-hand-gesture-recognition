@@ -4,6 +4,9 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::{Feature, MinimumValue};
 
+/// In X direction, find for a specified length of timeframes the area (left 0, center 1, right 2)
+/// where it is brightest for each time frame, i.e. where the difference to the minimum is the minimal (Minimum - current).
+/// Its called float because it can also be also take values between the areas.
 pub fn calc_brightness_distribution_float_x(length: usize, gesture: &Gesture) -> Vec<f64> {
     assert!(gesture.frames.len() >= length);
     let mut result = Vec::new();
@@ -15,6 +18,8 @@ pub fn calc_brightness_distribution_float_x(length: usize, gesture: &Gesture) ->
         result.push(vec![row1, row2, row3].into_iter().enumerate()
             .min_by(|&(_, left), &(_, right)| left.cmp(&right)).unwrap().0);
     }
+
+    // Tries to shorten to result to the specified length
     let merge_threshold = result.len() as f64 / (length as f64);
     let mut values = Vec::new();
     let mut perma_result = Vec::with_capacity(length);
@@ -29,6 +34,9 @@ pub fn calc_brightness_distribution_float_x(length: usize, gesture: &Gesture) ->
     perma_result
 }
 
+/// In Y direction, find for a specified length of timeframes the area (top 0, center 1, bottom 2)
+/// where it is brightest for each time frame, i.e. where the difference to the minimum is the minimal (Minimum - current).
+/// Its called float because it can also be also take values between the areas.
 pub fn calc_brightness_distribution_float_y(length: usize, gesture: &Gesture) -> Vec<f64> {
     assert!(gesture.frames.len() >= length);
     let mut result = Vec::new();
@@ -54,6 +62,9 @@ pub fn calc_brightness_distribution_float_y(length: usize, gesture: &Gesture) ->
     perma_result
 }
 
+/// In XY direction, find for a specified length of timeframes the area (top 0,1,2, center 3,4,5, bottom 6,7,8)
+/// where it is brightest for each time frame, i.e. where the difference to the minimum is the minimal (Minimum - current).
+/// Its called float because it can also be also take values between the areas.
 pub fn calc_brightness_distribution_float_xy(length: usize, gesture: &Gesture) -> Vec<usize> {
     assert!(gesture.frames.len() >= length);
     let mut result = Vec::new();
@@ -62,6 +73,8 @@ pub fn calc_brightness_distribution_float_xy(length: usize, gesture: &Gesture) -
         result.push(frame.pixel.iter().enumerate().map(|(index, item)| (index, min_frame.deref()[index] - item))
             .min_by(|&(_, left), &(_, right)| left.cmp(&right)).unwrap().0)
     }
+
+    // Tries to shorten to result to the specified length
     let merge_threshold = result.len() as f64 / (length as f64);
     let mut values = Vec::new();
     let mut perma_result = Vec::with_capacity(length);
@@ -76,6 +89,10 @@ pub fn calc_brightness_distribution_float_xy(length: usize, gesture: &Gesture) -
     perma_result
 }
 
+/// In XY direction, find for a specified length of timeframes the area (top 0,1,2, center 3,4,5, bottom 6,7,8)
+/// where it is brightest for each time frame, i.e. where the difference to the minimum is the minimal (Minimum - current).
+/// In order to squish it better into the specified length, it maps the 9 areas to a cartesian system and uses the average of the sum of the coordinates.
+/// Its called float because it can also be also take values between the areas.
 pub fn calc_brightness_distribution_float_xy_geom(length: usize, gesture: &Gesture) -> Vec<usize> {
     assert!(gesture.frames.len() >= length);
     let mut result = Vec::new();
@@ -96,6 +113,8 @@ pub fn calc_brightness_distribution_float_xy_geom(length: usize, gesture: &Gestu
             _ => unreachable!()
         })
     }
+
+    // Tries to shorten to result to the specified length
     let merge_threshold = result.len() as f64 / (length as f64);
     let mut values = Vec::new();
     let mut perma_result = Vec::with_capacity(length);
@@ -122,6 +141,10 @@ pub fn calc_brightness_distribution_float_xy_geom(length: usize, gesture: &Gestu
     perma_result
 }
 
+/// In XY direction, find for a specified length of timeframes the area (top left (0,1,3,4), top right (1,2,4,5), bottom left (3,4,6,7), bottom right (4,5,7,8), center (1,3,4,5,7))
+/// where it is brightest for each time frame, i.e. where the difference to the minimum is the minimal (Minimum - current).
+/// It first maps all all indices geometrically to the first 4 quadrants and then sums them. Those that dont fit in one of the 4 first quadrants specifically a categorized as center.
+/// Its called float because it can also be also take values between the areas.
 pub fn calc_brightness_distribution_float_xy_quadrant(length: usize, gesture: &Gesture) -> Vec<usize> {
     assert!(gesture.frames.len() >= length);
     let mut result = Vec::new();
@@ -141,6 +164,8 @@ pub fn calc_brightness_distribution_float_xy_quadrant(length: usize, gesture: &G
             _ => unreachable!()
         })
     }
+
+    // Tries to shorten to result to the specified length
     let merge_threshold = result.len() as f64 / (length as f64);
     let mut values = Vec::new();
     let mut perma_result = Vec::with_capacity(length);

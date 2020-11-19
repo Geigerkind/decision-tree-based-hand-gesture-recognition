@@ -4,6 +4,7 @@ use crate::value_objects::{AdditionalSpecification, BrightnessLevel, CameraDista
 use std::path::Path;
 use lib_gesture::tools::{parse_gestures_by_annotation, parse_gestures_by_threshold};
 
+/// Defines a single entry in a data set, e.g. LRRL_Hand_10cm_highBrightness_fast.
 #[derive(Debug, Getters)]
 pub struct DataSetEntry {
     data_set_name: DataSetName,
@@ -18,6 +19,7 @@ pub struct DataSetEntry {
 }
 
 impl DataSetEntry {
+    /// Creates a new instance ob this structure and parses the data set specified in the path implicitly.
     pub fn new(file_path: String, data_set_name: DataSetName, covering_object: CoveringObject, camera_distance: CameraDistance,
                brightness_level: BrightnessLevel, additional_specification: Option<AdditionalSpecification>, parsing_method: ParsingMethod) -> Self {
         let mut entry = DataSetEntry {
@@ -34,6 +36,7 @@ impl DataSetEntry {
         entry
     }
 
+    /// Checks if the file exists and if so parses it either ByAnnotation or ByThreshold.
     fn parse(&mut self) {
         if !Path::new(&self.file_path).exists() {
             panic!("DataSetEntry does not exist: {:?}", self);

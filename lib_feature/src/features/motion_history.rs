@@ -4,6 +4,9 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::{AverageAmplitudeChange, Feature};
 
+/// The idea of motion history is to highlight those pixels that had recently been active.
+/// Therefore, pixel that had not seen any significant change recently, slowly fade out compared
+/// to pixel that had recently seen change.
 pub struct MotionHistory(pub [i16; 9]);
 
 impl Deref for MotionHistory {

@@ -4,6 +4,9 @@ use lib_gesture::entities::Gesture;
 
 use crate::Feature;
 
+/// Calculates the average center of gravity for 6 time slots, i.e. if more than 6 samples are obtained, they
+/// are squished into 6 values by applying the average of the sum.
+/// y_g = (top_row - bottom_row) / total_of_all_pixel
 pub struct CenterOfGravityDistributionFloatY(pub [f64; 6]);
 
 impl Deref for CenterOfGravityDistributionFloatY {
@@ -45,7 +48,7 @@ impl Feature for CenterOfGravityDistributionFloatY {
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(f64::to_string).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(|num| format!("{:.2}", num)).collect::<Vec<String>>().join(",")
     }
 }
 
@@ -123,6 +126,6 @@ mod test {
         let marshaled = feature.marshal();
 
         // Assert
-        assert_eq!(marshaled, String::from("0.1,1.1,2.1,0.1,1.1,2.1"));
+        assert_eq!(marshaled, String::from("0.10,1.10,2.10,0.10,1.10,2.10"));
     }
 }

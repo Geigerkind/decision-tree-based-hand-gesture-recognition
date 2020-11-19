@@ -4,6 +4,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// Calculates for each pixel the sum of the differences of each frame.
 pub struct SumOfSlopes(pub [i16; 9]);
 
 impl Deref for SumOfSlopes {

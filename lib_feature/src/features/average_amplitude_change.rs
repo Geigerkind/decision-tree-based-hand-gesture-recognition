@@ -4,6 +4,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// The average of the absolute amplitude change between each pixel and frame.
 pub struct AverageAmplitudeChange(pub i32);
 
 impl Deref for AverageAmplitudeChange {

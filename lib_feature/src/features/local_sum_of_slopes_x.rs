@@ -4,6 +4,8 @@ use lib_gesture::entities::Gesture;
 
 use crate::features::Feature;
 
+/// Calculates the sum of the differences of each column and frame from first to last frame.
+/// Returns a vector containing the differences.
 pub struct LocalSumOfSlopeX(pub [i16; 3]);
 
 impl Deref for LocalSumOfSlopeX {
