@@ -26,7 +26,7 @@ use num_traits::FromPrimitive;
 const ASCII_NEW_LINE: u8 = 10;
 
 /// This function calculates the currently selected features that are used by the decision tree and decision forest.
-fn calculate_features(gesture: &Gesture) -> Vec<f64> {
+fn calculate_features(gesture: &Gesture) -> Vec<f32> {
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
     let mut args = Vec::with_capacity(12);
@@ -61,7 +61,7 @@ fn main() {
         }
     }
 
-    let mut gesture_reader = GestureReader::new(0.01, 0.01, 0.1, true);
+    let mut gesture_reader = GestureReader::new(0.05, 0.01, 0.2, true);
     let mut line = Vec::with_capacity(28);
     loop {
         if port.read(&mut serial_buf).is_ok() {

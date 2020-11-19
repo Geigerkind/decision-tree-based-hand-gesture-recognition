@@ -13,11 +13,12 @@ pub struct GestureReader {
     pixel_treshold: f64,
     margin: f64,
     gesture_buffer: Gesture,
-    last_frame: Option<Frame>,
     padding_counter: u8,
     record_gesture: bool,
+    finished_recording: bool,
     pad_gesture: bool,
     pad_buffer: VecDeque<Frame>,
+    is_initialized: bool
 }
 
 impl GestureReader {
@@ -32,11 +33,12 @@ impl GestureReader {
             pixel_treshold,
             margin,
             gesture_buffer: Gesture::default(),
-            last_frame: None,
             padding_counter: 3,
             record_gesture: false,
+            finished_recording: false,
             pad_gesture,
             pad_buffer: VecDeque::with_capacity(3),
+            is_initialized: false
         }
     }
 
@@ -48,28 +50,29 @@ impl GestureReader {
     /// Note: This function is similar to the original in frameBuffer.py, but only at its threshold calculation
     pub fn feed_frame(&mut self, frame: Frame) -> Option<Gesture> {
         // I guess an initialization step
-        if self.last_frame.is_none() {
+        if !self.is_initialized {
             self.trigger_mean = frame.mean();
             self.threshold_low = self.trigger_mean * (1.0 - self.margin);
             self.threshold_high = self.trigger_mean * (1.0 + self.margin);
-            self.last_frame = Some(frame);
+            self.is_initialized = true;
             return None;
         }
 
-        if self.record_gesture && (!self.pad_gesture || self.padding_counter > 0) {
+        if self.record_gesture {
             self.gesture_buffer.add_frame(frame.clone());
-            if self.pad_gesture {
-                self.padding_counter -= 1;
-            }
+        } else if self.finished_recording && self.pad_gesture && self.padding_counter > 0 {
+            self.gesture_buffer.add_frame(frame.clone());
+            self.padding_counter -= 1;
         }
 
-        // This apparently means that no event has happened, so we reset the padding counter
-        // and adjust the thresholds
-        if frame.mean() >= self.threshold_low && frame.mean() <= self.threshold_high {
-            // Finish recording!
-            if self.record_gesture && (!self.pad_gesture || self.padding_counter == 0) {
-                self.padding_counter = 3;
-                self.record_gesture = false;
+        if self.finished_recording {
+            if !self.pad_gesture || self.padding_counter == 0 {
+                self.finished_recording = false;
+
+                self.trigger_mean = frame.mean();
+                self.threshold_low = self.trigger_mean * (1.0 - self.margin);
+                self.threshold_high = self.trigger_mean * (1.0 + self.margin);
+                println!("Finish recording");
 
                 // We require at least 6 frames!
                 if (self.pad_gesture && self.gesture_buffer.frames.len() + self.pad_buffer.len() >= 6) || self.gesture_buffer.frames.len() >= 6 {
@@ -87,25 +90,27 @@ impl GestureReader {
                     self.gesture_buffer = Gesture::default();
                     self.pad_buffer = VecDeque::with_capacity(3);
                     self.record_gesture = false;
+                    return None;
                 }
             }
+        }
 
-            if !self.record_gesture && self.pad_gesture {
+        // This apparently means that no event has happened, so we reset the padding counter
+        // and adjust the thresholds
+        if frame.mean() >= self.threshold_low && frame.mean() <= self.threshold_high {
+            // Finish recording!
+            if self.record_gesture {
+                self.padding_counter = 3;
+                self.record_gesture = false;
+                self.finished_recording = true;
+                println!("Stop recording");
+            }
+
+            if !self.finished_recording && !self.record_gesture && self.pad_gesture {
                 if self.pad_buffer.len() == 3 {
                     self.pad_buffer.pop_front();
                 }
                 self.pad_buffer.push_back(frame.clone());
-            }
-
-            let last_frame = self.last_frame.as_ref().expect("If not, we would have returned at init");
-            if last_frame.any_pixel_difference_higher_than_threshold(&frame, self.pixel_treshold) {
-                self.trigger_mean = self.trigger_mean * (1.0 - self.alpha) + frame.mean() * self.alpha;
-                self.threshold_low = self.trigger_mean * (1.0 - self.margin);
-                self.threshold_high = self.trigger_mean * (1.0 + self.margin);
-            }
-
-            if !self.record_gesture {
-                self.last_frame = Some(frame);
             }
 
             return None;
@@ -113,13 +118,37 @@ impl GestureReader {
 
         // This apparently means that a gesture happened
         if frame.mean() < self.threshold_low || frame.mean() > self.threshold_high {
-            if self.record_gesture && self.pad_gesture {
-                self.padding_counter = 3;
-            } else {
-                self.gesture_buffer.add_frame(frame.clone());
-                self.record_gesture = true;
+            if !self.finished_recording {
+                if self.record_gesture && self.pad_gesture {
+                    self.padding_counter = 3;
+                } else if !self.record_gesture {
+                    self.gesture_buffer.add_frame(frame.clone());
+                    self.record_gesture = true;
+                    println!("Start recording");
+                }
             }
         }
+
+        if !self.finished_recording && !self.record_gesture {
+            self.trigger_mean = self.trigger_mean * (1.0 - self.alpha) + frame.mean() * self.alpha;
+            self.threshold_low = self.trigger_mean * (1.0 - self.margin);
+            self.threshold_high = self.trigger_mean * (1.0 + self.margin);
+        }
+
+        if self.gesture_buffer.frames.len() == 100 {
+            println!("Dismissing gesture!");
+            self.finished_recording = false;
+            self.record_gesture = false;
+            self.padding_counter = 3;
+
+            self.trigger_mean = frame.mean();
+            self.threshold_low = self.trigger_mean * (1.0 - self.margin);
+            self.threshold_high = self.trigger_mean * (1.0 + self.margin);
+
+            self.gesture_buffer = Gesture::default();
+            return None;
+        }
+
         None
     }
 }
