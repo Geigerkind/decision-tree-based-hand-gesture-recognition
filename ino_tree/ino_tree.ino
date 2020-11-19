@@ -1,5 +1,9 @@
 // NOTE: We cant access variables from other files
 
+// Number of milliseconds between each frame
+#define MILLISECONDS_PER_FRAME 25
+
+
 ////////////////
 // Serial.ino //
 ////////////////
@@ -270,16 +274,23 @@ void setup() {
 }
 
 void loop() {
+  int frameStartTime = millis();
   readFrame();
 
-  if (feed_frame()) {
+  bool gesture_recognized = feed_frame();
+
+  if (gesture_recognized) {
     // Gesture is parsed
     // Evaluate the features
     float args[12];
     Serial.print("Number recorded frames: ");
     Serial.println(num_recorded_frames);
+    int featureStartTime = millis();
     center_of_gravity_distribution_x(args);
     center_of_gravity_distribution_y(args + 6);
+    int featureEndTime = millis();
+    Serial.print("Feature Execution time: ");
+    Serial.println(featureEndTime - featureStartTime);
     for (int i=0; i<12; ++i) {
         Serial.print(args[i]);
         Serial.print(",");
@@ -288,10 +299,21 @@ void loop() {
 
 
     // Run it through the tree!
+    int treeStartTime = millis();
     unsigned char result = evaluate(args);
+    int treeEndTime = millis();
+    Serial.print("Tree Execution time: ");
+    Serial.println(treeEndTime - treeStartTime);
     Serial.print("Result: ");
     Serial.println(result);
   }
 
-  delay(13);
+  int frameExecutionTime = millis() - frameStartTime;
+  if (gesture_recognized) {
+    Serial.print("Total Execution time: ");
+    Serial.println(frameExecutionTime);
+  }
+  if (frameExecutionTime < MILLISECONDS_PER_FRAME) {
+    delay(MILLISECONDS_PER_FRAME - frameExecutionTime); // Wait until the next frame shall start.
+  }
 }
