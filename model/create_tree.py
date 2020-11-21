@@ -2,7 +2,7 @@ from tree_to_code import *
 
 
 def create_tree_native_main(file, clf, with_io):
-    tree_to_code(file, clf, "decision_tree")
+    tree_to_code(file, clf, clf.classes_, "decision_tree")
     if with_io:
         file.write("#include <stdio.h>\n")
     file.write("int main(int argc, char** argv) {\n")
@@ -19,4 +19,4 @@ def create_tree_native_main(file, clf, with_io):
 
 
 def create_tree_ino_evaluate(file, clf):
-    tree_to_code(file, clf, "evaluate")
+    tree_to_code(file, clf, clf.classes_, "evaluate")

@@ -3,7 +3,7 @@ if [[ -f "./size_data.csv" ]]; then
   rm ./size_data.csv
 fi
 
-touch ./size_data.csv
+echo "max_depth,forest_size,optimization_level,tree_bytes,forest_bytes" > ./size_data.csv
 
 # We gather data for the following:
 # Max_depth => 1 to 50
@@ -14,9 +14,10 @@ optimizations=(O0 Os O2 O3)
 
 for max_depth in {1..50}; do
   for forest_size in {1..64}; do
+    echo "Working on: ${max_depth},${forest_size}..."
+    python model/decision_tree.py $max_depth $forest_size 0 &> /dev/null
     for opt in ${optimizations[*]}; do
-      echo "Working on: ${max_depth},${forest_size},${opt}"
-      python model/decision_tree.py $max_depth $forest_size 0 &> /dev/null
+      echo "${opt}"
       ./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -g -${opt} -std=gnu11 -ffunction-sections -fdata-sections -flto -fno-fat-lto-objects ./decision_tree.c -o decision_tree
       ./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -g -${opt} -std=gnu11 -ffunction-sections -fdata-sections -flto -fno-fat-lto-objects ./decision_forest.c -o decision_forest
       size_in_bytes_tree=$(wc -c ./decision_tree | awk '{print $1}')

@@ -4,7 +4,7 @@
 from sklearn.tree import _tree
 
 
-def tree_to_code(file, tree, function_name, feature_names=range(0, 40)):
+def tree_to_code(file, tree, classes, function_name, feature_names=range(0, 40)):
     nspaces = 4
     tree_ = tree.tree_
     feature_name = [
@@ -33,7 +33,7 @@ def tree_to_code(file, tree, function_name, feature_names=range(0, 40)):
             file.write("\n" + "{}".format(indent) + "}\n")
         else:
             classification_index = [ind for ind, x in enumerate(tree_.value[node][0]) if x != 0][0]
-            file.write("\n{}return {};\n".format(indent, tree.classes_[classification_index]))
+            file.write("\n{}return {};\n".format(indent, int(classes[classification_index])))
 
     recurse(0, 1)
     file.write("}\n")

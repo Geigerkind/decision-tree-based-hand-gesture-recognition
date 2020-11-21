@@ -84,7 +84,7 @@ XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_o
 
 # This function is used to fit the decision tree classifier to the training set
 def evaluate_tree(id):
-    clf = tree.DecisionTreeClassifier(max_depth=max_depth)
+    clf = tree.DecisionTreeClassifier(max_depth=max_depth, random_state=1)
     clf = clf.fit(X_train, y_train)
 
     predicted = clf.predict(XX_opt)
@@ -102,7 +102,7 @@ def evaluate_tree(id):
 # Create the decision tree and train it
 def decision_tree():
     # Fit a bunch of trees in parallel
-    amount_tests = 1024
+    amount_tests = 256
     print("Test " + str(amount_tests) + " different trees, and cherry pick best...")
     pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
     trees = pool.map(evaluate_tree, range(amount_tests))
@@ -132,21 +132,11 @@ def decision_tree():
     create_tree_ino_evaluate(file, clf)
     file.close()
 
-    file = open("decision_forest.c", "w")
-    create_forest_native_main(file, trees, num_trees, with_io)
-    file.close()
-
-    file = open("ino_tree/decision_forest.cpp", "w")
-    create_forest_ino_evaluate(file, trees, num_trees)
-    file.close()
-
-    file = open("ino_tree2/decision_forest.cpp", "w")
-    create_forest_ino_evaluate(file, trees, num_trees)
-    file.close()
+    return clf.classes_
 
 
-def random_forest():
-    clf = RandomForestClassifier(criterion='entropy', n_estimators=64, random_state=1, n_jobs=16)
+def random_forest(classes):
+    clf = RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=1, n_jobs=16)
     clf = clf.fit(X_train, y_train)
 
     predicted = clf.predict(XX_test)
@@ -154,6 +144,18 @@ def random_forest():
     print("Evaluating RandomForestClassifier:")
     evaluate_predicted(predicted, yy_test)
 
+    file = open("decision_forest.c", "w")
+    create_forest_native_main(file, clf.estimators_, classes, num_trees, with_io)
+    file.close()
 
-decision_tree()
-random_forest()
+    file = open("ino_tree/decision_forest.cpp", "w")
+    create_forest_ino_evaluate(file, clf.estimators_, classes, num_trees)
+    file.close()
+
+    file = open("ino_tree2/decision_forest.cpp", "w")
+    create_forest_ino_evaluate(file, clf.estimators_, classes, num_trees)
+    file.close()
+
+
+classes = decision_tree()
+random_forest(classes)
