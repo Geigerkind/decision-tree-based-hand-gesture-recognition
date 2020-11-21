@@ -7,3 +7,4 @@ decision_tree
 decision_forest.c
 decision_forest
 size_data.csv
+size_data_test.csv
