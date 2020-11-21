@@ -79,10 +79,83 @@ void setup() {
 }
 
 void loop() {
-    unsigned long iterations = 300000;
+    unsigned long iterations = 1000000;
+    unsigned long bench_sum = 0;
+    unsigned long max_val = 0;
+
+    float avg_measurement_failure = 0.0;
+    unsigned long max_measurement_failure = 0;
+
+    // max start to end delay
+    bench_sum = 0;
+    max_val = 0;
+    for (unsigned long i=0; i < iterations; ++i) {
+        unsigned long startTime = micros();
+        unsigned long endTime = micros();
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
+        bench_sum += (endTime - startTime);
+    }
+    Serial.print("start to end failure: ");
+    Serial.println(((float)bench_sum)/((float)iterations));
+    Serial.print("Max: ");
+    Serial.println(max_val);
+
+    avg_measurement_failure = ((float)bench_sum)/((float)iterations);
+    max_measurement_failure = max_val;
+
+    // __divmodhi4
+    bench_sum = 0;
+    max_val = 0;
+    char dont_opt_away7 = 0;
+    for (unsigned long i=0; i < iterations; ++i) {
+        int some_int = (int)i;
+        int some_div = (int)(i+3);
+        dont_opt_away7 += (char)some_int;
+        dont_opt_away7 += (char)some_div;
+        unsigned long startTime = micros();
+        char some_char = some_int / some_div;
+        unsigned long endTime = micros();
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
+        
+        dont_opt_away7 += some_char;
+        bench_sum += (endTime - startTime);
+    }
+    Serial.print("__divmodhi4: ");
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure);
+
+    // __divmodsi
+    bench_sum = 0;
+    long some_long = 42;
+    max_val = 0;
+    long dont_opt_away6 = 0;
+    for (unsigned long i=0; i < iterations; ++i) {
+        long test = (long)i;
+        long test2 = some_long + (long)(i + 3);
+        dont_opt_away6 += test;
+        dont_opt_away6 += test2;
+        unsigned long startTime = micros();
+        test2 /= test;
+        unsigned long endTime = micros();
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
+        dont_opt_away6 += test2;
+        bench_sum += (endTime - startTime);
+    }
+    Serial.print("__divmodsi: ");
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure);
 
     // __floatsisf
-    unsigned long bench_sum = 0;
+    bench_sum = 0;
+    max_val = 0;
     float dont_opt_away = 0.0;
     for (unsigned long i=0; i < iterations; ++i) {
         //char test2 = i + 3 * i + (42 / i);
@@ -90,13 +163,19 @@ void loop() {
         unsigned long startTime = micros();
         dont_opt_away += (float)test2;
         unsigned long endTime = micros();
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
         bench_sum += (endTime - startTime);
     }
     Serial.print("__floatsisf: ");
-    Serial.println(((float)bench_sum)/((float)iterations) - 2.7 - 9.09);
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure - 9.09);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure - 12);
 
     // __addsf3
     bench_sum = 0;
+    max_val = 0;
     float some_float = 32.24;
     float dont_opt_away2 = 0.0;
     for (unsigned long i=0; i < iterations; ++i) {
@@ -104,25 +183,37 @@ void loop() {
         dont_opt_away2 += some_float;
         unsigned long endTime = micros();
         bench_sum += (endTime - startTime);
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
     }
     Serial.print("__addsf: ");
-    Serial.println(((float)bench_sum)/((float)iterations) - 2.7);
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure);
 
     // __subsf3
     bench_sum = 0;
+    max_val = 0;
     float some_float2 = 312.24;
     float dont_opt_away3 = 0.0;
     for (unsigned long i=0; i < iterations; ++i) {
         unsigned long startTime = micros();
         dont_opt_away3 -= some_float2;
         unsigned long endTime = micros();
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
         bench_sum += (endTime - startTime);
     }
     Serial.print("__subsf: ");
-    Serial.println(((float)bench_sum)/((float)iterations) - 2.7);
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure);
 
     // __divsf3
     bench_sum = 0;
+    max_val = 0;
     float some_float3 = 5.0;
     float dont_opt_away4 = 0.0;
     for (unsigned long i=0; i < iterations; ++i) {
@@ -133,14 +224,20 @@ void loop() {
         unsigned long startTime = micros();
         test /= test2;
         unsigned long endTime = micros();
+        if (endTime-startTime > max_val) {
+          max_val = endTime - startTime;
+        }
         dont_opt_away4 += test;
         bench_sum += (endTime - startTime);
     }
     Serial.print("__divsf: ");
-    Serial.println(((float)bench_sum)/((float)iterations) - 2.7);
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure);
 
     // __lesf2
     bench_sum = 0;
+    max_val = 0;
     float some_float4 = 33.24;
     float dont_opt_away5 = 0.0;
     for (unsigned long i=0; i < iterations; ++i) {
@@ -153,14 +250,22 @@ void loop() {
           unsigned long endTime = micros();
           bench_sum += (endTime - startTime);
           dont_opt_away5 += 1.0;
+          if (endTime-startTime > max_val) {
+            max_val = endTime - startTime;
+          }
         } else {
           unsigned long endTime = micros();
           bench_sum += (endTime - startTime);
           dont_opt_away5 += 2.0;
+          if (endTime-startTime > max_val) {
+            max_val = endTime - startTime;
+          }
         }
     }
     Serial.print("__lesf2: ");
-    Serial.println(((float)bench_sum)/((float)iterations) - 2.7);
+    Serial.println(((float)bench_sum)/((float)iterations) - avg_measurement_failure);
+    Serial.print("Max: ");
+    Serial.println(max_val - max_measurement_failure);
 
     Serial.print("Ignore this: ");
     Serial.print(dont_opt_away);
@@ -168,5 +273,7 @@ void loop() {
     Serial.print(dont_opt_away3);
     Serial.print(dont_opt_away4);
     Serial.print(dont_opt_away5);
+    Serial.print(dont_opt_away6);
+    Serial.print(dont_opt_away7);
     Serial.println();
 }
