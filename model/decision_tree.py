@@ -109,6 +109,7 @@ def decision_tree():
     plt.savefig('tree.png', format='png')
 
     print("Evaluating DecisionTreeClassifier:")
+    print("Max depth: " + str(clf.tree_.max_depth))
     predicted = clf.predict(XX_test)
     evaluate_predicted(predicted, yy_test)
 

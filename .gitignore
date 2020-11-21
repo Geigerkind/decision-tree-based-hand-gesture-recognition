@@ -1,6 +1,7 @@
 /target
 Cargo.lock
 decision_tree.c
+decision_tree.s
 tree.png
 decision_tree
 decision_forest.c
