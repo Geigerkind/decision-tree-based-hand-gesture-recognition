@@ -7,7 +7,7 @@
 #define FRAME_BUFFER_SIZE 80
 
 // Number of milliseconds between each frame
-#define MILLISECONDS_PER_FRAME 25
+#define MILLISECONDS_PER_FRAME 13
 
 // Number of frame that are added to a candidate at the beginning and ending 
 #define NO_FRAMES_ADDED_AT_BEGINNING_AND_END 3
