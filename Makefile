@@ -34,7 +34,7 @@ test_gen_features:
 	DATA_PATH=".." $(CARGO) test
 
 gen_tree:
-	$(PYTHON) model/decision_tree.py
+	$(PYTHON) model/decision_tree.py 50 32 1
 	$(GCC) -O3 decision_tree.c -o decision_tree
 	$(GCC) -O3 decision_forest.c -o decision_forest
 

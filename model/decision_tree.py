@@ -1,4 +1,5 @@
 import multiprocessing
+import sys
 
 import pandas as pd
 from create_forest import *
@@ -7,6 +8,11 @@ from matplotlib import pyplot as plt
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+
+_, max_depth, num_trees, with_io = sys.argv
+max_depth = int(max_depth)
+num_trees = int(num_trees)
+with_io = 1 == int(with_io)
 
 
 # This is a helper function to quickly print some results of the tree's performance.
@@ -78,7 +84,7 @@ XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_o
 
 # This function is used to fit the decision tree classifier to the training set
 def evaluate_tree(id):
-    clf = tree.DecisionTreeClassifier()
+    clf = tree.DecisionTreeClassifier(max_depth=max_depth)
     clf = clf.fit(X_train, y_train)
 
     predicted = clf.predict(XX_opt)
@@ -115,7 +121,7 @@ def decision_tree():
     evaluate_predicted(predicted, yy_test)
 
     file = open("decision_tree.c", "w")
-    create_tree_native_main(file, clf)
+    create_tree_native_main(file, clf, with_io)
     file.close()
 
     file = open("ino_tree/decision_tree.cpp", "w")
@@ -127,15 +133,15 @@ def decision_tree():
     file.close()
 
     file = open("decision_forest.c", "w")
-    create_forest_native_main(file, trees, 64)
+    create_forest_native_main(file, trees, num_trees, with_io)
     file.close()
 
     file = open("ino_tree/decision_forest.cpp", "w")
-    create_forest_ino_evaluate(file, trees, 32)
+    create_forest_ino_evaluate(file, trees, num_trees)
     file.close()
 
     file = open("ino_tree2/decision_forest.cpp", "w")
-    create_forest_ino_evaluate(file, trees, 32)
+    create_forest_ino_evaluate(file, trees, num_trees)
     file.close()
 
 
