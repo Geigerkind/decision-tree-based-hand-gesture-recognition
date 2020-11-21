@@ -1,14 +1,16 @@
 use std::ops::Deref;
-use crate::Feature;
+
 use lib_gesture::entities::Gesture;
+
+use crate::Feature;
 
 /// Calculates the average center of gravity for 6 time slots, i.e. if more than 6 samples are obtained, they
 /// are squished into 6 values by applying the average of the sum.
-/// x_g = (left_row - right_row) / total_of_all_pixel
-pub struct CenterOfGravityDistributionX(pub [i8; 6]);
+/// Here: x_g = (left_row - right_row) (For performance reasons the divide has been dismissed)
+pub struct CenterOfGravityDistributionX(pub [i32; 6]);
 
 impl Deref for CenterOfGravityDistributionX {
-    type Target = [i8; 6];
+    type Target = [i32; 6];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -19,25 +21,28 @@ impl Feature for CenterOfGravityDistributionX {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized {
         let mut center_of_gravities = Vec::with_capacity(gesture.frames.len());
         for frame in gesture.frames.iter() {
-            let total_brightness = frame.pixel.iter().sum::<i16>();
-            if total_brightness == 0 {
-                center_of_gravities.push(0.0);
-                continue;
-            }
-            let amount = frame.pixel[0] + frame.pixel[3] + frame.pixel[6] - frame.pixel[2] - frame.pixel[5] - frame.pixel[8];
-            center_of_gravities.push((amount as f32) / (total_brightness as f32));
+            center_of_gravities.push((frame.pixel[0] + frame.pixel[3] + frame.pixel[6] - frame.pixel[2] - frame.pixel[5] - frame.pixel[8]) as i32);
         }
 
-        let merge_threshold = center_of_gravities.len() as f32 / 6.0;
-        let mut values = Vec::new();
-        let mut perma_result: [i8; 6] = [0; 6];
+        let amount_always_merge = center_of_gravities.len() / 6;
+        let add_pattern: [usize; 6] = match center_of_gravities.len() % 6 {
+            0 => [0; 6],
+            1 => [0, 0, 0, 0, 0, 1],
+            2 => [0, 0, 1, 0, 0, 1],
+            3 => [0, 1, 0, 1, 0, 1],
+            4 => [0, 1, 0, 1, 1, 1],
+            5 => [1, 1, 0, 1, 1, 1],
+            _ => unreachable!()
+        };
+        let mut perma_result: [i32; 6] = [0; 6];
         let mut perma_result_index = 0;
+        let mut values = Vec::new();
         for i in 0..center_of_gravities.len() {
             values.push(center_of_gravities[i]);
-            if ((i + 1) as f32) < merge_threshold * ((perma_result_index + 1) as f32) {
+            if values.len() < amount_always_merge + add_pattern[perma_result_index] {
                 continue;
             }
-            perma_result[perma_result_index] = (values.iter().sum::<f32>() / (values.len() as f32)).round() as i8;
+            perma_result[perma_result_index] = values.iter().sum::<i32>() / (values.len() as i32);
             perma_result_index += 1;
             values.clear();
         }
@@ -46,7 +51,7 @@ impl Feature for CenterOfGravityDistributionX {
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(i8::to_string).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(i32::to_string).collect::<Vec<String>>().join(",")
     }
 }
 
@@ -56,8 +61,9 @@ mod test {
     use std::str::FromStr;
 
     use lib_gesture::entities::{Frame, Gesture};
-    use crate::features::{CenterOfGravityDistributionX, Feature};
     use lib_gesture::value_objects::GestureType;
+
+    use crate::features::{CenterOfGravityDistributionX, Feature};
 
     #[test]
     fn test_calculate() {
@@ -87,7 +93,7 @@ mod test {
         let feature = CenterOfGravityDistributionX::calculate(&gesture);
 
         // Assert
-        assert_eq!(feature.deref(), &[1, 1, -1, -1, 1, 1]);
+        assert_eq!(feature.deref(), &[95, 95, -95, -95, 95, 95]);
     }
 
     #[test]
@@ -112,7 +118,7 @@ mod test {
         let feature = CenterOfGravityDistributionX::calculate(&gesture);
 
         // Assert
-        assert_eq!(feature.deref(), &[1, 1, 1, -1, -1, -1]);
+        assert_eq!(feature.deref(), &[95, 95, 95, -95, -95, -95]);
     }
 
     #[test]

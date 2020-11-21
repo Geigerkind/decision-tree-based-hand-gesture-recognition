@@ -56,7 +56,7 @@ float rollingAverageBrightness;
 short frameBuffer[FRAME_BUFFER_SIZE][NO_PIXELS];
 
 // Arg buffer for the decision tree
-float dt_args[12];
+long dt_args[12];
 
 
 /*
@@ -256,19 +256,21 @@ void loop() {
 
       // *************************** From here: ANN *******************************
 
-      int featureStartTime = millis();
-      center_of_gravity_distribution_x(frameBuffer, noFramesInBuffer, dt_args);
-      center_of_gravity_distribution_y(frameBuffer, noFramesInBuffer, dt_args + 6);
-      int featureEndTime = millis();
+      unsigned long featureStartTime = micros();
+      center_of_gravity_distribution_long_x(frameBuffer, noFramesInBuffer, dt_args);
+      center_of_gravity_distribution_long_y(frameBuffer, noFramesInBuffer, dt_args + 6);
+      unsigned long featureEndTime = micros();
 
-      int treeStartTime = millis();
+      unsigned long treeStartTime = micros();
       unsigned char prediction = evaluate_forest(dt_args);
-      int treeEndTime = millis();
+      unsigned long treeEndTime = micros();
 
       Ser.print("Feature Execution Time: ");
-      Ser.println(featureEndTime - featureStartTime);
+      Ser.print(featureEndTime - featureStartTime);
+      Ser.println(" micro seconds");
       Ser.print("Tree Execution Time: ");
-      Ser.println(treeEndTime - treeStartTime);
+      Ser.print(treeEndTime - treeStartTime);
+      Ser.println(" micro seconds");
 
       Ser.print("Decision Tree Result: ");
       Ser.println(prediction);

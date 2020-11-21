@@ -9,11 +9,13 @@ def create_forest(file, trees, num_trees):
 
 def create_forest_native_main(file, trees, num_trees):
     create_forest(file, trees, num_trees)
-    file.write("float args[12];\n")
+    # file.write("float args[12];\n")
+    file.write("long args[12];\n")
     file.write("unsigned int results[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n")
     file.write("#include <stdio.h>\n")
     file.write("int main(int argc, char** argv) {\n")
-    file.write("for (unsigned char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
+    # file.write("for (unsigned char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
+    file.write("for (unsigned char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%ld\", &args[i]);\n")
     for i in range(num_trees):
         file.write("++results[tree" + str(i) + "(args)];\n")
     file.write("unsigned char max_index = 0;\n")
@@ -30,7 +32,8 @@ def create_forest_native_main(file, trees, num_trees):
 
 def create_forest_ino_evaluate(file, trees, num_trees):
     create_forest(file, trees, num_trees)
-    file.write("unsigned char evaluate_forest(float* args) {\n")
+    # file.write("unsigned char evaluate_forest(float* args) {\n")
+    file.write("unsigned char evaluate_forest(long* args) {\n")
     file.write("unsigned int results[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n")
     for i in range(num_trees):
         file.write("++results[tree" + str(i) + "(args)];\n")
