@@ -12,14 +12,16 @@ echo "max_depth,forest_size,optimization_level,tree_bytes,forest_bytes" > ./size
 
 optimizations=(O0 Os O2 O3)
 
-for max_depth in {1..50}; do
-  for forest_size in {1..64}; do
+for max_depth in {1..30}; do
+  for forest_size in {1..32}; do
     echo "Working on: ${max_depth},${forest_size}..."
-    python model/decision_tree.py $max_depth $forest_size 0 &> /dev/null
+    python model/decision_tree.py $max_depth $forest_size 1 &> /dev/null
     for opt in ${optimizations[*]}; do
       echo "${opt}"
-      ./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -g -${opt} -std=gnu11 -ffunction-sections -fdata-sections -flto -fno-fat-lto-objects ./decision_tree.c -o decision_tree
-      ./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -g -${opt} -std=gnu11 -ffunction-sections -fdata-sections -flto -fno-fat-lto-objects ./decision_forest.c -o decision_forest
+      #./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -${opt} -std=gnu11 -mmcu=atmega328p -g -flto -fuse-linker-plugin -Wl,--gc-sections ./decision_tree.c -o decision_tree
+      ./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -${opt} -std=gnu11 -mmcu=atmega328p -s -fwhole-program -fdata-sections -ffunction-sections -flto -fuse-linker-plugin -Wl,--gc-sections -Wl,--strip-all ./decision_tree.c -o decision_tree
+      #./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -${opt} -std=gnu11 -mmcu=atmega328p -g -flto -fuse-linker-plugin -Wl,--gc-sections ./decision_forest.c -o decision_forest
+      ./../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -${opt} -std=gnu11 -mmcu=atmega328p -s -fwhole-program -fdata-sections -ffunction-sections -flto -fuse-linker-plugin -Wl,--gc-sections -Wl,--strip-all ./decision_forest.c -o decision_forest
       size_in_bytes_tree=$(wc -c ./decision_tree | awk '{print $1}')
       size_in_bytes_forest=$(wc -c ./decision_forest | awk '{print $1}')
       if [[ -z "${size_in_bytes_tree}" ]]; then

@@ -21,6 +21,16 @@ impl Evaluation {
         }
     }
 
+    /// Calculates the accuracy over all entries
+    pub fn accuracy(&self) -> Option<f64> {
+        let total = self.entries.iter().fold(0, |acc, (_, entry)| acc + entry.true_positive() + entry.false_negative());
+        let true_positive = self.entries.iter().fold(0, |acc, (_, entry)| acc + entry.true_positive());
+        if total == 0 {
+            return None;
+        }
+        return Some((true_positive as f64) / (total as f64));
+    }
+
     /// When evaluating, add a true positive find to the evaluation
     pub fn add_true_positive(&mut self, key: EvaluationEntryKey) {
         let entry = self.entries.entry(key).or_insert_with(|| EvaluationEntry::new(key));
@@ -40,6 +50,7 @@ impl Evaluation {
             println!("{:?}", key);
             println!("Accuracy: {:?}", entry.accuracy());
         }
+        println!("Total accuracy: {:?}", self.accuracy());
     }
 }
 

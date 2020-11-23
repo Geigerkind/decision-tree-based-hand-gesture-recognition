@@ -1,2 +1,2 @@
-// unsigned char evaluate_float(float* args);
-unsigned char evaluate_long(long* args);
+// unsigned char evaluate(float* args);
+unsigned char evaluate(long* args);

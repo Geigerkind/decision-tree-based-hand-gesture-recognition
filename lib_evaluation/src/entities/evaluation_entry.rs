@@ -1,7 +1,7 @@
 use crate::value_objects::EvaluationEntryKey;
 
 /// The structure holding for each evaluation entry the necessary information.
-#[derive(Debug)]
+#[derive(Debug, Getters)]
 pub struct EvaluationEntry {
     key: EvaluationEntryKey,
     true_positive: u32,
@@ -16,11 +16,6 @@ impl EvaluationEntry {
             true_positive: 0,
             false_negative: 0
         }
-    }
-
-    /// Getter for the EvaluationEntryKey.
-    pub fn key(&self) -> &EvaluationEntryKey {
-        &self.key
     }
 
     /// Increment function for true_positive

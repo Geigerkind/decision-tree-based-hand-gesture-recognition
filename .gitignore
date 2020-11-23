@@ -8,3 +8,5 @@ decision_forest.c
 decision_forest
 size_data.csv
 size_data_test.csv
+size_data_default.csv
+accuracy_data.csv

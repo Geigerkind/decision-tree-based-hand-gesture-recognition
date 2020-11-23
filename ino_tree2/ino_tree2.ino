@@ -1,5 +1,5 @@
 #include "CompoundEyeCamera.h"
-#include "decision_forest.h"
+#include "decision_tree.h"
 #include "features.h"
 
 // Maximum number of frames that can be stored in the buffer.
@@ -262,7 +262,8 @@ void loop() {
       unsigned long featureEndTime = micros();
 
       unsigned long treeStartTime = micros();
-      unsigned char prediction = evaluate_forest(dt_args);
+      unsigned char prediction = evaluate(dt_args);
+      
       unsigned long treeEndTime = micros();
 
       Ser.print("Feature Execution Time: ");
