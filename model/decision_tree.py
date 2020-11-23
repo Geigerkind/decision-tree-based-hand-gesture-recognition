@@ -84,7 +84,7 @@ XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_o
 
 # This function is used to fit the decision tree classifier to the training set
 def evaluate_tree(id):
-    clf = tree.DecisionTreeClassifier(max_depth=max_depth, random_state=1)
+    clf = tree.DecisionTreeClassifier(max_depth=max_depth, random_state=id)
     clf = clf.fit(X_train, y_train)
 
     predicted = clf.predict(XX_opt)
@@ -102,7 +102,7 @@ def evaluate_tree(id):
 # Create the decision tree and train it
 def decision_tree():
     # Fit a bunch of trees in parallel
-    amount_tests = 256
+    amount_tests = 1
     print("Test " + str(amount_tests) + " different trees, and cherry pick best...")
     pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
     trees = pool.map(evaluate_tree, range(amount_tests))
@@ -135,10 +135,30 @@ def decision_tree():
     return clf.classes_
 
 
-def random_forest(classes):
-    clf = RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=1,
-                                 n_jobs=16)
+def evaluate_forest(id):
+    clf = RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id, n_jobs=1)
     clf = clf.fit(X_train, y_train)
+
+    predicted = clf.predict(XX_opt)
+
+    correct = 0
+    for i in range(len(yy_opt)):
+        if predicted[i] == yy_opt[i]:
+            correct += 1
+
+    accuracy = correct / len(yy_opt)
+
+    return clf, accuracy
+
+
+def random_forest(classes):
+    amount_tests = 256
+    print("Test " + str(amount_tests) + " different forest, and cherry pick best...")
+    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
+    trees = pool.map(evaluate_forest, range(amount_tests))
+    trees.sort(key=lambda x: x[1], reverse=True)
+
+    clf = trees[0][0]
 
     predicted = clf.predict(XX_test)
 
