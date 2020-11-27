@@ -55,11 +55,11 @@ float rollingAverageBrightness;
 short current_frame_buffer[NO_PIXELS];
 
 // Buffer to calculate the center of gravity distribution in x and y
-short buffer_cocd_x[FRAME_BUFFER_SIZE];
-short buffer_cocd_y[FRAME_BUFFER_SIZE];
+float buffer_cocd_x[FRAME_BUFFER_SIZE];
+float buffer_cocd_y[FRAME_BUFFER_SIZE];
 
 // Arg buffer for the decision tree
-long dt_args[12];
+float dt_args[12];
 
 /* 
  * Calculates the average brightness of all light values of a frame.   

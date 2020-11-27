@@ -30,20 +30,28 @@ impl Feature for CenterOfGravityDistributionFloatY {
             center_of_gravities.push((amount as f32) / (total_brightness as f32));
         }
 
-        let merge_threshold = center_of_gravities.len() as f32 / 6.0;
-        let mut values = Vec::new();
+        let amount_always_merge = center_of_gravities.len() / 6;
+        let add_pattern: [usize; 6] = match center_of_gravities.len() % 6 {
+            0 => [0; 6],
+            1 => [0, 0, 0, 0, 0, 1],
+            2 => [0, 0, 1, 0, 0, 1],
+            3 => [0, 1, 0, 1, 0, 1],
+            4 => [0, 1, 0, 1, 1, 1],
+            5 => [1, 1, 0, 1, 1, 1],
+            _ => unreachable!()
+        };
         let mut perma_result: [f32; 6] = [0.0; 6];
         let mut perma_result_index = 0;
+        let mut values = Vec::new();
         for i in 0..center_of_gravities.len() {
             values.push(center_of_gravities[i]);
-            if ((i + 1) as f32) < merge_threshold * ((perma_result_index + 1) as f32) {
+            if values.len() < amount_always_merge + add_pattern[perma_result_index] {
                 continue;
             }
             perma_result[perma_result_index] = values.iter().sum::<f32>() / (values.len() as f32);
             perma_result_index += 1;
             values.clear();
         }
-
         CenterOfGravityDistributionFloatY(perma_result)
     }
 
@@ -89,7 +97,7 @@ mod test {
         let feature = CenterOfGravityDistributionFloatY::calculate(&gesture);
 
         // Assert
-        assert_eq!(feature.deref(), &[0.5, -1.0, -0.5, 1.0, 0.5, -1.0]);
+        assert_eq!(feature.deref(), &[1.0, -0.5, -1.0, 0.5, 1.0, -0.5]);
     }
 
     #[test]

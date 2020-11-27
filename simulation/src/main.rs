@@ -118,7 +118,7 @@ mod test {
     use lib_data_set::data_sets::kubik::{KUBIK_TEST, KUBIK_TRAINING};
     use lib_data_set::data_sets::venzke::VENZKE_TRAINING;
     use lib_data_set::entities::DataSetEntry;
-    use lib_data_set::value_objects::{DataSetName, ParsingMethod};
+    use lib_data_set::value_objects::{DataSetName, ParsingMethod, CoveringObject, CameraDistance, BrightnessLevel};
     use lib_evaluation::entities::Evaluation;
     use lib_evaluation::value_objects::EvaluationEntryKey;
     use crate::calculate_features;
@@ -254,6 +254,20 @@ mod test {
     #[test]
     fn test_klisch_test_by_threshold_decision_forest() {
         evaluate_data_set(KLISCH_TEST.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::KlischTest, "decision_forest");
+    }
+
+    #[test]
+    fn test_klisch_test_by_annotation_decision_forest_with_synthetic_data() {
+        let mut data_set = KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap().clone();
+        let mut synthetic = Vec::new();
+        for entry in data_set.iter() {
+            for gesture in entry.gestures() {
+                synthetic.append(&mut gesture.infer_diagonal());
+                synthetic.append(&mut gesture.infer_shifting());
+            }
+        }
+        data_set.push(DataSetEntry::custom(DataSetName::KlischTest, CoveringObject::Unknown, CameraDistance::Unknown, BrightnessLevel::Unknown, None, synthetic));
+        evaluate_data_set(&data_set, DataSetName::KlischTest, "decision_forest");
     }
 
     #[test]

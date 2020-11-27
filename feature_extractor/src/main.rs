@@ -43,6 +43,8 @@ fn main() {
     let mut gestures: Vec<Gesture> = Vec::new();
     let mut synthetic_rotations: Vec<Gesture> = Vec::new();
     let mut synthetic_garbage: Vec<Gesture> = Vec::new();
+    let mut synthetic_shifted: Vec<Gesture> = Vec::new();
+    let mut synthetic_diagonal: Vec<Gesture> = Vec::new();
     for data_set in data_sets {
         for data_set_entry in data_set {
             gestures.append(&mut data_set_entry.gestures().clone());
@@ -50,6 +52,8 @@ fn main() {
             for gesture in data_set_entry.gestures() {
                 synthetic_rotations.append(&mut gesture.infer_rotations());
                 synthetic_garbage.append(&mut gesture.infer_garbage());
+                synthetic_shifted.append(&mut gesture.infer_shifting());
+                synthetic_diagonal.append(&mut gesture.infer_diagonal());
             }
         }
     }
@@ -57,9 +61,13 @@ fn main() {
     // We dont want to create a bias if we only add a certain amount of it
     synthetic_rotations.shuffle(&mut thread_rng());
     synthetic_garbage.shuffle(&mut thread_rng());
+    synthetic_shifted.shuffle(&mut thread_rng());
+    synthetic_diagonal.shuffle(&mut thread_rng());
 
     // If we add garbage or rotations, we dont want to add too many
-    //gestures.append(&mut synthetic_rotations[0..(gestures.len() / 4)].to_vec());
+    //gestures.append(&mut synthetic_rotations[0..(gestures.len() / 5)].to_vec());
+    gestures.append(&mut synthetic_shifted[0..(gestures.len() / 4)].to_vec());
+    gestures.append(&mut synthetic_diagonal[0..(gestures.len() / 5)].to_vec());
 
     // This creates for each feature a file in model_data
     println!("Gestures found: {}", gestures.len());

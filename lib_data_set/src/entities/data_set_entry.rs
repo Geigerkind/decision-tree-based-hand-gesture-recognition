@@ -5,7 +5,7 @@ use std::path::Path;
 use lib_gesture::tools::{parse_gestures_by_annotation, parse_gestures_by_threshold};
 
 /// Defines a single entry in a data set, e.g. LRRL_Hand_10cm_highBrightness_fast.
-#[derive(Debug, Getters)]
+#[derive(Debug, Getters, Clone)]
 pub struct DataSetEntry {
     data_set_name: DataSetName,
     covering_object: CoveringObject,
@@ -34,6 +34,21 @@ impl DataSetEntry {
         };
         entry.parse();
         entry
+    }
+
+    /// Create a custom data set entry, e.g. for synthetic data
+    pub fn custom(data_set_name: DataSetName, covering_object: CoveringObject, camera_distance: CameraDistance,
+               brightness_level: BrightnessLevel, additional_specification: Option<AdditionalSpecification>, gestures: Vec<Gesture>) -> Self {
+        DataSetEntry {
+            data_set_name,
+            covering_object,
+            camera_distance,
+            brightness_level,
+            additional_specification,
+            gestures,
+            file_path: String::new(),
+            parsing_method: ParsingMethod::ByAnnotation
+        }
     }
 
     /// Checks if the file exists and if so parses it either ByAnnotation or ByThreshold.

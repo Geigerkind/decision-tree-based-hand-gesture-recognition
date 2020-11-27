@@ -73,8 +73,8 @@ center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGr
 
 # Specifying the features
 # X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history, center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
-# X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
-X = pd.concat([center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
+X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
+# X = pd.concat([center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
 y = result
 X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=0.3, random_state=0)
 
