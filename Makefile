@@ -44,6 +44,9 @@ test_tree:
 test_tree_kubik:
 	DATA_PATH=".." $(CARGO) test test_kubik_test_by_annotation --bin simulation -- --nocapture
 
+test_tree_klisch:
+	DATA_PATH=".." $(CARGO) test test_klisch_test_by_annotation --bin simulation -- --nocapture
+
 playground:
 	DATA_PATH="." $(CARGO) run --release --bin simulation
 

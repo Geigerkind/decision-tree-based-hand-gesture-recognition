@@ -3,7 +3,7 @@ import pandas as pd
 # Manually tested
 default_size = 2508
 
-data = pd.read_csv("./size_and_accuracy_data.csv")
+data = pd.read_csv("./size_and_accuracy_data_klisch_int.csv")
 
 max_size_in_bytes = 25000 + default_size
 

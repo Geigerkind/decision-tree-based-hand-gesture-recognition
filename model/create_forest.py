@@ -9,10 +9,10 @@ def create_forest(file, trees, classes, num_trees):
 
 def create_forest_native_main(file, trees, classes, num_trees, with_io):
     create_forest(file, trees, classes, num_trees)
-    # file.write("float args[12];\n")
     if with_io:
         file.write("#include <stdio.h>\n")
     file.write("int main(int argc, char** argv) {\n")
+    # file.write("float args[12];\n")
     file.write("long args[12];\n")
     file.write("unsigned int results[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n")
     if with_io:

@@ -39,7 +39,7 @@
   #define AIN_PIN_MAX A2
 
   // Time in ms to wait per row, that is, between the output pin is set an the analog inputs are read.
-  #define DELAY_PER_ROW 3
+  #define DELAY_PER_ROW 1
 
   // Number of rows of a frame physically implemented by the camera
   #define NO_ROWS_NATIVE (OUT_PIN_MAX - OUT_PIN_MIN + 1)

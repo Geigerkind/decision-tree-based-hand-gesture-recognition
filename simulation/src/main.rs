@@ -47,7 +47,6 @@ fn calculate_features(gesture: &Gesture) -> Vec<i32> {
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
      */
-
     let mut args: Vec<i32> = Vec::with_capacity(12);
     let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);

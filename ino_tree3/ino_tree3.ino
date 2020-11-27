@@ -1,10 +1,10 @@
 #include "CompoundEyeCamera.h"
-#include "decision_tree.h"
+#include "decision_forest.h"
 #include "features.h"
 
 // Maximum number of frames that can be stored in the buffer.
 // This is thus the maximum number of frames a gesture can consist of.
-#define FRAME_BUFFER_SIZE 80
+#define FRAME_BUFFER_SIZE 125
 
 // Number of milliseconds between each frame
 #define MILLISECONDS_PER_FRAME 13
@@ -52,69 +52,14 @@ int noFramesInBuffer;
 // Rolling average of the brightness of the previous frames.
 float rollingAverageBrightness;
 
-// Buffer to store the scaled frames of a candidate.
-short frameBuffer[FRAME_BUFFER_SIZE][NO_PIXELS];
+short current_frame_buffer[NO_PIXELS];
+
+// Buffer to calculate the center of gravity distribution in x and y
+short buffer_cocd_x[FRAME_BUFFER_SIZE];
+short buffer_cocd_y[FRAME_BUFFER_SIZE];
 
 // Arg buffer for the decision tree
 long dt_args[12];
-
-
-/*
-    Initializes the LED-Pins.
-*/
-void initalizeLEDs() {
-  pinMode(11, OUTPUT);
-  pinMode(32, OUTPUT);
-  pinMode(33, OUTPUT);
-  pinMode(34, OUTPUT);
-}
-
-/**
-   Blicks LEDs to show a reset.
-*/
-void displayResetOnLED() {
-  digitalWrite(11, HIGH);
-  delay(200);
-  digitalWrite(11, LOW);
-  delay(200);
-  digitalWrite(11, HIGH);
-  delay(200);
-  digitalWrite(11, LOW);
-  digitalWrite(32, HIGH);
-}
-
-/*
-   Sets the LEDs according to the gesture.
-   Parameter gesture contains the gesture to be shown on the LEDs
-*/
-void displayGestureOnLEDs(int gesture) {
-  if (gesture == 1) {
-    digitalWrite(32, HIGH); // PC0
-    digitalWrite(33, LOW);  // PC1
-    digitalWrite(34, LOW);  // PC2
-    digitalWrite(11, LOW);  // PC3
-  } else if (gesture == 2) {
-    digitalWrite(32, LOW);
-    digitalWrite(33, HIGH);
-    digitalWrite(34, LOW);
-    digitalWrite(11, LOW);
-  } else if (gesture == 3) {
-    digitalWrite(32, LOW);
-    digitalWrite(33, LOW);
-    digitalWrite(34, HIGH);
-    digitalWrite(11, LOW);
-  } else if (gesture == 4) {
-    digitalWrite(32, LOW);  // PC0
-    digitalWrite(33, LOW);  // PC1
-    digitalWrite(34, LOW);  // PC2
-    digitalWrite(11, HIGH); // PC3
-  } else {
-    digitalWrite(32, LOW);
-    digitalWrite(33, LOW);
-    digitalWrite(34, LOW);
-    digitalWrite(11, LOW);
-  }
-}
 
 /* 
  * Calculates the average brightness of all light values of a frame.   
@@ -128,23 +73,10 @@ short brightnessOfFrame(short *frame) {
   return sum / NO_PIXELS;
 }
 
-/*
- * Copies one frame from one location to another. 
- * source is a pointer to the frame to copy from. 
- * destination is a pointer to the memory to copy the frame to. 
- */
-void copyFrame(short *source, short *destination) {
-  for (int i = 0; i < NO_PIXELS; i++) {
-    destination[i] = source[i];
-  }
-}
-
-/* 
- *  Removes the first image from the frameBuffer. 
- */
 void removeFirstFrameFromBuffer() {
   for (int i = 1; i < noFramesInBuffer; i++) {
-    copyFrame(frameBuffer[i], frameBuffer[i-1]);
+    buffer_cocd_x[i - 1] = buffer_cocd_x[i];
+    buffer_cocd_y[i - 1] = buffer_cocd_y[i];
   }
   noFramesInBuffer--; 
 }
@@ -178,9 +110,6 @@ void calculateRollingAverageBrightness(short averageBrightnessCurrentFrame) {
   averageBrightnessPreviousFrame = averageBrightnessCurrentFrame;
 }
 
-/*
- * Initializes the extraction of a candidate. 
- */
 void init_candidate_extraction() {
   noFramesInBuffer = 0; // Flush all frames in the frameBuffer.
 
@@ -191,13 +120,10 @@ void init_candidate_extraction() {
   // Ser.println("--- Init ---"); 
 }
 
-/* Initialize the program. */
 void setup() {
   CompoundEyeCamera_init();
-  initalizeLEDs();
 
   Ser.println("------ Reset -----"); // Displays reset on serial line
-  displayResetOnLED();
 
   init_candidate_extraction(); // Initialize the variables for recognizing extraction.
   frameStartTime = millis();   // Remember the current start time to consider it the start time of the first frame.
@@ -209,14 +135,28 @@ void loop() {
   int averageBrightnessCurrentFrame;            // Average brightness of the light values of the current frame 
   int noFramesToBeRecordedInRecordEndingFrames; // No of frames that shall be recorded in state RECORD_ENDING_FRAMES
 
-  unsigned long annStartTime;  
-  unsigned long annEndTime;
   int frameEndTime;  // Time (in milliseconds) when the processing of this frame ended.
   int frameExecutionTime; // Time for executing the frame (in milliseconds).
 
-  readFrame(frameBuffer[noFramesInBuffer]);  // Read a frame values from the sensors.
+  readFrame(current_frame_buffer);  // Read a frame values from the sensors.
+  // Calculate center of gravity in x and y direction
+  /*
+  short cocd_total = 0;
+  for (char i = 0; i < 9; ++i) {
+      cocd_total += current_frame_buffer[i];
+  }
+  if (cocd_total > 0) {
+    buffer_cocd_x[noFramesInBuffer] = (float)(current_frame_buffer[0] + current_frame_buffer[3] + current_frame_buffer[6] - current_frame_buffer[2] - current_frame_buffer[5] - current_frame_buffer[8]) / ((float)cocd_total);
+    buffer_cocd_y[noFramesInBuffer] = (float)(current_frame_buffer[0] + current_frame_buffer[1] + current_frame_buffer[2] - current_frame_buffer[6] - current_frame_buffer[7] - current_frame_buffer[8]) / ((float)cocd_total);
+  } else {
+    buffer_cocd_x[noFramesInBuffer] = 0;
+    buffer_cocd_y[noFramesInBuffer] = 0;
+  }*/
+  buffer_cocd_x[noFramesInBuffer] = current_frame_buffer[0] + current_frame_buffer[3] + current_frame_buffer[6] - current_frame_buffer[2] - current_frame_buffer[5] - current_frame_buffer[8];
+  buffer_cocd_y[noFramesInBuffer] = current_frame_buffer[0] + current_frame_buffer[1] + current_frame_buffer[2] - current_frame_buffer[6] - current_frame_buffer[7] - current_frame_buffer[8];
+
   // writeFrameArray(frameBuffer[noFramesInBuffer]);  // Display frame on serial interface
-  averageBrightnessCurrentFrame = brightnessOfFrame(frameBuffer[noFramesInBuffer]);
+  averageBrightnessCurrentFrame = brightnessOfFrame(current_frame_buffer);
   noFramesInBuffer++; // One more frame in the sensor.
 
   if (noFramesInBuffer >= FRAME_BUFFER_SIZE) { // If the buffer gets bigger than the maximum buffer size
@@ -257,12 +197,12 @@ void loop() {
       // *************************** From here: ANN *******************************
 
       unsigned long featureStartTime = micros();
-      center_of_gravity_distribution_long_x(frameBuffer, noFramesInBuffer, dt_args);
-      center_of_gravity_distribution_long_y(frameBuffer, noFramesInBuffer, dt_args + 6);
+      center_of_gravity_distribution(buffer_cocd_x, noFramesInBuffer, dt_args);
+      center_of_gravity_distribution(buffer_cocd_y, noFramesInBuffer, dt_args + 6);
       unsigned long featureEndTime = micros();
 
       unsigned long treeStartTime = micros();
-      unsigned char prediction = evaluate(dt_args);
+      unsigned char prediction = evaluate_forest(dt_args);
       
       unsigned long treeEndTime = micros();
 
@@ -289,8 +229,8 @@ void loop() {
   // Ser.println(averageBrightnessCurrentFrame);
   // Ser.println(rollingAverageBrightness);
 
-  toggleFrequencyPin();                 // Toggle a pin to allow measuring the speed of the loop.
-
+  //toggleFrequencyPin();                 // Toggle a pin to allow measuring the speed of the loop.
+  
   frameEndTime = millis();              // Remember when the processing of the Frame ended.
   frameExecutionTime = frameEndTime - frameStartTime;
   // Ser.println(frameExecutionTime);
@@ -298,6 +238,5 @@ void loop() {
   if (frameExecutionTime < MILLISECONDS_PER_FRAME) {
     delay(MILLISECONDS_PER_FRAME - frameExecutionTime); // Wait until the next frame shall start.
   }
-
-  frameStartTime = frameEndTime;        // Use frameEndTime as the start time of the next frame.
+  frameStartTime = millis();        // Use frameEndTime as the start time of the next frame.
 }

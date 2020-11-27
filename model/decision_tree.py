@@ -68,8 +68,8 @@ result = pd.read_csv(storage_path + "/result", dtype=int).values.flatten()
 # sum_of_slopes = pd.read_csv(storage_path + "/SumOfSlopes", dtype=int)
 center_of_gravity_distribution_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionX", dtype=int)
 center_of_gravity_distribution_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionY", dtype=int)
-# center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX", dtype=float)
-# center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY", dtype=float)
+center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX", dtype=float)
+center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY", dtype=float)
 
 # Specifying the features
 # X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history, center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
@@ -111,9 +111,9 @@ def decision_tree():
     # Take the best
     clf = trees[0][0]
 
-    plt.figure(figsize=(40, 40))
-    tree.plot_tree(clf)
-    plt.savefig('tree.png', format='png')
+    #plt.figure(figsize=(40, 40))
+    #tree.plot_tree(clf, impurity=False, filled=True)
+    #plt.savefig('tree.png', format='png')
 
     print("Evaluating DecisionTreeClassifier:")
     print("Max depth: " + str(clf.tree_.max_depth))
@@ -129,6 +129,10 @@ def decision_tree():
     file.close()
 
     file = open("ino_tree2/decision_tree.cpp", "w")
+    create_tree_ino_evaluate(file, clf)
+    file.close()
+
+    file = open("ino_tree3/decision_tree.cpp", "w")
     create_tree_ino_evaluate(file, clf)
     file.close()
 
@@ -174,6 +178,10 @@ def random_forest(classes):
     file.close()
 
     file = open("ino_tree2/decision_forest.cpp", "w")
+    create_forest_ino_evaluate(file, clf.estimators_, classes, num_trees)
+    file.close()
+
+    file = open("ino_tree3/decision_forest.cpp", "w")
     create_forest_ino_evaluate(file, clf.estimators_, classes, num_trees)
     file.close()
 
