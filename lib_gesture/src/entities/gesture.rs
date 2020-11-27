@@ -99,7 +99,7 @@ impl Gesture {
     }
 
     /// Infer garbage by inferring the rotations and splitting them at the half.
-    /// Stich together the original gesture's first half and the second half from the rotation.
+    /// Stitch together the original gesture's first half and the second half from the rotation.
     pub fn infer_garbage(&self) -> Vec<Self> {
         if self.gesture_type == GestureType::NotGesture || self.gesture_type == GestureType::None {
             return Vec::new();
@@ -114,6 +114,67 @@ impl Gesture {
                 }
                 gesture
             }).collect()
+    }
+
+    /// We shift LR RL 3 times to the top (and put pixel that went out at the top back to the bottom)
+    /// Analogously we shift TB BT by doing the same to the right
+    pub fn infer_shifting(&self) -> Vec<Self> {
+        let mut result = Vec::with_capacity(2);
+        match self.gesture_type {
+            GestureType::LeftToRight | GestureType::RightToLeft => {
+                for i in 1..3 {
+                    let mut new_gesture = self.clone();
+                    for (index, frame) in new_gesture.frames.iter_mut().enumerate() {
+                        for j in 0..9 {
+                            frame.pixel[((j as i8) - (i as i8) * 3).rem_euclid(9) as usize] = self.frames[index].pixel[j];
+                        }
+                    }
+                    result.push(new_gesture);
+                }
+            }
+            GestureType::TopToBottom | GestureType::BottomToTop => {
+                for i in 1..3 {
+                    let mut new_gesture = self.clone();
+                    for (index, frame) in new_gesture.frames.iter_mut().enumerate() {
+                        for j in 0..9 {
+                            let mut shifted_index = j;
+                            for _ in 0..i {
+                                shifted_index = match shifted_index {
+                                    0 | 1 | 3 | 4 | 6 | 7 => shifted_index + 1,
+                                    2 | 5 | 8 => shifted_index - 2,
+                                    _ => unreachable!()
+                                };
+                            }
+                            frame.pixel[shifted_index] = self.frames[index].pixel[j];
+                        }
+                    }
+                    result.push(new_gesture);
+                }
+            }
+            _ => {}
+        };
+        result
+    }
+
+    /// Rotates all border pixel once clock wise and once anti clock wise
+    /// The gesture type remains the same, for now this is added to make
+    /// the algorithm more robust to non perfect gesture
+    pub fn infer_diagonal(&self) -> Vec<Self> {
+        let mut result = Vec::with_capacity(2);
+        match self.gesture_type {
+            GestureType::LeftToRight | GestureType::RightToLeft
+            | GestureType::TopToBottom | GestureType::BottomToTop => {
+                let mut left_gesture = self.clone();
+                left_gesture.frames = left_gesture.frames.into_iter().map(|frame| rotate_frame_left(&frame)).collect();
+                result.push(left_gesture);
+                let mut right_gesture = self.clone();
+                right_gesture.frames = right_gesture.frames.into_iter().map(|frame| rotate_frame_right(&frame)).collect();
+                result.push(right_gesture);
+            }
+            _ => {}
+        };
+
+        result
     }
 
     /// Helper function to rotate a gesture into left to right position.
@@ -183,5 +244,145 @@ impl Gesture {
         for frame in self.frames.iter() {
             frame.print();
         }
+    }
+}
+
+fn rotate_frame_left(frame: &Frame) -> Frame {
+    let mut new_frame = frame.clone();
+    for i in 0..9 {
+        let shifted_index = match i {
+            0 | 3 => i + 3,
+            1 | 2 => i - 1,
+            5 | 8 => i - 3,
+            6 | 7 => i + 1,
+            _ => i
+        };
+        new_frame.pixel[shifted_index] = frame.pixel[i];
+    }
+    new_frame
+}
+
+fn rotate_frame_right(frame: &Frame) -> Frame {
+    let mut new_frame = frame.clone();
+    for i in 0..9 {
+        let shifted_index = match i {
+            0 | 1 => i + 1,
+            2 | 5 => i + 3,
+            3 | 6 => i - 3,
+            7 | 8 => i - 1,
+            _ => i
+        };
+        new_frame.pixel[shifted_index] = frame.pixel[i];
+    }
+    new_frame
+}
+
+#[cfg(test)]
+mod test {
+    use std::str::FromStr;
+
+    use crate::entities::{Frame, Gesture};
+    use crate::value_objects::GestureType;
+
+    #[test]
+    fn test_infer_shifting_lrrl() {
+        // Arrange
+        let mut gesture = Gesture::default();
+        gesture.gesture_type = GestureType::LeftToRight;
+        gesture.frames.push(Frame::from_str("100,100,100,90,90,90,80,80,80,1").unwrap());
+
+        // Act
+        let shifting = gesture.infer_shifting();
+
+        // Assert
+        assert_eq!(shifting.len(), 2);
+        let shift1 = shifting.get(0).unwrap();
+        assert_eq!(shift1.frames[0].pixel[0], 90);
+        assert_eq!(shift1.frames[0].pixel[1], 90);
+        assert_eq!(shift1.frames[0].pixel[2], 90);
+        assert_eq!(shift1.frames[0].pixel[3], 80);
+        assert_eq!(shift1.frames[0].pixel[4], 80);
+        assert_eq!(shift1.frames[0].pixel[5], 80);
+        assert_eq!(shift1.frames[0].pixel[6], 100);
+        assert_eq!(shift1.frames[0].pixel[7], 100);
+        assert_eq!(shift1.frames[0].pixel[8], 100);
+        let shift2 = shifting.get(1).unwrap();
+        assert_eq!(shift2.frames[0].pixel[0], 80);
+        assert_eq!(shift2.frames[0].pixel[1], 80);
+        assert_eq!(shift2.frames[0].pixel[2], 80);
+        assert_eq!(shift2.frames[0].pixel[3], 100);
+        assert_eq!(shift2.frames[0].pixel[4], 100);
+        assert_eq!(shift2.frames[0].pixel[5], 100);
+        assert_eq!(shift2.frames[0].pixel[6], 90);
+        assert_eq!(shift2.frames[0].pixel[7], 90);
+        assert_eq!(shift2.frames[0].pixel[8], 90);
+    }
+
+    #[test]
+    fn test_infer_shifting_tbbt() {
+        // Arrange
+        let mut gesture = Gesture::default();
+        gesture.gesture_type = GestureType::TopToBottom;
+        gesture.frames.push(Frame::from_str("100,90,80,100,90,80,100,90,80,3").unwrap());
+
+        // Act
+        let shifting = gesture.infer_shifting();
+
+        // Assert
+        assert_eq!(shifting.len(), 2);
+        let shift1 = shifting.get(0).unwrap();
+        assert_eq!(shift1.frames[0].pixel[0], 80);
+        assert_eq!(shift1.frames[0].pixel[1], 100);
+        assert_eq!(shift1.frames[0].pixel[2], 90);
+        assert_eq!(shift1.frames[0].pixel[3], 80);
+        assert_eq!(shift1.frames[0].pixel[4], 100);
+        assert_eq!(shift1.frames[0].pixel[5], 90);
+        assert_eq!(shift1.frames[0].pixel[6], 80);
+        assert_eq!(shift1.frames[0].pixel[7], 100);
+        assert_eq!(shift1.frames[0].pixel[8], 90);
+        let shift2 = shifting.get(1).unwrap();
+        assert_eq!(shift2.frames[0].pixel[0], 90);
+        assert_eq!(shift2.frames[0].pixel[1], 80);
+        assert_eq!(shift2.frames[0].pixel[2], 100);
+        assert_eq!(shift2.frames[0].pixel[3], 90);
+        assert_eq!(shift2.frames[0].pixel[4], 80);
+        assert_eq!(shift2.frames[0].pixel[5], 100);
+        assert_eq!(shift2.frames[0].pixel[6], 90);
+        assert_eq!(shift2.frames[0].pixel[7], 80);
+        assert_eq!(shift2.frames[0].pixel[8], 100);
+    }
+
+    #[test]
+    fn test_infer_diagonal() {
+        // Arrange
+        let mut gesture = Gesture::default();
+        gesture.gesture_type = GestureType::LeftToRight;
+        gesture.frames.push(Frame::from_str("100,100,100,90,90,90,80,80,80,1").unwrap());
+
+        // Act
+        let diagonal = gesture.infer_diagonal();
+
+        // Assert
+        assert_eq!(diagonal.len(), 2);
+        let diag1 = diagonal.get(0).unwrap();
+        assert_eq!(diag1.frames[0].pixel[0], 100);
+        assert_eq!(diag1.frames[0].pixel[1], 100);
+        assert_eq!(diag1.frames[0].pixel[2], 90);
+        assert_eq!(diag1.frames[0].pixel[3], 100);
+        assert_eq!(diag1.frames[0].pixel[4], 90);
+        assert_eq!(diag1.frames[0].pixel[5], 80);
+        assert_eq!(diag1.frames[0].pixel[6], 90);
+        assert_eq!(diag1.frames[0].pixel[7], 80);
+        assert_eq!(diag1.frames[0].pixel[8], 80);
+        let diag2 = diagonal.get(1).unwrap();
+        assert_eq!(diag2.frames[0].pixel[0], 90);
+        assert_eq!(diag2.frames[0].pixel[1], 100);
+        assert_eq!(diag2.frames[0].pixel[2], 100);
+        assert_eq!(diag2.frames[0].pixel[3], 80);
+        assert_eq!(diag2.frames[0].pixel[4], 90);
+        assert_eq!(diag2.frames[0].pixel[5], 100);
+        assert_eq!(diag2.frames[0].pixel[6], 80);
+        assert_eq!(diag2.frames[0].pixel[7], 80);
+        assert_eq!(diag2.frames[0].pixel[8], 90);
     }
 }
