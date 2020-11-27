@@ -47,8 +47,17 @@ Furthermore, it tests the aforementioned tree classifier on the data sets and pr
 This project is the final product. It combines all the work and provides the chain of gesture candidate parsing, feature extraction and classification using either 
 the decision tree or decision forest. It finally outputs its prediction to the serial interface.
 
+### ino_tree2
+The same as `ino_tree` but uses Dr. Venzke`s gesture recognizer.
+
+### ino_tree3
+The same as `ino_tree2` but calculates parts of the features during frame collection.
+
 ### serial_reader
 This program only prints each line that it encounters in the serial data stream from the Arduino.
+
+### gesture_recorder
+This program uses the serial stream from the Arduino and the `GestureReader` to collect labeled gestures.
 
 ## Toolchain
 * Cargo nightly (I used `cargo 1.49.0-nightly (79b397d72 2020-10-15)`)
@@ -78,7 +87,10 @@ Executes all tests in the libraries.
 Evaluates all data sets on the previously generated trees.
 
 ### test_tree_kubik
-Only evaluates the `KUBIK_TRAINING` data set.
+Only evaluates the `KUBIK_TEST` data set.
+
+### test_tree_klisch
+Only evaluates the `KLISCH_TEST` data set.
 
 ### test
 Executes test_gen_features, then test_tree
@@ -89,7 +101,8 @@ Starts the `simulation` program and listens for frames from the Arduino Uno.
 ### reader
 Starts the `serial_reader` program and prints the serial output from the Arduino Uno.
 
+### recorder
+Starts the `gesture_recorder` program.
+
 ### all
 Executes in this order: gen_features, gen_tree, test_gen_features, test_tree
-
-

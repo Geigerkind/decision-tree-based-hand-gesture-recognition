@@ -21,6 +21,7 @@ use lib_gesture::entities::Gesture;
 use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
 use lib_data_set::data_sets::kubik::{KUBIK_TRAINING, KUBIK_TEST};
 use lib_data_set::data_sets::klisch::{KLISCH_TEST, KLISCH_DATA};
+use lib_data_set::data_sets::dymel::DYMEL_DATA;
 
 use crate::strum::IntoEnumIterator;
 use lib_data_set::value_objects::ParsingMethod;
@@ -34,6 +35,7 @@ fn main() {
     let data_sets = vec![
         EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
+        //DYMEL_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
         KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),

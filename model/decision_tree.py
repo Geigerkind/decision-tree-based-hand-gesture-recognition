@@ -6,8 +6,7 @@ from create_forest import *
 from create_tree import *
 from sklearn import tree
 from sklearn.experimental import enable_hist_gradient_boosting  # noqa
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, \
-    ExtraTreesClassifier, HistGradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, ExtraTreesClassifier, HistGradientBoostingClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
 from xgboost.sklearn import XGBClassifier
 
@@ -79,10 +78,10 @@ X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distrib
 # X = pd.concat([center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
 
 # Interestingly seems the order to effect the accuracy
-# new_x = []
-# for item in X:
+#new_x = []
+#for item in X:
 #    new_x.append([item[0], item[6], item[1], item[7], item[2], item[8], item[3], item[9], item[4], item[10], item[5], item[11]])
-# X = new_x
+#X = new_x
 y = result
 X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=0.3, random_state=0)
 
@@ -149,8 +148,7 @@ def decision_tree():
 
 def evaluate_forest(id):
     # ccp_alpha=0.001, min_samples_leaf=2 ?
-    clf = RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id,
-                                 n_jobs=1)
+    clf = RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id, n_jobs=1)
     clf = clf.fit(X_train, y_train)
 
     predicted = clf.predict(XX_opt)
@@ -195,7 +193,6 @@ def random_forest(classes):
     create_forest_ino_evaluate(file, clf.estimators_, classes, num_trees)
     file.close()
 
-
 # This is like GBM, but just more performant and applies regularization to avoid overfitting
 def xgboost_decision_tree():
     xgb1 = XGBClassifier(
@@ -211,7 +208,7 @@ def xgboost_decision_tree():
         nthread=16,
         seed=42)
     xgb1.fit(X_train, y_train, eval_metric="auc")
-    scores = cross_val_score(xgb1, X_test_and_opt, y_test_and_opt, cv=5, n_jobs=1)
+    scores = cross_val_score(xgb1, XX_test, yy_test, cv=5, n_jobs=1)
     print("XGBClassifier")
     print("Mean cross-validation score: %.2f" % scores.mean())
 
@@ -221,7 +218,7 @@ def adaboost_decision_tree():
                                n_estimators=num_trees, random_state=1, learning_rate=0.01)
     model.fit(X_train, y_train)
     print("AdaBoostClassifier: ")
-    print(model.score(X_test_and_opt, y_test_and_opt))
+    print(model.score(XX_test, yy_test))
 
 
 # Difference to RandomForestClassifier is, that this does not select a set of features
@@ -230,7 +227,7 @@ def bagging_decision_tree():
                               n_estimators=num_trees, random_state=1)
     model.fit(X_train, y_train)
     print("BaggingClassifier: ")
-    print(model.score(X_test_and_opt, y_test_and_opt))
+    print(model.score(XX_test, yy_test))
 
 
 # Uses DecisionTreeRegressor under the hood o.o
@@ -239,7 +236,7 @@ def gradient_boosting_decision_tree():
                                        max_features=12)
     model.fit(X_train, y_train)
     print("GradientBoostingClassifier: ")
-    print(model.score(X_test_and_opt, y_test_and_opt))
+    print(model.score(XX_test, yy_test))
 
 
 # Uses extra trees, they seem to differ from normal decision trees
@@ -252,23 +249,22 @@ def extra_trees():
     # model.base_estimator = tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy")
     model.fit(X_train, y_train)
     print("ExtraTreesClassifier: ")
-    print(model.score(X_test_and_opt, y_test_and_opt))
+    print(model.score(XX_test, yy_test))
 
 
 # Not so sure what this is, but it works well and should be based on decision trees
 # Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier
 def hist_gradient_boosting_decision_tree():
-    model = HistGradientBoostingClassifier(random_state=1, learning_rate=0.01, max_depth=max_depth)
+    model = HistGradientBoostingClassifier(random_state=1, learning_rate=0.01, max_depth=max_depth, max_iter=num_trees)
     model.fit(X_train, y_train)
     print("HistGradientBoostingClassifier: ")
-    print(model.score(X_test_and_opt, y_test_and_opt))
-
+    print(model.score(XX_test, yy_test))
 
 classes = decision_tree()
 random_forest(classes)
-xgboost_decision_tree()
-adaboost_decision_tree()
-bagging_decision_tree()
-gradient_boosting_decision_tree()
-extra_trees()
-hist_gradient_boosting_decision_tree()
+#xgboost_decision_tree()
+#adaboost_decision_tree()
+#bagging_decision_tree()
+#gradient_boosting_decision_tree()
+#extra_trees()
+#hist_gradient_boosting_decision_tree()

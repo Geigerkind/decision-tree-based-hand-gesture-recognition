@@ -12,8 +12,8 @@ echo "max_depth,forest_size,optimization_level,forest_bytes,accuracy" > ./size_a
 
 optimizations=(O0 Os O2 O3)
 
-for max_depth in {1..30}; do
-  for forest_size in {1..20}; do
+for max_depth in {12..20}; do
+  for forest_size in {1..10}; do
     echo "Working on: ${max_depth},${forest_size}..."
     python model/decision_tree.py $max_depth $forest_size 1 &> /dev/null
     gcc -O2 ./decision_forest.c -o decision_forest

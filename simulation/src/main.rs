@@ -257,6 +257,7 @@ mod test {
     }
 
     #[test]
+    #[ignore]
     fn test_klisch_test_by_annotation_decision_forest_with_synthetic_data() {
         let mut data_set = KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap().clone();
         let mut synthetic = Vec::new();

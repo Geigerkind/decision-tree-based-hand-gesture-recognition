@@ -34,7 +34,7 @@ test_gen_features:
 	DATA_PATH=".." $(CARGO) test
 
 gen_tree:
-	$(PYTHON) model/decision_tree.py 18 5 1
+	$(PYTHON) model/decision_tree.py 14 3 1
 	$(GCC) -O3 decision_tree.c -o decision_tree
 	$(GCC) -O3 decision_forest.c -o decision_forest
 
@@ -55,3 +55,6 @@ doc:
 
 reader:
 	DATA_PATH="." $(CARGO) run --release --bin serial_reader
+
+recorder:
+	DATA_PATH="." $(CARGO) run --release --bin gesture_recorder

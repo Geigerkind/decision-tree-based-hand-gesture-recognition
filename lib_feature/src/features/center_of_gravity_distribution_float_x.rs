@@ -32,10 +32,10 @@ impl Feature for CenterOfGravityDistributionFloatX {
         let amount_always_merge = center_of_gravities.len() / 6;
         let add_pattern: [usize; 6] = match center_of_gravities.len() % 6 {
             0 => [0; 6],
-            1 => [0, 0, 0, 0, 0, 1],
-            2 => [0, 0, 1, 0, 0, 1],
-            3 => [0, 1, 0, 1, 0, 1],
-            4 => [0, 1, 0, 1, 1, 1],
+            1 => [1, 0, 0, 0, 0, 0],
+            2 => [1, 0, 0, 0, 0, 1],
+            3 => [1, 0, 1, 0, 0, 1],
+            4 => [1, 0, 1, 1, 0, 1],
             5 => [1, 1, 0, 1, 1, 1],
             _ => unreachable!()
         };
@@ -56,7 +56,7 @@ impl Feature for CenterOfGravityDistributionFloatX {
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(|num| format!("{:.2}", num)).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(f32::to_string).collect::<Vec<String>>().join(",")
     }
 }
 

@@ -12,5 +12,6 @@ pub enum BrightnessLevel {
     CeilingVarious,
     CeilingLit, // ?
     Wall, //?
+    VeryHigh,
     Unknown
 }

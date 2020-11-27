@@ -3,5 +3,6 @@ pub enum CoveringObject {
     Finger,
     Hand,
     Unknown,
-    Arm
+    Arm,
+    GlassesCase
 }

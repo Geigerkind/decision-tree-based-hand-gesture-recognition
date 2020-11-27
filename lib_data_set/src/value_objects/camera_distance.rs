@@ -2,6 +2,7 @@
 pub enum CameraDistance {
     CM3,
     CM5,
+    CM3To10,
     CM5To10,
     CM10,
     CM15,

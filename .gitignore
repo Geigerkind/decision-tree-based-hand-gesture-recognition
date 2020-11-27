@@ -10,6 +10,7 @@ size_data.csv
 size_data_test.csv
 size_data_default.csv
 accuracy_data.csv
+size_and_accuracy_data.csv
 size_and_accuracy_data_klisch_float.csv
 size_and_accuracy_data_kubik_int.csv
 size_and_accuracy_data_klisch_int.csv

@@ -6,5 +6,6 @@ pub enum DataSetName {
     KlischData,
     KubikTest,
     KubikTraining,
-    VenzkeTraining
+    VenzkeTraining,
+    DymelData
 }

@@ -35,8 +35,13 @@ pub fn parse_gestures_by_annotation(path: &String) -> io::Result<Vec<Gesture>> {
                             current_gesture.frames.push(frame);
                         } else {
                             let mut new_gesture = Gesture::default();
+                            if frame.gesture_type != GestureType::None {
+                                new_gesture.frames.push(frame);
+                            }
                             std::mem::swap(&mut current_gesture, &mut new_gesture);
-                            result.push(new_gesture);
+                            if new_gesture.frames.len() >= 6 {
+                                result.push(new_gesture);
+                            }
                         }
                     }
                 }

@@ -1,0 +1,9 @@
+[package]
+name = "gesture_recorder"
+version = "0.1.0"
+authors = ["Tom Dymel <tom.dymel@tuhh.de>"]
+edition = "2018"
+
+[dependencies]
+serialport = "3.3.0"
+lib_gesture = { path = "../lib_gesture", version = "*" }
