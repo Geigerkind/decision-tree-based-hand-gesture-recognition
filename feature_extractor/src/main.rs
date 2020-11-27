@@ -65,9 +65,10 @@ fn main() {
     synthetic_diagonal.shuffle(&mut thread_rng());
 
     // If we add garbage or rotations, we dont want to add too many
-    //gestures.append(&mut synthetic_rotations[0..(gestures.len() / 5)].to_vec());
-    gestures.append(&mut synthetic_shifted[0..(gestures.len() / 4)].to_vec());
-    gestures.append(&mut synthetic_diagonal[0..(gestures.len() / 5)].to_vec());
+    // gestures.append(&mut synthetic_rotations[0..(gestures.len() / 5)].to_vec());
+    // gestures.append(&mut synthetic_garbage[0..(gestures.len() / 4)].to_vec());
+    // gestures.append(&mut synthetic_shifted[0..(gestures.len() / 4)].to_vec());
+    // gestures.append(&mut synthetic_diagonal[0..(gestures.len() / 5)].to_vec());
 
     // This creates for each feature a file in model_data
     println!("Gestures found: {}", gestures.len());

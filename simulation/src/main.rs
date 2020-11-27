@@ -28,7 +28,7 @@ use num_traits::FromPrimitive;
 const ASCII_NEW_LINE: u8 = 10;
 
 /// This function calculates the currently selected features that are used by the decision tree and decision forest.
-fn calculate_features(gesture: &Gesture) -> Vec<i32> {
+fn calculate_features(gesture: &Gesture) -> Vec<f32> {
     /*
     let mut args: Vec<f32> = Vec::with_capacity(33);
     let darkness_dist_geom = DarknessDistribution6XYGeom::calculate(gesture);
@@ -40,18 +40,18 @@ fn calculate_features(gesture: &Gesture) -> Vec<i32> {
     args.append(&mut motion_history.deref().iter().map(|val| *val as f32).collect());
      */
 
-    /*
     let mut args: Vec<f32> = Vec::with_capacity(12);
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
-     */
+    /*
     let mut args: Vec<i32> = Vec::with_capacity(12);
     let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
+    */
     args
 }
 
@@ -262,8 +262,9 @@ mod test {
         let mut synthetic = Vec::new();
         for entry in data_set.iter() {
             for gesture in entry.gestures() {
-                synthetic.append(&mut gesture.infer_diagonal());
-                synthetic.append(&mut gesture.infer_shifting());
+                synthetic.append(&mut gesture.infer_garbage());
+                //synthetic.append(&mut gesture.infer_diagonal());
+                //synthetic.append(&mut gesture.infer_shifting());
             }
         }
         data_set.push(DataSetEntry::custom(DataSetName::KlischTest, CoveringObject::Unknown, CameraDistance::Unknown, BrightnessLevel::Unknown, None, synthetic));
