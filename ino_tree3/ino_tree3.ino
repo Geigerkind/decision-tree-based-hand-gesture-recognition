@@ -59,7 +59,7 @@ float buffer_cocd_x[FRAME_BUFFER_SIZE];
 float buffer_cocd_y[FRAME_BUFFER_SIZE];
 
 // Arg buffer for the decision tree
-float dt_args[12];
+float dt_args[10];
 
 /* 
  * Calculates the average brightness of all light values of a frame.   
@@ -198,7 +198,7 @@ void loop() {
 
       unsigned long featureStartTime = micros();
       center_of_gravity_distribution(buffer_cocd_x, noFramesInBuffer, dt_args);
-      center_of_gravity_distribution(buffer_cocd_y, noFramesInBuffer, dt_args + 6);
+      center_of_gravity_distribution(buffer_cocd_y, noFramesInBuffer, dt_args + 5);
       unsigned long featureEndTime = micros();
 
       unsigned long treeStartTime = micros();
