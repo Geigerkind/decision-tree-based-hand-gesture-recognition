@@ -20,17 +20,19 @@ use serialport::{DataBits, FlowControl, Parity, SerialPortSettings, StopBits};
 use lib_gesture::entities::{GestureReader, Frame, Gesture};
 use std::str::FromStr;
 use std::process::Command;
-use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature, DarknessDistribution6XYGeom, BrightnessDistribution6XYGeom, MotionHistory, CenterOfGravityDistributionY, CenterOfGravityDistributionX};
+use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature, DarknessDistribution6XYGeom, BrightnessDistribution6XYGeom, MotionHistory, CenterOfGravityDistributionY, CenterOfGravityDistributionX, SumOfSlopes};
 use std::ops::Deref;
 use lib_gesture::value_objects::GestureType;
 use num_traits::FromPrimitive;
 
 const ASCII_NEW_LINE: u8 = 10;
+const DO_FEATURE_REORDERING: bool = false;
 
 /// This function calculates the currently selected features that are used by the decision tree and decision forest.
+#[cfg(feature="feature_set1")]
 fn calculate_features(gesture: &Gesture) -> Vec<f32> {
+    let mut args: Vec<f32> = Vec::new();
     /*
-    let mut args: Vec<f32> = Vec::with_capacity(33);
     let darkness_dist_geom = DarknessDistribution6XYGeom::calculate(gesture);
     let brightness_dist_geom = BrightnessDistribution6XYGeom::calculate(gesture);
     let motion_history = MotionHistory::calculate(gesture);
@@ -40,18 +42,34 @@ fn calculate_features(gesture: &Gesture) -> Vec<f32> {
     args.append(&mut motion_history.deref().iter().map(|val| *val as f32).collect());
      */
 
-    let mut args: Vec<f32> = Vec::with_capacity(12);
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
+    //let sum_of_slopes = SumOfSlopes::calculate(&gesture);
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
-    /*
-    let mut args: Vec<i32> = Vec::with_capacity(12);
+    //args.append(&mut sum_of_slopes.deref().to_vec().into_iter().map(|val| val as f32).collect());
+
+    // Feature reordering
+    if DO_FEATURE_REORDERING {
+        let mut new_args = Vec::new();
+        let half = args.len() / 2;
+        for i in 0..half {
+            new_args.push(args[i]);
+            new_args.push(args[half + i]);
+        }
+        args = new_args;
+    }
+
+    args
+}
+
+#[cfg(feature="feature_set2")]
+fn calculate_features(gesture: &Gesture) -> Vec<i32> {
+    let mut args: Vec<i32> = Vec::new();
     let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
-    */
     args
 }
 

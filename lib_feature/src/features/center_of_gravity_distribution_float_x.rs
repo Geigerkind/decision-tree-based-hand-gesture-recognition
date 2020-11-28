@@ -2,13 +2,15 @@ use std::ops::Deref;
 use crate::Feature;
 use lib_gesture::entities::Gesture;
 
+const AMOUNT_WINDOWS: usize = 5;
+
 /// Calculates the average center of gravity for 6 time slots, i.e. if more than 6 samples are obtained, they
 /// are squished into 6 values by applying the average of the sum.
 /// x_g = (left_row - right_row) / total_of_all_pixel
-pub struct CenterOfGravityDistributionFloatX(pub [f32; 6]);
+pub struct CenterOfGravityDistributionFloatX(pub [f32; AMOUNT_WINDOWS]);
 
 impl Deref for CenterOfGravityDistributionFloatX {
-    type Target = [f32; 6];
+    type Target = [f32; AMOUNT_WINDOWS];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -25,21 +27,55 @@ impl Feature for CenterOfGravityDistributionFloatX {
                 continue;
             }
 
-            let amount = frame.pixel[0] + frame.pixel[3] + frame.pixel[6] - frame.pixel[2] - frame.pixel[5] - frame.pixel[8];
+            let amount = frame.pixel[2] + frame.pixel[5] + frame.pixel[8] - frame.pixel[0] - frame.pixel[3] - frame.pixel[6];
             center_of_gravities.push((amount as f32) / (total_brightness as f32));
         }
 
-        let amount_always_merge = center_of_gravities.len() / 6;
-        let add_pattern: [usize; 6] = match center_of_gravities.len() % 6 {
-            0 => [0; 6],
+        let amount_always_merge = center_of_gravities.len() / AMOUNT_WINDOWS;
+        let add_pattern: [usize; AMOUNT_WINDOWS] = match center_of_gravities.len() % AMOUNT_WINDOWS {
+            0 => [0; AMOUNT_WINDOWS],
+            /*
+            1 => [1, 0, 0, 0],
+            2 => [1, 0, 0, 1],
+            3 => [1, 1, 0, 1],
+             */
+            /*
+            1 => [1, 0, 0, 0, 0, 0, 0, 0, 0],
+            2 => [1, 0, 0, 0, 0, 0, 0, 0, 1],
+            3 => [1, 0, 0, 0, 1, 0, 0, 0, 1],
+            4 => [1, 0, 1, 0, 1, 0, 0, 0, 1],
+            5 => [1, 0, 1, 0, 1, 0, 1, 0, 1],
+            6 => [1, 1, 1, 0, 1, 0, 1, 0, 1],
+            7 => [1, 1, 1, 0, 1, 0, 1, 1, 1],
+            8 => [1, 1, 1, 1, 1, 0, 1, 1, 1],
+             */
+            /*
+            1 => [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            2 => [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            3 => [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            4 => [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            5 => [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1],
+            6 => [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1],
+            7 => [1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1],
+            8 => [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+            9 => [1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1],
+            10 => [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
+            11 => [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+             */
+            1 => [1, 0, 0, 0, 0],
+            2 => [1, 0, 0, 0, 1],
+            3 => [1, 0, 1, 0, 1],
+            4 => [1, 1, 1, 0, 1],
+            /*
             1 => [1, 0, 0, 0, 0, 0],
             2 => [1, 0, 0, 0, 0, 1],
             3 => [1, 0, 1, 0, 0, 1],
             4 => [1, 0, 1, 1, 0, 1],
             5 => [1, 1, 0, 1, 1, 1],
+             */
             _ => unreachable!()
         };
-        let mut perma_result: [f32; 6] = [0.0; 6];
+        let mut perma_result: [f32; AMOUNT_WINDOWS] = [0.0; AMOUNT_WINDOWS];
         let mut perma_result_index = 0;
         let mut values = Vec::new();
         for i in 0..center_of_gravities.len() {

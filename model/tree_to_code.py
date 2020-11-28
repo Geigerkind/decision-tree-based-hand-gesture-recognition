@@ -4,7 +4,7 @@
 from sklearn.tree import _tree
 
 
-def tree_to_code(file, tree, classes, function_name, feature_names=range(0, 40)):
+def tree_to_code(file, tree, classes, function_name, is_float, feature_names=range(0, 40)):
     nspaces = 4
     tree_ = tree.tree_
     feature_name = [
@@ -12,7 +12,10 @@ def tree_to_code(file, tree, classes, function_name, feature_names=range(0, 40))
         for i in tree_.feature
     ]
 
-    file.write("unsigned char " + function_name + "(float* features)")
+    if is_float:
+        file.write("unsigned char " + function_name + "(float* features)")
+    else:
+        file.write("unsigned char " + function_name + "(long* features)")
     file.write("{")
 
     def recurse(node, depth):
@@ -22,7 +25,10 @@ def tree_to_code(file, tree, classes, function_name, feature_names=range(0, 40))
             name = feature_name[node]
             threshold = tree_.threshold[node]
 
-            file.write("\n{}if (features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
+            if is_float:
+                file.write("\n{}if (features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
+            else:
+                file.write("\n{}if (features[{}] <= {:0.0f})".format(indent, name, threshold) + " {")
 
             recurse(tree_.children_left[node], depth + 1)
 

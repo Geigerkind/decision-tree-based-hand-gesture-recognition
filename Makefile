@@ -34,21 +34,21 @@ test_gen_features:
 	DATA_PATH=".." $(CARGO) test
 
 gen_tree:
-	$(PYTHON) model/decision_tree.py 14 3 1
-	$(GCC) -O3 decision_tree.c -o decision_tree
-	$(GCC) -O3 decision_forest.c -o decision_forest
+	$(PYTHON) model/decision_tree.py 18 6 1 1 0 1
+	$(GCC) -O2 decision_tree.c -o decision_tree
+	$(GCC) -O2 decision_forest.c -o decision_forest
 
 test_tree:
-	DATA_PATH=".." $(CARGO) test --bin simulation -- --nocapture
+	DATA_PATH=".." $(CARGO) test --bin simulation --manifest-path "simulation/Cargo.toml" --features "feature_set1" -- --nocapture
 
 test_tree_kubik:
-	DATA_PATH=".." $(CARGO) test test_kubik_test_by_annotation --bin simulation -- --nocapture
+	DATA_PATH=".." $(CARGO) test test_kubik_test_by_annotation --bin simulation --manifest-path "simulation/Cargo.toml" --features "feature_set1" -- --nocapture
 
 test_tree_klisch:
-	DATA_PATH=".." $(CARGO) test test_klisch_test_by_annotation --bin simulation -- --nocapture
+	DATA_PATH=".." $(CARGO) test test_klisch_test_by_annotation --bin simulation --manifest-path "simulation/Cargo.toml" --features "feature_set1" -- --nocapture
 
 playground:
-	DATA_PATH="." $(CARGO) run --release --bin simulation
+	DATA_PATH="." $(CARGO) run --release --bin simulation --manifest-path "simulation/Cargo.toml" --features "feature_set1"
 
 doc:
 	DATA_PATH="." $(CARGO) doc --open --no-deps

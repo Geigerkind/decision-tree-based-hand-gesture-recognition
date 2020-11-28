@@ -12,3 +12,8 @@ lib_feature = { path = "../lib_feature", version = "*" }
 strum = "0.19"
 serialport = "3.3.0"
 num-traits = "0.2"
+
+[features]
+default = []
+feature_set1 = []
+feature_set2 = []

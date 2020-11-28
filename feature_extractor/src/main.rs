@@ -7,26 +7,27 @@ Furthermore, it tests the aforementioned tree classifier on the data sets and pr
 
 #![allow(unused_imports)]
 
+extern crate lib_data_set;
 extern crate lib_feature;
 extern crate lib_gesture;
-extern crate lib_data_set;
-extern crate strum;
 extern crate rand;
+extern crate strum;
 
 use std::fs::File;
 use std::io::Write;
 
+use rand::seq::SliceRandom;
+use rand::thread_rng;
+
+use lib_data_set::data_sets::dymel::DYMEL_DATA;
+use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
+use lib_data_set::data_sets::klisch::{KLISCH_DATA, KLISCH_TEST};
+use lib_data_set::data_sets::kubik::{KUBIK_TEST, KUBIK_TRAINING};
+use lib_data_set::value_objects::{CameraDistance, ParsingMethod};
 use lib_feature::FeatureType;
 use lib_gesture::entities::Gesture;
-use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
-use lib_data_set::data_sets::kubik::{KUBIK_TRAINING, KUBIK_TEST};
-use lib_data_set::data_sets::klisch::{KLISCH_TEST, KLISCH_DATA};
-use lib_data_set::data_sets::dymel::DYMEL_DATA;
 
 use crate::strum::IntoEnumIterator;
-use lib_data_set::value_objects::ParsingMethod;
-use rand::thread_rng;
-use rand::seq::SliceRandom;
 
 const ASCII_NEW_LINE: u8 = 10;
 

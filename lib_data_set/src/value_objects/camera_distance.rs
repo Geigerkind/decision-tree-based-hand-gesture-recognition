@@ -1,4 +1,5 @@
 #[derive(Debug, Hash, Copy, Clone, Eq, PartialEq)]
+#[repr(u8)]
 pub enum CameraDistance {
     CM3,
     CM5,

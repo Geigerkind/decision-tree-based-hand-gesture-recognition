@@ -3,9 +3,9 @@ import pandas as pd
 # Manually tested
 default_size = 2508
 
-data = pd.read_csv("./size_and_accuracy_data.csv")
+data = pd.read_csv("./size_and_accuracy_data.csv").query("feature_set == 2 and ensamble_technique == 1")
 
-max_size_in_bytes = 25000 + default_size
+max_size_in_bytes = 45000 + default_size
 
 min_size = 99999999
 max_accuracy = 0
