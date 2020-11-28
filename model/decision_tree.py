@@ -10,13 +10,14 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, Bagging
 from sklearn.model_selection import train_test_split, cross_val_score
 from xgboost.sklearn import XGBClassifier
 
-_, max_depth, num_trees, with_io, ensamble_kind, only_ensamble, feature_set = sys.argv
+_, max_depth, num_trees, with_io, ensamble_kind, only_ensamble, feature_set, train_fraction = sys.argv
 max_depth = int(max_depth)
 num_trees = int(num_trees)
 with_io = 1 == int(with_io)
 ensamble_kind = int(ensamble_kind)
 only_ensamble = 1 == int(only_ensamble)
 feature_set = int(feature_set)
+train_fraction = float(train_fraction)
 
 
 # This is a helper function to quickly print some results of the tree's performance.
@@ -91,82 +92,10 @@ else:
 #X = new_x
 
 y = result
-X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=0.3, random_state=0)
+X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=train_fraction, random_state=0)
 
 # For cherry picking we will optimize on XX_opt and later validate on XX_test
-XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_opt, test_size=0.5, random_state=0)
-
-
-# This function is used to fit the decision tree classifier to the training set
-def evaluate_tree(id):
-    clf = tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id)
-    clf = clf.fit(X_train, y_train)
-
-    predicted = clf.predict(XX_opt)
-
-    correct = 0
-    for i in range(len(yy_opt)):
-        if predicted[i] == yy_opt[i]:
-            correct += 1
-
-    accuracy = correct / len(yy_opt)
-
-    return clf, accuracy
-
-
-# Create the decision tree and train it
-def decision_tree():
-    # Fit a bunch of trees in parallel
-    amount_tests = 1
-    print("Test " + str(amount_tests) + " different trees, and cherry pick best...")
-    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
-    trees = pool.map(evaluate_tree, range(amount_tests))
-    trees.sort(key=lambda x: x[1], reverse=True)
-
-    # Take the best
-    clf = trees[0][0]
-
-    # plt.figure(figsize=(40, 40))
-    # tree.plot_tree(clf, impurity=False, filled=True)
-    # plt.savefig('tree.png', format='png')
-
-    print("Evaluating DecisionTreeClassifier:")
-    print("Max depth: " + str(clf.tree_.max_depth))
-    predicted = clf.predict(XX_test)
-    evaluate_predicted(predicted, yy_test)
-
-    file = open("decision_tree.c", "w")
-    create_tree_native_main(file, clf, with_io, feature_set == 1)
-    file.close()
-
-    file = open("ino_tree/decision_tree.cpp", "w")
-    create_tree_ino_evaluate(file, clf, feature_set == 1)
-    file.close()
-
-    file = open("ino_tree2/decision_tree.cpp", "w")
-    create_tree_ino_evaluate(file, clf, feature_set == 1)
-    file.close()
-
-    file = open("ino_tree3/decision_tree.cpp", "w")
-    create_tree_ino_evaluate(file, clf, feature_set == 1)
-    file.close()
-
-
-def evaluate_forest(id):
-    # ccp_alpha=0.001, min_samples_leaf=2 ?
-    clf = RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id, n_jobs=1)
-    clf = clf.fit(X_train, y_train)
-
-    predicted = clf.predict(XX_opt)
-
-    correct = 0
-    for i in range(len(yy_opt)):
-        if predicted[i] == yy_opt[i]:
-            correct += 1
-
-    accuracy = correct / len(yy_opt)
-
-    return clf, accuracy
+# XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_opt, test_size=0.5, random_state=0)
 
 
 def create_ensamble_tree(clf):
@@ -187,21 +116,69 @@ def create_ensamble_tree(clf):
     file.close()
 
 
-def random_forest():
+def evaluate_classifier(clf):
+    clf = clf.fit(X_train, y_train)
+    predicted = clf.predict(X_test_and_opt)
+
+    correct = 0
+    for i in range(len(y_test_and_opt)):
+        if predicted[i] == y_test_and_opt[i]:
+            correct += 1
+
+    accuracy = correct / len(y_test_and_opt)
+
+    return clf, accuracy
+
+
+def cherry_picking(template):
     amount_tests = 256
-    print("Test " + str(amount_tests) + " different forest, and cherry pick best...")
+    print("Test " + str(amount_tests) + " different classifier, and cherry pick best...")
     pool = multiprocessing.Pool(processes=multiprocessing.cpu_count() - 1)
-    trees = pool.map(evaluate_forest, range(amount_tests))
-    trees.sort(key=lambda x: x[1], reverse=True)
+    args = []
+    for i in range(amount_tests):
+        args.append(template(i))
+    classifier = pool.map(evaluate_classifier, args)
+    classifier.sort(key=lambda x: x[1], reverse=True)
+    return classifier[0][0]
 
-    clf = trees[0][0]
 
-    predicted = clf.predict(XX_test)
+# Create the decision tree and train it
+def decision_tree():
+    clf = cherry_picking(lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id))
 
+    # plt.figure(figsize=(40, 40))
+    # tree.plot_tree(clf, impurity=False, filled=True)
+    # plt.savefig('tree.png', format='png')
+
+    print("Evaluating DecisionTreeClassifier:")
+    print("Max depth: " + str(clf.tree_.max_depth))
+    predicted = clf.predict(x_test_and_opt)
+    evaluate_predicted(predicted, y_test_and_opt)
+
+    file = open("decision_tree.c", "w")
+    create_tree_native_main(file, clf, with_io, feature_set == 1)
+    file.close()
+
+    file = open("ino_tree/decision_tree.cpp", "w")
+    create_tree_ino_evaluate(file, clf, feature_set == 1)
+    file.close()
+
+    file = open("ino_tree2/decision_tree.cpp", "w")
+    create_tree_ino_evaluate(file, clf, feature_set == 1)
+    file.close()
+
+    file = open("ino_tree3/decision_tree.cpp", "w")
+    create_tree_ino_evaluate(file, clf, feature_set == 1)
+    file.close()
+
+
+def random_forest():
+    clf = cherry_picking(lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id, n_jobs=1))
+    predicted = clf.predict(x_test_and_opt)
     print("Evaluating RandomForestClassifier:")
-    evaluate_predicted(predicted, yy_test)
-
+    evaluate_predicted(predicted, y_test_and_opt)
     create_ensamble_tree(clf)
+
 
 # This is like GBM, but just more performant and applies regularization to avoid overfitting
 def xgboost_decision_tree():
@@ -218,38 +195,38 @@ def xgboost_decision_tree():
         nthread=16,
         seed=42)
     xgb1.fit(X_train, y_train, eval_metric="auc")
-    scores = cross_val_score(xgb1, XX_test, yy_test, cv=5, n_jobs=1)
+    scores = cross_val_score(xgb1, x_test_and_opt, y_test_and_opt, cv=5, n_jobs=1)
     print("XGBClassifier")
     print("Mean cross-validation score: %.2f" % scores.mean())
 
 
 def adaboost_decision_tree():
-    clf = AdaBoostClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy"),
-                               n_estimators=num_trees, random_state=1, learning_rate=0.01)
+    clf = cherry_picking(lambda id: AdaBoostClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy"),
+                                                       n_estimators=num_trees, random_state=id, learning_rate=0.01))
     clf.fit(X_train, y_train)
     print("AdaBoostClassifier: ")
-    print(clf.score(XX_test, yy_test))
+    print(clf.score(x_test_and_opt, y_test_and_opt))
 
     create_ensamble_tree(clf)
 
 
 # Difference to RandomForestClassifier is, that this does not select a set of features
 def bagging_decision_tree():
-    clf = BaggingClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy"),
-                              n_estimators=num_trees, random_state=1)
+    clf = cherry_picking(lambda id: BaggingClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy"),
+                                                      n_estimators=num_trees, random_state=id))
     clf.fit(X_train, y_train)
     print("BaggingClassifier: ")
-    print(clf.score(XX_test, yy_test))
+    print(clf.score(x_test_and_opt, y_test_and_opt))
 
     create_ensamble_tree(clf)
 
 
 # Uses DecisionTreeRegressor under the hood o.o
 def gradient_boosting_decision_tree():
-    clf = GradientBoostingClassifier(n_estimators=num_trees, random_state=1, learning_rate=0.01, max_depth=max_depth)
+    clf = cherry_picking(lambda id: GradientBoostingClassifier(n_estimators=num_trees, random_state=id, learning_rate=0.01, max_depth=max_depth))
     clf.fit(X_train, y_train)
     print("GradientBoostingClassifier: ")
-    print(clf.score(XX_test, yy_test))
+    print(clf.score(x_test_and_opt, y_test_and_opt))
 
 
 # Uses extra trees, they seem to differ from normal decision trees
@@ -257,11 +234,11 @@ def gradient_boosting_decision_tree():
 # Scales well with a big max-depth
 # It can also use the normal decision tree as estimator. Not sure where the difference to the random forest is then
 def extra_trees():
-    clf = ExtraTreesClassifier(n_estimators=num_trees, random_state=1, n_jobs=16, max_depth=max_depth, max_features=10)
+    clf = cherry_picking(lambda id: ExtraTreesClassifier(n_estimators=num_trees, random_state=id, n_jobs=16, max_depth=max_depth, max_features=10))
     # clf.base_estimator = tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy")
     clf.fit(X_train, y_train)
     print("ExtraTreesClassifier: ")
-    print(clf.score(XX_test, yy_test))
+    print(clf.score(x_test_and_opt, y_test_and_opt))
 
     create_ensamble_tree(clf)
 
@@ -272,7 +249,7 @@ def hist_gradient_boosting_decision_tree():
     clf = HistGradientBoostingClassifier(random_state=1, learning_rate=0.01, max_depth=max_depth, max_iter=num_trees)
     clf.fit(X_train, y_train)
     print("HistGradientBoostingClassifier: ")
-    print(clf.score(XX_test, yy_test))
+    print(clf.score(x_test_and_opt, y_test_and_opt))
 
 
 if not only_ensamble:
