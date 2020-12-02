@@ -152,7 +152,7 @@ def decision_tree():
 
     print("Evaluating DecisionTreeClassifier:")
     print("Max depth: " + str(clf.tree_.max_depth))
-    predicted = clf.predict(x_test_and_opt)
+    predicted = clf.predict(X_test_and_opt)
     evaluate_predicted(predicted, y_test_and_opt)
 
     file = open("decision_tree.c", "w")
@@ -174,7 +174,7 @@ def decision_tree():
 
 def random_forest():
     clf = cherry_picking(lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id, n_jobs=1))
-    predicted = clf.predict(x_test_and_opt)
+    predicted = clf.predict(X_test_and_opt)
     print("Evaluating RandomForestClassifier:")
     evaluate_predicted(predicted, y_test_and_opt)
     create_ensamble_tree(clf)
@@ -195,7 +195,7 @@ def xgboost_decision_tree():
         nthread=16,
         seed=42)
     xgb1.fit(X_train, y_train, eval_metric="auc")
-    scores = cross_val_score(xgb1, x_test_and_opt, y_test_and_opt, cv=5, n_jobs=1)
+    scores = cross_val_score(xgb1, X_test_and_opt, y_test_and_opt, cv=5, n_jobs=1)
     print("XGBClassifier")
     print("Mean cross-validation score: %.2f" % scores.mean())
 
@@ -205,7 +205,7 @@ def adaboost_decision_tree():
                                                        n_estimators=num_trees, random_state=id, learning_rate=0.01))
     clf.fit(X_train, y_train)
     print("AdaBoostClassifier: ")
-    print(clf.score(x_test_and_opt, y_test_and_opt))
+    print(clf.score(X_test_and_opt, y_test_and_opt))
 
     create_ensamble_tree(clf)
 
@@ -216,7 +216,7 @@ def bagging_decision_tree():
                                                       n_estimators=num_trees, random_state=id))
     clf.fit(X_train, y_train)
     print("BaggingClassifier: ")
-    print(clf.score(x_test_and_opt, y_test_and_opt))
+    print(clf.score(X_test_and_opt, y_test_and_opt))
 
     create_ensamble_tree(clf)
 
@@ -226,7 +226,7 @@ def gradient_boosting_decision_tree():
     clf = cherry_picking(lambda id: GradientBoostingClassifier(n_estimators=num_trees, random_state=id, learning_rate=0.01, max_depth=max_depth))
     clf.fit(X_train, y_train)
     print("GradientBoostingClassifier: ")
-    print(clf.score(x_test_and_opt, y_test_and_opt))
+    print(clf.score(X_test_and_opt, y_test_and_opt))
 
 
 # Uses extra trees, they seem to differ from normal decision trees
@@ -238,7 +238,7 @@ def extra_trees():
     # clf.base_estimator = tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy")
     clf.fit(X_train, y_train)
     print("ExtraTreesClassifier: ")
-    print(clf.score(x_test_and_opt, y_test_and_opt))
+    print(clf.score(X_test_and_opt, y_test_and_opt))
 
     create_ensamble_tree(clf)
 
@@ -249,7 +249,7 @@ def hist_gradient_boosting_decision_tree():
     clf = HistGradientBoostingClassifier(random_state=1, learning_rate=0.01, max_depth=max_depth, max_iter=num_trees)
     clf.fit(X_train, y_train)
     print("HistGradientBoostingClassifier: ")
-    print(clf.score(x_test_and_opt, y_test_and_opt))
+    print(clf.score(X_test_and_opt, y_test_and_opt))
 
 
 if not only_ensamble:

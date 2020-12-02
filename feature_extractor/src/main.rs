@@ -36,7 +36,7 @@ fn main() {
     let data_sets = vec![
         EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
-        //DYMEL_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
+        DYMEL_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
         KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),

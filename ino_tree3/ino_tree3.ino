@@ -140,7 +140,6 @@ void loop() {
 
   readFrame(current_frame_buffer);  // Read a frame values from the sensors.
   // Calculate center of gravity in x and y direction
-  /*
   short cocd_total = 0;
   for (char i = 0; i < 9; ++i) {
       cocd_total += current_frame_buffer[i];
@@ -151,9 +150,9 @@ void loop() {
   } else {
     buffer_cocd_x[noFramesInBuffer] = 0;
     buffer_cocd_y[noFramesInBuffer] = 0;
-  }*/
-  buffer_cocd_x[noFramesInBuffer] = current_frame_buffer[0] + current_frame_buffer[3] + current_frame_buffer[6] - current_frame_buffer[2] - current_frame_buffer[5] - current_frame_buffer[8];
-  buffer_cocd_y[noFramesInBuffer] = current_frame_buffer[0] + current_frame_buffer[1] + current_frame_buffer[2] - current_frame_buffer[6] - current_frame_buffer[7] - current_frame_buffer[8];
+  }
+  //buffer_cocd_x[noFramesInBuffer] = current_frame_buffer[0] + current_frame_buffer[3] + current_frame_buffer[6] - current_frame_buffer[2] - current_frame_buffer[5] - current_frame_buffer[8];
+  //buffer_cocd_y[noFramesInBuffer] = current_frame_buffer[0] + current_frame_buffer[1] + current_frame_buffer[2] - current_frame_buffer[6] - current_frame_buffer[7] - current_frame_buffer[8];
 
   // writeFrameArray(frameBuffer[noFramesInBuffer]);  // Display frame on serial interface
   averageBrightnessCurrentFrame = brightnessOfFrame(current_frame_buffer);

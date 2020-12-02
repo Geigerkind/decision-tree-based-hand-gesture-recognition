@@ -11,15 +11,15 @@ echo "max_depth,forest_size,optimization_level,ensamble_technique,feature_set,se
 # Optimization O0, Os, O2, O3
 
 optimizations=(O0 Os O2 O3)
-set_fractions=(0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5)
+set_fractions=(0.1 0.2 0.3 0.4 0.5)
 
 for feature_set in {1..2}; do
   for set_fraction in ${set_fractions[*]}; do
     for ensamble_technique in {1..4}; do
-      for max_depth in {1..25}; do
-        for forest_size in {1..22}; do
+      for max_depth in {1..22}; do
+        for forest_size in {1..20}; do
           echo "Working on: ${max_depth},${forest_size},${ensamble_technique},${feature_set},${set_fraction},..."
-          python model/decision_tree.py $max_depth $forest_size 1 ${ensamble_technique} 1 ${feature_set} &> /dev/null
+          python model/decision_tree.py $max_depth $forest_size 1 ${ensamble_technique} 1 ${feature_set} ${set_fraction} &> /dev/null
           gcc -O2 ./decision_forest.c -o decision_forest
           accuracy=$(DATA_PATH=".." cargo test test_klisch_test_by_annotation_decision_forest --bin simulation --manifest-path "simulation/Cargo.toml" --features "feature_set${feature_set}" -- --nocapture | grep "Total accuracy:" | grep -o -E "[0-9]\.[0-9]+")
           for opt in ${optimizations[*]}; do

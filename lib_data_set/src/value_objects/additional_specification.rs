@@ -3,5 +3,7 @@ pub enum AdditionalSpecification {
     Fast,
     Slow,
     White,
-    NoPadding
+    NoPadding,
+    NullGestureCorner,
+    NullGestureSameInAndOut
 }

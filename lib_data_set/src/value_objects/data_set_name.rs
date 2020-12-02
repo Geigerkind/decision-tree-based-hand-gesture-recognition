@@ -7,5 +7,5 @@ pub enum DataSetName {
     KubikTest,
     KubikTraining,
     VenzkeTraining,
-    DymelData
+    DymelTest
 }

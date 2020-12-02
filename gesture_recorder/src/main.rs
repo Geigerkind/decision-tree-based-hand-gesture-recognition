@@ -11,7 +11,7 @@ use std::str::FromStr;
 use lib_gesture::value_objects::GestureType;
 
 const ASCII_NEW_LINE: u8 = 10;
-const DATA_DIRECTORY: &str = "data/dataDymel";
+const DATA_DIRECTORY: &str = "data/testDymel";
 
 fn main() {
     println!("Data directory path: {}", DATA_DIRECTORY);
@@ -34,7 +34,7 @@ fn main() {
     let mut gesture_type = GestureType::None;
     if auto_mode {
         loop {
-            println!("Enter start gesture type (1|2|3|4):");
+            println!("Enter start gesture type (1|2|3|4|9):");
             let mut input = String::new();
             let _ = reader.read_line(&mut input);
             gesture_type = match input.trim_end_matches("\n") {
@@ -42,11 +42,15 @@ fn main() {
                 "2" => GestureType::RightToLeft,
                 "3" => GestureType::TopToBottom,
                 "4" => GestureType::BottomToTop,
+                "9" => GestureType::NotGesture,
                 _ => continue
             };
             break;
         }
         println!("Start gesture is {:?}", gesture_type);
+        if gesture_type == GestureType::NotGesture {
+            println!("NotGesture will not toggle!");
+        }
     }
 
     println!("Establishing connection to serial output...");
@@ -62,6 +66,7 @@ fn main() {
     let mut gesture_reader = GestureReader::new(0.05, 0.01, 0.2, true);
     let mut line = Vec::with_capacity(28);
     let mut serial_buf: Vec<u8> = vec![0; 1];
+    let mut counter = 0;
     loop {
         if port.read(&mut serial_buf).is_ok() {
             line.push(serial_buf[0]);
@@ -85,7 +90,12 @@ fn main() {
                                     break;
                                 }
                             }
-                            println!("Noting gesture as {:?}", gesture_type);
+                            counter += 1;
+                            println!("Noting gesture #{} as {:?}", counter, gesture_type);
+                            if gesture_type == GestureType::NotGesture {
+                                let _ = file.write_all("1023,1023,1023,1023,1023,1023,1023,1023,1023,0\n".as_bytes());
+                            }
+
                             for frame in gesture.frames {
                                 let _ = file.write_all(format!("{},{}\n", frame.pixel.iter().map(i16::to_string).collect::<Vec<String>>().join(","), gesture_type as u8).as_bytes());
                             }
@@ -96,6 +106,7 @@ fn main() {
                                     GestureType::RightToLeft => GestureType::LeftToRight,
                                     GestureType::TopToBottom => GestureType::BottomToTop,
                                     GestureType::BottomToTop => GestureType::TopToBottom,
+                                    GestureType::NotGesture => GestureType::NotGesture,
                                     _ => GestureType::None
                                 };
                                 println!("Next gesture must be {:?}", gesture_type);
