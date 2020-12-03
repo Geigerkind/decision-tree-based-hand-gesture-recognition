@@ -5,8 +5,8 @@ import pandas as pd
 from create_forest import *
 from create_tree import *
 from sklearn import tree
-from sklearn.experimental import enable_hist_gradient_boosting  # noqa
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, ExtraTreesClassifier, HistGradientBoostingClassifier
+#from sklearn.experimental import enable_hist_gradient_boosting  # noqa
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
 #from xgboost.sklearn import XGBClassifier
 
@@ -275,7 +275,7 @@ def extra_trees():
     create_ensamble_tree(clf)
     return max(x.tree_.max_depth for x in clf.estimators_)
 
-
+"""
 # Not so sure what this is, but it works well and should be based on decision trees
 # Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier
 def hist_gradient_boosting_decision_tree():
@@ -283,7 +283,7 @@ def hist_gradient_boosting_decision_tree():
     clf.fit(X_train, y_train)
     print("HistGradientBoostingClassifier: ")
     print(clf.score(X_test_and_opt, y_test_and_opt))
-
+"""
 
 if not only_ensemble:
     decision_tree()
@@ -299,4 +299,4 @@ elif ensemble_kind == 4:
 else:
     gradient_boosting_decision_tree()
     #xgboost_decision_tree()
-    hist_gradient_boosting_decision_tree()
+    #hist_gradient_boosting_decision_tree()
