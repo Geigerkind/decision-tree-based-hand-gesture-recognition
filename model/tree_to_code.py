@@ -4,7 +4,7 @@
 from sklearn.tree import _tree
 
 
-def tree_to_code(file, tree, classes, function_name, is_float, feature_names=range(0, 40)):
+def tree_to_code(file, tree, classes, function_name, feature_set, feature_names=range(0, 40)):
     nspaces = 4
     tree_ = tree.tree_
     feature_name = [
@@ -12,8 +12,10 @@ def tree_to_code(file, tree, classes, function_name, is_float, feature_names=ran
         for i in tree_.feature
     ]
 
-    if is_float:
+    if feature_set == 1:
         file.write("unsigned char " + function_name + "(float* features)")
+    elif feature_set == 6:
+        file.write("unsigned char " + function_name + "(float* float_features, long* long_features)")
     else:
         file.write("unsigned char " + function_name + "(long* features)")
     file.write("{")
@@ -25,8 +27,13 @@ def tree_to_code(file, tree, classes, function_name, is_float, feature_names=ran
             name = feature_name[node]
             threshold = tree_.threshold[node]
 
-            if is_float:
+            if feature_set == 1:
                 file.write("\n{}if (features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
+            elif feature_set == 6:
+                if int(name) < 10:
+                    file.write("\n{}if (float_features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
+                else:
+                    file.write("\n{}if (long_features[{}] <= {:0.0f})".format(indent, name, threshold) + " {")
             else:
                 file.write("\n{}if (features[{}] <= {:0.0f})".format(indent, name, threshold) + " {")
 

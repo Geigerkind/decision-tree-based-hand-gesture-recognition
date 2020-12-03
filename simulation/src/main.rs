@@ -32,22 +32,10 @@ const DO_FEATURE_REORDERING: bool = false;
 #[cfg(feature="feature_set1")]
 fn calculate_features(gesture: &Gesture) -> Vec<f32> {
     let mut args: Vec<f32> = Vec::new();
-    /*
-    let darkness_dist_geom = DarknessDistribution6XYGeom::calculate(gesture);
-    let brightness_dist_geom = BrightnessDistribution6XYGeom::calculate(gesture);
-    let motion_history = MotionHistory::calculate(gesture);
-
-    args.append(&mut darkness_dist_geom.deref().iter().map(|val| *val as f32).collect());
-    args.append(&mut brightness_dist_geom.deref().iter().map(|val| *val as f32).collect());
-    args.append(&mut motion_history.deref().iter().map(|val| *val as f32).collect());
-     */
-
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
-    //let sum_of_slopes = SumOfSlopes::calculate(&gesture);
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
-    //args.append(&mut sum_of_slopes.deref().to_vec().into_iter().map(|val| val as f32).collect());
 
     // Feature reordering
     if DO_FEATURE_REORDERING {
@@ -103,6 +91,22 @@ fn calculate_features(gesture: &Gesture) -> Vec<i32> {
     args
 }
 
+#[cfg(feature="feature_set6")]
+fn calculate_features(gesture: &Gesture) -> (Vec<f32>, Vec<i32>) {
+    let mut f_args: Vec<f32> = Vec::new();
+    let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
+    f_args.append(&mut center_of_gravity_x.deref().to_vec());
+    f_args.append(&mut center_of_gravity_y.deref().to_vec());
+
+    let mut l_args: Vec<i32> = Vec::new();
+    let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);
+    l_args.append(&mut center_of_gravity_x.deref().to_vec());
+    l_args.append(&mut center_of_gravity_y.deref().to_vec());
+    (f_args, l_args)
+}
+
 fn main() {
     // The Arduino serial sends to the /dev/ttyACM0 port.
     let mut port = serialport::posix::TTYPort::open(&Path::new("/dev/ttyACM0"), &SerialPortSettings {
@@ -139,9 +143,20 @@ fn main() {
                     if let Ok(frame) = Frame::from_str(line.trim_end_matches("\r\n")) {
                         if let Some(gesture) = gesture_reader.feed_frame(frame) {
                             println!("#Frames: {}", gesture.frames.len());
-                            let args = calculate_features(&gesture);
+
+                            #[cfg(feature="feature_set6")]
+                            let program_args: Vec<String> = {
+                                let (f_args, l_args) = calculate_features(&gesture);
+                                let mut args = f_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
+                                args.append(&mut l_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>());
+                                args
+                            };
+
+                            #[cfg(not(feature="feature_set6"))]
+                            let program_args: Vec<String> = calculate_features(&gesture).into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
+
                             let decision_tree = Command::new("./decision_forest")
-                                .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
+                                .args(&program_args)
                                 .output()
                                 .unwrap();
                             let gesture_type: GestureType = FromPrimitive::from_i32(decision_tree.status.code().unwrap()).unwrap();
@@ -181,9 +196,18 @@ mod test {
 
             let path = std::env::var("PROGRAM_PATH").unwrap();
             for gesture in data_set_entry.gestures() {
-                let args = calculate_features(&gesture);
+                #[cfg(feature="feature_set6")]
+                    let program_args: Vec<String> = {
+                    let (f_args, l_args) = calculate_features(&gesture);
+                    let mut args = f_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
+                    args.append(&mut l_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>());
+                    args
+                };
+
+                #[cfg(not(feature="feature_set6"))]
+                let program_args: Vec<String> = calculate_features(&gesture).into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
                 let decision_tree = Command::new(&format!("{}/{}", path, program))
-                    .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
+                    .args(&program_args)
                     .output()
                     .unwrap();
                 let recognized_gesture = decision_tree.status.code().unwrap() as u8;

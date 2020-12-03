@@ -17,7 +17,7 @@ min_leaf_sample=$2
 num_cores_per_node=$3
 env_num=$4
 
-for feature_set in {1..5}; do
+for feature_set in {1..6}; do
   for set_fraction in ${set_fractions[*]}; do
     for ensemble_technique in {1..4}; do
       for max_depth in {1..22}; do

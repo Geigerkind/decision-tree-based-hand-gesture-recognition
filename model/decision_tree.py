@@ -98,12 +98,21 @@ elif feature_set == 4:
     darkness_dist_6xy_geom = pd.read_csv(storage_path + "/DarknessDistribution6XYGeom", dtype=int)
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom], axis=1).values
     max_features = 12
-else:
+elif feature_set == 5:
     motion_history = pd.read_csv(storage_path + "/MotionHistory", dtype=int)
     brightness_dist_6xy_geom = pd.read_csv(storage_path + "/BrightnessDistribution6XYGeom", dtype=int)
     darkness_dist_6xy_geom = pd.read_csv(storage_path + "/DarknessDistribution6XYGeom", dtype=int)
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history], axis=1).values
     max_features = 21
+else:
+    center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX",
+                                                         dtype=float)
+    center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY",
+                                                         dtype=float)
+    center_of_gravity_distribution_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionX", dtype=int)
+    center_of_gravity_distribution_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionY", dtype=int)
+    X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y, center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
+    max_features = 20
 
 # Interestingly seems the order to effect the accuracy
 # new_x = []

@@ -3,12 +3,12 @@ from tree_to_code import *
 
 def create_forest(file, trees, classes, num_trees, feature_set):
     for i in range(num_trees):
-        tree_to_code(file, trees[i], classes, "tree" + str(i), feature_set == 1)
+        tree_to_code(file, trees[i], classes, "tree" + str(i), feature_set)
         file.write("\n")
 
 
 def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_set):
-    create_forest(file, trees, classes, num_trees, feature_set == 1)
+    create_forest(file, trees, classes, num_trees, feature_set)
     if with_io:
         file.write("#include <stdio.h>\n")
     file.write("int main(int argc, char** argv) {\n")
@@ -22,6 +22,9 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
         file.write("long args[12];\n")
     elif feature_set == 5:
         file.write("long args[21];\n")
+    elif feature_set == 6:
+        file.write("float f_args[10];\n")
+        file.write("long l_args[10];\n")
     file.write("unsigned int results[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n")
     if with_io:
         if feature_set == 1:
@@ -34,8 +37,14 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
             file.write("for (char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%ld\", &args[i]);\n")
         elif feature_set == 5:
             file.write("for (char i = 0; i < 21; ++i) sscanf(argv[i+1], \"%ld\", &args[i]);\n")
+        elif feature_set == 6:
+            file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1], \"%f\", &f_args[i]);\n")
+            file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1 + 10], \"%ld\", &l_args[i]);\n")
     for i in range(num_trees):
-        file.write("++results[tree" + str(i) + "(args)];\n")
+        if feature_set == 6:
+            file.write("++results[tree" + str(i) + "(f_args, l_args)];\n")
+        else:
+            file.write("++results[tree" + str(i) + "(args)];\n")
     file.write("unsigned char max_index = 0;\n")
     file.write("unsigned int max_value = 0;\n")
     file.write("for (unsigned char i = 0; i < 10; ++i) {\n")
@@ -49,14 +58,19 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
 
 
 def create_forest_ino_evaluate(file, trees, classes, num_trees, feature_set):
-    create_forest(file, trees, classes, num_trees, feature_set == 1)
+    create_forest(file, trees, classes, num_trees, feature_set)
     if feature_set == 1:
         file.write("unsigned char evaluate_forest(float* args) {\n")
+    elif feature_set == 6:
+        file.write("unsigned char evaluate_forest(float* f_args, long* l_args) {\n")
     else:
         file.write("unsigned char evaluate_forest(long* args) {\n")
     file.write("unsigned int results[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n")
     for i in range(num_trees):
-        file.write("++results[tree" + str(i) + "(args)];\n")
+        if feature_set == 6:
+            file.write("++results[tree" + str(i) + "(f_args, l_args)];\n")
+        else:
+            file.write("++results[tree" + str(i) + "(args)];\n")
     file.write("unsigned char max_index = 1;\n")
     file.write("unsigned int max_value = results[1];\n")
     file.write("if (max_value < results[2]) {\n")
