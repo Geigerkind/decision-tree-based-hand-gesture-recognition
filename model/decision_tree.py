@@ -5,10 +5,12 @@ import pandas as pd
 from create_forest import *
 from create_tree import *
 from sklearn import tree
-#from sklearn.experimental import enable_hist_gradient_boosting  # noqa
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
-from sklearn.model_selection import train_test_split, cross_val_score
-#from xgboost.sklearn import XGBClassifier
+# from sklearn.experimental import enable_hist_gradient_boosting  # noqa
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, \
+    ExtraTreesClassifier
+from sklearn.model_selection import train_test_split
+
+# from xgboost.sklearn import XGBClassifier
 
 _, max_depth, num_trees, with_io, ensemble_kind, only_ensemble, feature_set, train_fraction, ccp_alpha, min_samples_leaf, silent_mode, prefix, num_cores_per_node = sys.argv
 max_depth = int(max_depth)
@@ -48,7 +50,7 @@ def evaluate_predicted(predicted, y_test):
 
 # Import all the data
 # Generated from the extractor
-storage_path = "./"+prefix+"model_data"
+storage_path = "./" + prefix + "model_data"
 result = pd.read_csv(storage_path + "/result", dtype=int).values.flatten()
 # lsos_x = pd.read_csv(storage_path + "/LocalSumOfSlopesX", dtype=int)
 # lsos_y = pd.read_csv(storage_path + "/LocalSumOfSlopesY", dtype=int)
@@ -76,8 +78,10 @@ result = pd.read_csv(storage_path + "/result", dtype=int).values.flatten()
 # Specifying the features
 max_features = 10
 if feature_set == 1:
-    center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX", dtype=float)
-    center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY", dtype=float)
+    center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX",
+                                                         dtype=float)
+    center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY",
+                                                         dtype=float)
     X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
     max_features = 10
 elif feature_set == 2:
@@ -101,15 +105,15 @@ else:
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history], axis=1).values
     max_features = 21
 
-
 # Interestingly seems the order to effect the accuracy
-#new_x = []
-#for item in X:
+# new_x = []
+# for item in X:
 #    new_x.append([item[0], item[5], item[1], item[6], item[2], item[7], item[3], item[8], item[4], item[9]])
-#X = new_x
+# X = new_x
 
 y = result
 X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=train_fraction, random_state=0)
+
 
 # For cherry picking we will optimize on XX_opt and later validate on XX_test
 # XX_opt, XX_test, yy_opt, yy_test = train_test_split(X_test_and_opt, y_test_and_opt, test_size=0.5, random_state=0)
@@ -163,7 +167,8 @@ def cherry_picking(template):
 
 # Create the decision tree and train it
 def decision_tree():
-    clf = cherry_picking(lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id))
+    clf = cherry_picking(
+        lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id))
 
     # plt.figure(figsize=(40, 40))
     # tree.plot_tree(clf, impurity=False, filled=True)
@@ -194,8 +199,10 @@ def decision_tree():
 
 
 def random_forest():
-    clf = cherry_picking(lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees, random_state=id, n_jobs=1,
-                                                           ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf))
+    clf = cherry_picking(
+        lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees,
+                                          random_state=id, n_jobs=1,
+                                          ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf))
     predicted = clf.predict(X_test_and_opt)
     if not silent_mode:
         print("Evaluating RandomForestClassifier:")
@@ -225,10 +232,12 @@ def xgboost_decision_tree():
     print("Mean cross-validation score: %.2f" % scores.mean())
 """
 
+
 def adaboost_decision_tree():
-    clf = cherry_picking(lambda id: AdaBoostClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy",
-                                                                                                  ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf),
-                                                       n_estimators=num_trees, random_state=id, learning_rate=0.01))
+    clf = cherry_picking(lambda id: AdaBoostClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy",
+                                                   ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf),
+        n_estimators=num_trees, random_state=id, learning_rate=0.01))
     clf.fit(X_train, y_train)
     if not silent_mode:
         print("AdaBoostClassifier: ")
@@ -240,8 +249,10 @@ def adaboost_decision_tree():
 
 # Difference to RandomForestClassifier is, that this does not select a set of features
 def bagging_decision_tree():
-    clf = cherry_picking(lambda id: BaggingClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy", ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf),
-                                                      n_estimators=num_trees, random_state=id))
+    clf = cherry_picking(lambda id: BaggingClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy", ccp_alpha=ccp_alpha,
+                                                   min_samples_leaf=min_samples_leaf),
+        n_estimators=num_trees, random_state=id))
     clf.fit(X_train, y_train)
     if not silent_mode:
         print("BaggingClassifier: ")
@@ -253,7 +264,9 @@ def bagging_decision_tree():
 
 # Uses DecisionTreeRegressor under the hood o.o
 def gradient_boosting_decision_tree():
-    clf = cherry_picking(lambda id: GradientBoostingClassifier(n_estimators=num_trees, random_state=id, learning_rate=0.01, max_depth=max_depth))
+    clf = cherry_picking(
+        lambda id: GradientBoostingClassifier(n_estimators=num_trees, random_state=id, learning_rate=0.01,
+                                              max_depth=max_depth))
     clf.fit(X_train, y_train)
     print("GradientBoostingClassifier: ")
     print(clf.score(X_test_and_opt, y_test_and_opt))
@@ -264,8 +277,10 @@ def gradient_boosting_decision_tree():
 # Scales well with a big max-depth
 # It can also use the normal decision tree as estimator. Not sure where the difference to the random forest is then
 def extra_trees():
-    clf = cherry_picking(lambda id: ExtraTreesClassifier(n_estimators=num_trees, random_state=id, n_jobs=1, max_depth=max_depth, max_features=max_features,
-                                                         ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf))
+    clf = cherry_picking(
+        lambda id: ExtraTreesClassifier(n_estimators=num_trees, random_state=id, n_jobs=1, max_depth=max_depth,
+                                        max_features=max_features,
+                                        ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf))
     # clf.base_estimator = tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy")
     clf.fit(X_train, y_train)
     if not silent_mode:
@@ -274,6 +289,7 @@ def extra_trees():
 
     create_ensamble_tree(clf)
     return max(x.tree_.max_depth for x in clf.estimators_)
+
 
 """
 # Not so sure what this is, but it works well and should be based on decision trees
@@ -298,5 +314,5 @@ elif ensemble_kind == 4:
     sys.exit(extra_trees())
 else:
     gradient_boosting_decision_tree()
-    #xgboost_decision_tree()
-    #hist_gradient_boosting_decision_tree()
+    # xgboost_decision_tree()
+    # hist_gradient_boosting_decision_tree()
