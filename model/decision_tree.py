@@ -8,7 +8,7 @@ from sklearn import tree
 from sklearn.experimental import enable_hist_gradient_boosting  # noqa
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, ExtraTreesClassifier, HistGradientBoostingClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
-from xgboost.sklearn import XGBClassifier
+#from xgboost.sklearn import XGBClassifier
 
 _, max_depth, num_trees, with_io, ensemble_kind, only_ensemble, feature_set, train_fraction, ccp_alpha, min_samples_leaf, silent_mode, prefix, num_cores_per_node = sys.argv
 max_depth = int(max_depth)
@@ -205,6 +205,7 @@ def random_forest():
 
 
 # This is like GBM, but just more performant and applies regularization to avoid overfitting
+"""
 def xgboost_decision_tree():
     xgb1 = XGBClassifier(
         learning_rate=0.01,
@@ -222,7 +223,7 @@ def xgboost_decision_tree():
     scores = cross_val_score(xgb1, X_test_and_opt, y_test_and_opt, cv=5, n_jobs=1)
     print("XGBClassifier")
     print("Mean cross-validation score: %.2f" % scores.mean())
-
+"""
 
 def adaboost_decision_tree():
     clf = cherry_picking(lambda id: AdaBoostClassifier(base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy",
@@ -297,5 +298,5 @@ elif ensemble_kind == 4:
     sys.exit(extra_trees())
 else:
     gradient_boosting_decision_tree()
-    xgboost_decision_tree()
+    #xgboost_decision_tree()
     hist_gradient_boosting_decision_tree()
