@@ -73,6 +73,36 @@ fn calculate_features(gesture: &Gesture) -> Vec<i32> {
     args
 }
 
+#[cfg(feature="feature_set3")]
+fn calculate_features(gesture: &Gesture) -> Vec<i32> {
+    let mut args: Vec<i32> = Vec::new();
+    let motion_history = MotionHistory::calculate(gesture);
+    args.append(&mut motion_history.deref().iter().map(|val| *val as i32).collect());
+    args
+}
+
+#[cfg(feature="feature_set4")]
+fn calculate_features(gesture: &Gesture) -> Vec<i32> {
+    let mut args: Vec<i32> = Vec::new();
+    let darkness_dist_geom = DarknessDistribution6XYGeom::calculate(gesture);
+    let brightness_dist_geom = BrightnessDistribution6XYGeom::calculate(gesture);
+    args.append(&mut darkness_dist_geom.deref().iter().map(|val| *val as i32).collect());
+    args.append(&mut brightness_dist_geom.deref().iter().map(|val| *val as i32).collect());
+    args
+}
+
+#[cfg(feature="feature_set5")]
+fn calculate_features(gesture: &Gesture) -> Vec<i32> {
+    let mut args: Vec<i32> = Vec::new();
+    let motion_history = MotionHistory::calculate(gesture);
+    let darkness_dist_geom = DarknessDistribution6XYGeom::calculate(gesture);
+    let brightness_dist_geom = BrightnessDistribution6XYGeom::calculate(gesture);
+    args.append(&mut darkness_dist_geom.deref().iter().map(|val| *val as i32).collect());
+    args.append(&mut brightness_dist_geom.deref().iter().map(|val| *val as i32).collect());
+    args.append(&mut motion_history.deref().iter().map(|val| *val as i32).collect());
+    args
+}
+
 fn main() {
     // The Arduino serial sends to the /dev/ttyACM0 port.
     let mut port = serialport::posix::TTYPort::open(&Path::new("/dev/ttyACM0"), &SerialPortSettings {
@@ -131,6 +161,7 @@ mod test {
     use std::ops::Deref;
     use std::process::Command;
 
+    use lib_data_set::data_sets::dymel::{DYMEL_GESTURE_TEST, DYMEL_NULL_TEST};
     use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
     use lib_data_set::data_sets::klisch::{KLISCH_DATA, KLISCH_TEST};
     use lib_data_set::data_sets::kubik::{KUBIK_TEST, KUBIK_TRAINING};
@@ -146,9 +177,11 @@ mod test {
         for data_set_entry in data_set.iter() {
             let evaluation_entry_key = EvaluationEntryKey::new(*data_set_entry.covering_object(), *data_set_entry.camera_distance(),
                                                                *data_set_entry.brightness_level(), *data_set_entry.additional_specification());
+
+            let path = std::env::var("PROGRAM_PATH").unwrap();
             for gesture in data_set_entry.gestures() {
                 let args = calculate_features(&gesture);
-                let decision_tree = Command::new(&format!("./../{}", program))
+                let decision_tree = Command::new(&format!("{}/{}", path, program))
                     .args(&args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>())
                     .output()
                     .unwrap();
@@ -318,5 +351,15 @@ mod test {
     #[test]
     fn test_eva_9_pixel_by_threshold_decision_forest() {
         evaluate_data_set(EVA_9PIXEL.get(&ParsingMethod::ByThreshold).unwrap().deref(), DataSetName::Eva9pixelData, "decision_forest");
+    }
+
+    #[test]
+    fn test_dymel_test_gesture_by_annotation_decision_forest() {
+        evaluate_data_set(&DYMEL_GESTURE_TEST, DataSetName::DymelData, "decision_forest");
+    }
+
+    #[test]
+    fn test_dymel_test_null_by_annotation_decision_forest() {
+        evaluate_data_set(&DYMEL_NULL_TEST, DataSetName::DymelData, "decision_forest");
     }
 }

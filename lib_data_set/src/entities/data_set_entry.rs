@@ -51,6 +51,14 @@ impl DataSetEntry {
         }
     }
 
+    pub fn take_percent_until(&mut self, percent: f32) {
+        self.gestures = self.gestures[..(((self.gestures.len() as f32) * percent) as usize)].to_vec();
+    }
+
+    pub fn take_percent_from(&mut self, percent: f32) {
+        self.gestures = self.gestures[(((self.gestures.len() as f32) * percent) as usize)..].to_vec();
+    }
+
     /// Checks if the file exists and if so parses it either ByAnnotation or ByThreshold.
     fn parse(&mut self) {
         if !Path::new(&self.file_path).exists() {

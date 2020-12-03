@@ -19,7 +19,7 @@ use std::io::Write;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
-use lib_data_set::data_sets::dymel::DYMEL_DATA;
+use lib_data_set::data_sets::dymel::{DYMEL_GESTURE_TRAINING, DYMEL_NULL_TRAINING};
 use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
 use lib_data_set::data_sets::klisch::{KLISCH_DATA, KLISCH_TEST};
 use lib_data_set::data_sets::kubik::{KUBIK_TEST, KUBIK_TRAINING};
@@ -28,15 +28,17 @@ use lib_feature::FeatureType;
 use lib_gesture::entities::Gesture;
 
 use crate::strum::IntoEnumIterator;
+use lib_data_set::entities::DataSetEntry;
 
 const ASCII_NEW_LINE: u8 = 10;
 
 fn main() {
     // All data sets that are going to be processed
-    let data_sets = vec![
+    let data_sets: Vec<&Vec<DataSetEntry>> = vec![
         EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
-        DYMEL_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
+        &DYMEL_NULL_TRAINING,
+        &DYMEL_GESTURE_TRAINING,
         KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
