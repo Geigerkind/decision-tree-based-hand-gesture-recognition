@@ -31,8 +31,8 @@ for feature_set in {1..5}; do
           accuracy_dymel_gesture=$(DATA_PATH=".." PROGRAM_PATH="./../test_env/env_${env_num}" cargo test test_dymel_test_gesture --bin simulation --target-dir "./" --manifest-path "../../simulation/Cargo.toml" --features "feature_set${feature_set}" -- --nocapture | grep "Total accuracy:" | grep -o -E "[0-9]\.[0-9]+")
           for opt in ${optimizations[*]}; do
             echo "${opt}"
-            ./../../../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -${opt} -std=gnu11 -mmcu=atmega328p -s -fwhole-program -fdata-sections -ffunction-sections -flto -fuse-linker-plugin -Wl,--gc-sections -Wl,--strip-all ./decision_forest.c -o decision_forest
-            size_in_bytes_forest=$(wc -c ./decision_forest | awk '{print $1}')
+            ./../../../arduino-1.8.13/hardware/tools/avr/bin/avr-gcc -${opt} -std=gnu11 -mmcu=atmega328p -s -fwhole-program -fdata-sections -ffunction-sections -flto -fuse-linker-plugin -Wl,--gc-sections -Wl,--strip-all ./decision_forest.c -o decision_forest_avr
+            size_in_bytes_forest=$(wc -c ./decision_forest_avr | awk '{print $1}')
             if [[ -z "${size_in_bytes_forest}" ]]; then
               size_in_bytes_forest=-1
             fi
