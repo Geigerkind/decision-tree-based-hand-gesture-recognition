@@ -149,7 +149,7 @@ def evaluate_classifier(clf):
 
 
 def cherry_picking(template):
-    amount_tests = 512
+    amount_tests = 256
     if not silent_mode:
         print("Test " + str(amount_tests) + " different classifier, and cherry pick best...")
     pool = multiprocessing.Pool(processes=num_cores_per_node)

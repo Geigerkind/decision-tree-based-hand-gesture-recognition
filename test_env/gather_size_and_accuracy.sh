@@ -20,8 +20,8 @@ env_num=$4
 for feature_set in {1..5}; do
   for set_fraction in ${set_fractions[*]}; do
     for ensemble_technique in {1..4}; do
-      for max_depth in {1..25}; do
-        for forest_size in {1..20}; do
+      for max_depth in {1..22}; do
+        for forest_size in {1..17}; do
           echo "Working on: ${max_depth},${forest_size},${ensemble_technique},${feature_set},${set_fraction},${ccp_alpha},${min_leaf_sample}..."
           python ../../model/decision_tree.py ${max_depth} ${forest_size} 1 ${ensemble_technique} 1 ${feature_set} ${set_fraction} ${ccp_alpha} ${min_leaf_sample} 1 "../../" ${num_cores_per_node}
           real_max_depth=$?
