@@ -161,7 +161,7 @@ mod test {
     use std::ops::Deref;
     use std::process::Command;
 
-    use lib_data_set::data_sets::dymel::{DYMEL_GESTURE_TEST, DYMEL_NULL_TEST};
+    use lib_data_set::data_sets::dymel::{DYMEL_GESTURE_TEST, DYMEL_NULL_TEST, DYMEL_LIGHT_TEST};
     use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
     use lib_data_set::data_sets::klisch::{KLISCH_DATA, KLISCH_TEST};
     use lib_data_set::data_sets::kubik::{KUBIK_TEST, KUBIK_TRAINING};
@@ -176,7 +176,8 @@ mod test {
         let mut evaluation = Evaluation::new(data_set_name);
         for data_set_entry in data_set.iter() {
             let evaluation_entry_key = EvaluationEntryKey::new(*data_set_entry.covering_object(), *data_set_entry.camera_distance(),
-                                                               *data_set_entry.brightness_level(), *data_set_entry.additional_specification());
+                                                               *data_set_entry.brightness_level(), *data_set_entry.additional_specification(),
+                                                               *data_set_entry.offset(), *data_set_entry.scaling());
 
             let path = std::env::var("PROGRAM_PATH").unwrap();
             for gesture in data_set_entry.gestures() {
@@ -361,5 +362,10 @@ mod test {
     #[test]
     fn test_dymel_test_null_by_annotation_decision_forest() {
         evaluate_data_set(&DYMEL_NULL_TEST, DataSetName::DymelData, "decision_forest");
+    }
+
+    #[test]
+    fn test_dymel_test_light_by_annotation_decision_forest() {
+        evaluate_data_set(&DYMEL_LIGHT_TEST, DataSetName::DymelData, "decision_forest");
     }
 }

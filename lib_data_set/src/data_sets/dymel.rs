@@ -352,4 +352,22 @@ lazy_static! {
         data.iter_mut().for_each(|entry| entry.take_percent_from(0.75));
         data
     };
+
+    pub static ref DYMEL_LIGHT_TEST: Vec<DataSetEntry> = {
+        let mut data: Vec<DataSetEntry> = DYMEL_GESTURE.clone().into_iter().filter(|entry| *entry.brightness_level() == BrightnessLevel::Low).collect();
+        let mut additional_entries = Vec::new();
+        // Infer lighting conditions by scaling and offsets
+        for entry in data.iter() {
+            for i in 0..20 {
+                let mut scaled = entry.clone();
+                let mut offset = entry.clone();
+                scaled.scale_by((i as f32) * 0.5);
+                offset.add_offset((i as i16) * 50);
+                additional_entries.push(scaled);
+                additional_entries.push(offset);
+            }
+        }
+        data.append(&mut additional_entries);
+        data
+    };
 }

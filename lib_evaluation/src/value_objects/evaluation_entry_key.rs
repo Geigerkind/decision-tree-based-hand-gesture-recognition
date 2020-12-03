@@ -6,16 +6,20 @@ pub struct EvaluationEntryKey {
     camera_distance: CameraDistance,
     brightness_level: BrightnessLevel,
     additional_specification: Option<AdditionalSpecification>,
+    offset: Option<i16>,
+    scaling: Option<i32>
 }
 
 impl EvaluationEntryKey {
     pub fn new(covering_object: CoveringObject, camera_distance: CameraDistance, brightness_level: BrightnessLevel,
-               additional_specification: Option<AdditionalSpecification>) -> Self {
+               additional_specification: Option<AdditionalSpecification>, offset: Option<i16>, scaling: Option<i32>) -> Self {
         EvaluationEntryKey {
             covering_object,
             camera_distance,
             brightness_level,
-            additional_specification
+            additional_specification,
+            offset,
+            scaling
         }
     }
 }

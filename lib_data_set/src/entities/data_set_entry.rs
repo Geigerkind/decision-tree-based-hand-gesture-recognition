@@ -15,7 +15,9 @@ pub struct DataSetEntry {
     gestures: Vec<Gesture>,
     #[getter(skip)]
     file_path: String,
-    parsing_method: ParsingMethod
+    parsing_method: ParsingMethod,
+    scaling: Option<i32>,
+    offset: Option<i16>
 }
 
 impl DataSetEntry {
@@ -30,7 +32,9 @@ impl DataSetEntry {
             additional_specification,
             gestures: Vec::new(),
             file_path,
-            parsing_method
+            parsing_method,
+            scaling: None,
+            offset: None
         };
         entry.parse();
         entry
@@ -47,7 +51,9 @@ impl DataSetEntry {
             additional_specification,
             gestures,
             file_path: String::new(),
-            parsing_method: ParsingMethod::ByAnnotation
+            parsing_method: ParsingMethod::ByAnnotation,
+            scaling: None,
+            offset: None
         }
     }
 
@@ -57,6 +63,28 @@ impl DataSetEntry {
 
     pub fn take_percent_from(&mut self, percent: f32) {
         self.gestures = self.gestures[(((self.gestures.len() as f32) * percent) as usize)..].to_vec();
+    }
+
+    pub fn scale_by(&mut self, factor: f32) {
+        self.scaling = Some((factor * 10.0) as i32);
+        for gesture in self.gestures.iter_mut() {
+            for frame in gesture.frames.iter_mut() {
+                for i in 0..9 {
+                    frame.pixel[i] = 1023.min(((frame.pixel[i] as f32) * factor) as i16);
+                }
+            }
+        }
+    }
+
+    pub fn add_offset(&mut self, offset: i16) {
+        self.offset = Some(offset);
+        for gesture in self.gestures.iter_mut() {
+            for frame in gesture.frames.iter_mut() {
+                for i in 0..9 {
+                    frame.pixel[i] = 1023.min(frame.pixel[i] + offset);
+                }
+            }
+        }
     }
 
     /// Checks if the file exists and if so parses it either ByAnnotation or ByThreshold.
