@@ -1,0 +1,16 @@
+appendix_CD-Content.tex
+chapter_Figures.tex
+chapter_Introduction.tex
+chapter_Structure.tex
+chapter_Style.tex
+chapter_TheClass.tex
+INSTALL
+thesis.aux
+thesis.out
+thesis.toc
+thesis.log
+
+images/app_setup.*
+images/createPicture.sh
+images/setup_math.aux
+images/tree_*
