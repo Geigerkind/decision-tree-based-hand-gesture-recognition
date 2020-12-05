@@ -4,10 +4,11 @@ import sys
 import pandas as pd
 from create_forest import *
 from create_tree import *
+# from rotation_forest import RotationForestClassifier
 from sklearn import tree
 # from sklearn.experimental import enable_hist_gradient_boosting  # noqa
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, BaggingClassifier, GradientBoostingClassifier, \
-    ExtraTreesClassifier
+    ExtraTreesClassifier, IsolationForest
 from sklearn.model_selection import train_test_split
 
 # from xgboost.sklearn import XGBClassifier
@@ -310,6 +311,19 @@ def hist_gradient_boosting_decision_tree():
     print(clf.score(X_test_and_opt, y_test_and_opt))
 """
 
+"""
+def rotation_forest():
+    clf = cherry_picking(lambda id: RotationForestClassifier(n_estimators=num_trees, random_state=id, max_depth=max_depth, n_features_per_subset=6))
+    clf.fit(X_train, y_train)
+    if not silent_mode:
+        print("RotationForestClassifier: ")
+        print(clf.score(X_test_and_opt, y_test_and_opt))
+
+    create_ensamble_tree(clf)
+    return max(x.tree_.max_depth for x in clf.estimators_)
+"""
+
+
 if not only_ensemble:
     decision_tree()
 
@@ -321,6 +335,8 @@ elif ensemble_kind == 3:
     sys.exit(bagging_decision_tree())
 elif ensemble_kind == 4:
     sys.exit(extra_trees())
+#elif ensemble_kind == 5:
+#    sys.exit(rotation_forest())
 else:
     gradient_boosting_decision_tree()
     # xgboost_decision_tree()
