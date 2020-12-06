@@ -5,7 +5,7 @@ from sklearn.tree import _tree
 import numpy as np
 
 
-def tree_to_code(file, tree, classes, function_name, feature_set, feature_names=range(0, 40)):
+def tree_to_code(file, tree, classes, function_name, feature_set, return_voting, feature_names=range(0, 40)):
     nspaces = 4
     tree_ = tree.tree_
     feature_name = [
@@ -13,12 +13,20 @@ def tree_to_code(file, tree, classes, function_name, feature_set, feature_names=
         for i in tree_.feature
     ]
 
-    if feature_set == 1:
-        file.write("unsigned char " + function_name + "(float* features)")
-    elif feature_set == 6:
-        file.write("unsigned char " + function_name + "(float* float_features, long* long_features)")
+    if return_voting:
+        if feature_set == 1:
+            file.write("void " + function_name + "(float* features, float* result)")
+        elif feature_set == 6:
+            file.write("void " + function_name + "(float* float_features, long* long_features, float* result)")
+        else:
+            file.write("void " + function_name + "(long* features, float* result)")
     else:
-        file.write("unsigned char " + function_name + "(long* features)")
+        if feature_set == 1:
+            file.write("unsigned char " + function_name + "(float* features)")
+        elif feature_set == 6:
+            file.write("unsigned char " + function_name + "(float* float_features, long* long_features)")
+        else:
+            file.write("unsigned char " + function_name + "(long* features)")
     file.write("{")
 
     def recurse(node, depth):
@@ -46,8 +54,16 @@ def tree_to_code(file, tree, classes, function_name, feature_set, feature_names=
 
             file.write("\n" + "{}".format(indent) + "}\n")
         else:
-            classification_index = np.where(tree_.value[node][0] == max(tree_.value[node][0]))[0][0]
-            file.write("\n{}return {};\n".format(indent, int(classes[classification_index])))
+            if return_voting:
+                # Return probability of each class
+                sample_sum = sum(tree_.value[node][0])
+                for index, sample in enumerate(tree_.value[node][0]):
+                    file.write("\n{}result[{}] = {};\n".format(indent, index, sample/sample_sum))
+                file.write("\n{}return;\n".format(indent))
+            else:
+                # Return Class of that has most samples
+                classification_index = np.where(tree_.value[node][0] == max(tree_.value[node][0]))[0][0]
+                file.write("\n{}return {};\n".format(indent, int(classes[classification_index])))
 
     recurse(0, 1)
     file.write("}\n")

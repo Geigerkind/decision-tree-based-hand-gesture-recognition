@@ -163,7 +163,7 @@ def evaluate_classifier(clf):
 
 
 def cherry_picking(template):
-    amount_tests = 150
+    amount_tests = 140
     if not silent_mode:
         print("Test " + str(amount_tests) + " different classifier, and cherry pick best...")
     pool = multiprocessing.Pool(processes=num_cores_per_node)
@@ -247,7 +247,7 @@ def adaboost_decision_tree():
     clf = cherry_picking(lambda id: AdaBoostClassifier(
         base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy",
                                                    ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf),
-        n_estimators=num_trees, random_state=id, learning_rate=0.05))
+        n_estimators=num_trees, random_state=id, learning_rate=0.1))
     clf.fit(X_train, y_train)
     if not silent_mode:
         print("AdaBoostClassifier: ")
