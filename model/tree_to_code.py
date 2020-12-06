@@ -2,6 +2,7 @@
 # https://github.com/arturyumaev/Rules-Extraction-from-sklearn-DecisionTreeClassifier
 # And slightly modified to fit the purpose of classification for gestures
 from sklearn.tree import _tree
+import numpy as np
 
 
 def tree_to_code(file, tree, classes, function_name, feature_set, feature_names=range(0, 40)):
@@ -45,7 +46,7 @@ def tree_to_code(file, tree, classes, function_name, feature_set, feature_names=
 
             file.write("\n" + "{}".format(indent) + "}\n")
         else:
-            classification_index = [ind for ind, x in enumerate(tree_.value[node][0]) if x != 0][0]
+            classification_index = np.where(tree_.value[node][0] == max(tree_.value[node][0]))[0][0]
             file.write("\n{}return {};\n".format(indent, int(classes[classification_index])))
 
     recurse(0, 1)
