@@ -11,7 +11,7 @@ echo "max_depth,forest_size,optimization_level,ensemble_technique,feature_set,se
 # Optimization O0, Os, O2, O3
 
 optimizations=(O0 Os O2 O3)
-set_fractions=(0.1 0.3 0.5)
+set_fractions=(0.3 0.5)
 ccp_alpha=$1
 min_leaf_sample=$2
 num_cores_per_node=$3
@@ -21,7 +21,7 @@ for feature_set in {1..6}; do
   for set_fraction in ${set_fractions[*]}; do
     for ensemble_technique in {1..4}; do
       for max_depth in {1..22}; do
-        for forest_size in {1..17}; do
+        for forest_size in {1..16}; do
           echo "Working on: ${max_depth},${forest_size},${ensemble_technique},${feature_set},${set_fraction},${ccp_alpha},${min_leaf_sample}..."
           python3 ../../model/decision_tree.py ${max_depth} ${forest_size} 1 ${ensemble_technique} 1 ${feature_set} ${set_fraction} ${ccp_alpha} ${min_leaf_sample} 1 "../../" ${num_cores_per_node}
           real_max_depth=$?
