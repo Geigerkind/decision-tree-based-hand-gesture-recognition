@@ -9,6 +9,8 @@ thesis.aux
 thesis.out
 thesis.toc
 thesis.log
+thesis.bbl
+thesis.blg
 
 images/app_setup.*
 images/createPicture.sh

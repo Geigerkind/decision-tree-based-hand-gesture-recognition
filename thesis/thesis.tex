@@ -30,11 +30,22 @@
 %                   examination regulations, own work should be part of the regular
 %                   bibliography (this option is hence obsolete)
 
-\documentclass[de,symbollist,inputenc=utf8]{tuhhthesis}
+\documentclass[de,inputenc=utf8]{tuhhthesis}
 
 %%
 %% SETUP BLOCK
 %%
+\lstset{literate=%
+{Ö}{{\"O}}1
+{Ä}{{\"A}}1
+{Ü}{{\"U}}1
+{ß}{{\ss}}1
+{ü}{{\"u}}1
+{ä}{{\"a}}1
+{ö}{{\"o}}1
+{~}{{\textasciitilde}}1
+}
+
 
 \setthesistype{projectwork}
 
@@ -87,9 +98,7 @@
 %\nocite{*}
 \tuhhbibliography{thesis}
 
-
 % Appendix
-% Feel free to add additional appendix chapters (e.g., measurement setups, etc.)
 \begin{tuhhappendix}
   \input{appendix_CD-Content}
 \end{tuhhappendix}
