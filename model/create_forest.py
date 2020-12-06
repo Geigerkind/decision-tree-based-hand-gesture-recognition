@@ -10,9 +10,12 @@ def create_forest(file, trees, num_trees, feature_set):
 def shared_forest_print_stuff(file, feature_set, classes, num_trees):
     file.write("float tree_res[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };\n")
     file.write("float total_res[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };\n")
-    file.write("unsigned char result_map[5] = { " + str(classes[0]) + "," + str(classes[1]) + "," + str(
-        classes[2]) + "," + str(
-        classes[3]) + ", 9 };\n")
+    if len(classes) == 4:
+        file.write("unsigned char result_map[5] = { " + str(classes[0]) + "," + str(classes[1]) + "," + str(
+            classes[2]) + "," + str(classes[3]) + ", 9 };\n")
+    else:
+        file.write("unsigned char result_map[5] = { " + str(classes[0]) + "," + str(classes[1]) + "," + str(
+            classes[2]) + "," + str(classes[3]) + ", " + str(classes[4])+" };\n")
     for i in range(num_trees):
         if feature_set == 6:
             file.write("tree" + str(i) + "(f_args, l_args, tree_res);\n")

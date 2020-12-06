@@ -3,7 +3,7 @@ import pandas as pd
 # Manually tested
 default_size = 2508
 
-data = pd.read_csv("./saad_c1.csv")
+data = pd.read_csv("./saad_c2.csv")
 
 max_size_in_bytes = 45000 + default_size
 
