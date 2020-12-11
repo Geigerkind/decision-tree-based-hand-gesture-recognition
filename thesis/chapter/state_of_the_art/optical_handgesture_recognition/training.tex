@@ -23,9 +23,11 @@ Die Modelle werden auf Basis von aufgenommenen Daten trainiert und getestet. Jed
 Eine Geste ist eine Folge von Bildern, die die gleiche Annotation teilen (siehe Listing \ref{lst:sampleGesture}). Insgesamt gibt es 4792 Aufnahmen von validen Handgesten, die unter verschiedenen Lichtverhältnissen
 und Distanzen zur Kamera aufgenommen wurden. Dabei wurde die Gesten mit der Hand und Finger ausgeführt in verschiedenen Geschwindigkeiten (TODO: Quelle?!).
 \subsubsection{Synthetische Daten}
+\label{sec:synthetischeDaten}
 Um die Datenmenge zu erhöhen, können synthetisch Daten aus den bestehenden Daten erzeugt werden indem sie rotiert werden, Rauschen hinzugefügt wird oder die Helligkeit, Kontraste oder
 Gamma verändert wird \cite{venzkeArticle}.
 \subsubsection{Testdaten und Metrik von Klisch}
+\label{sec:testdaten}
 Als Testdaten wird ein Teil der Datenmenge bezeichnet, die nicht zum trainieren verwendet wurde. Kubik hat Testdaten unter verschiedenen Lichtverhältnissen und Entfernungen zur Kamera aufgenommen. Klisch hat
 daraus eine Testmenge erstellt die von Klisch und Giese zur Verifikation verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die Erkennungsgenauigkeit als Verhältnis zwischen der Anzahl an korrekt
 erkannten Gesten und der Gesamtanzahl (siehe Formel \ref{klisch_metric}) \cite{klischThesis}.

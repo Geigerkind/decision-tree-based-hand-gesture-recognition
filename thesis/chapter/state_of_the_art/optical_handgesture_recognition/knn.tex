@@ -10,6 +10,17 @@ seiner FFNNs heraus, das auf seinen Testdaten bis zu 99\% Erkennungsgenauigkeit 
 des FFNN belief sich auf 11,54 ms mit einem Verbrauch von 11 kB Flash-Speicher und 573 bytes RAM \cite{engelhardtThesis}.
 
 \subsubsection{Kubik}
+Kubik hat in seiner Arbeit den FFNN Ansatz von Engelhardt aufgegriffen. Er untersuchte Gesten die mit der Hand ausgeführt werden mit verschiedenen Distanzen zur Kamera und unter guten und schlechten Lichtverhältnissen.
+Neben der Facettenkamera, die Engelhardt ebenfalls genutzt hatte, untersuchte Kubik ebenfalls eine Lochkamera. Er stellte fest, dass diese aber wesentlich schwerer war auszuleuchten, was sich auch bei der
+Erkennungsgenauigkeit bemerkbar machte. Als Eingabe nutze Kubik ebenfalls 180 Werte, die 20 Bilder repräsentieren. Um mit der variablen Länge von Gesten umzugehen schlug Kubik vor die Bildsequenzen auf 20 Bilder zu
+skalieren (siehe Sektion \ref{sec:scaling}). Um die Skalierung durchzuführen musste allerdings der Anfang und das Ende der Geste bekannt sein. Aus diesem Grund war es nötig Gestenkandidaten erkennen zu können (siehe
+Sektion \ref{sec:gesture_extraction}). Er stellte fest, dass dies die Gesamtlänge der Geste limitierte in Abetracht des RAMs von dem Arduino. Um die Erkennungsgenauigkeit zu erhöhen verwendete er synthetische
+Trainingsdaten, die er aus bestehenden Daten durch Rotation generierte (siehe Sektion \ref{sec:synthetischeDaten}). Dies erhöhte die Erkennungsgenauigkeit erheblich. Kubik erstellte Testdaten (siehe
+Sektion \ref{sec:testdaten}) und evaluierte sein Model darauf. Im allgemeinen stellte er fest, dass mit zunehmender Distanz zur Kamera die Erkennungsgenauigkeit sich verschlechtert. Dies erwies sich besonders als ein
+Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mit der Facettenkamera bis 30 cm eine Erkennungsgenauigkeit von 97,2\% erreichen. Bei schlechten Lichtverhältnissen war die Erkennungsgenauigkeit
+bereits abs 20 cm nur noch bei 83\%. Zusätzlich zu den 4 Grundgesten, untersuchte Kubik Nullgesten. Er stellte fest, dass ruckartige Veränderungen der Lichtverhältnisse mit 92\% erkannt wurden und Handbewegungen die wieder
+zurück gezogen wurden mit 96\%. Schwierigkeiten hat die Erkennung von diagonalen Bewegungen als Nullgeste bereitet, da diese eine hohe Ähnlichkeit zu der benachbarten horizontalen und vertikalen Geste hat. Kubiks Ansatz
+hat insgesamt 36 ms benötigt um das Model auszuwerten und 11 ms für die Skalierung \cite{kubikThesis}.
 
 \subsubsection{Klisch}
 
