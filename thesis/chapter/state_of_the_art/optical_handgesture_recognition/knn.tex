@@ -1,6 +1,5 @@
 \subsection{Gestenerkennung mit künstliche neuronalen Netzen}
 Insgesamt gingen dieser Arbeit 4 Arbeiten voraus, die sich mit künstlichen neuronalen Netzen im Zusammenhang dieser Fallstudie beschäftigt hatten.
-
 \subsubsection{Engelhardt}
 Engelhardt führte die in \ref{sec:fallstudie} definierten Handgesten mit der Hand, einem Finger und 2 Finger unter verschiedenen Helligkeiten aus, auf Basis dessen seine Modelle trainiert und validiert wurden. Er
 argumentiert, dass rekurrente neuronale Netze (RNN), Feedforward neuronale Netze (FFNN) und Long-Short-Term Memory neuronale Netze (LSTMNN) am besten geeignet für temporale Probleme seien. Convolutional neuronale
@@ -8,7 +7,6 @@ Netze (CNN) verwarf Engelhardt aufgrund der geringen Auflösung der Gesten und d
 benötigen. Als Eingabewerte zu seinen RNNs und FFNNs diente eine Sequenz von 20 Bilder die zu 180 Werten konkatiniert wurden und auf Werte zwischen 0 und 1 normalisiert wurden. Als bestes Model stellte sich eines
 seiner FFNNs heraus, das auf seinen Testdaten bis zu 99\% Erkennungsgenauigkeit erzielte. Außerdem erwies es sich als robust gegenüber Rauschen und Helligkeitsveränderungen im Vergleich zum RNN. Die Ausführungszeit
 des FFNN belief sich auf 11,54 ms mit einem Verbrauch von 11 kB Flash-Speicher und 573 bytes RAM \cite{engelhardtThesis}.
-
 \subsubsection{Kubik}
 Kubik hat in seiner Arbeit den FFNN Ansatz von Engelhardt aufgegriffen. Er untersuchte Gesten die mit der Hand ausgeführt werden mit verschiedenen Distanzen zur Kamera und unter guten und schlechten Lichtverhältnissen.
 Neben der Facettenkamera, die Engelhardt ebenfalls genutzt hatte, untersuchte Kubik ebenfalls eine Lochkamera. Er stellte fest, dass diese aber wesentlich schwerer war auszuleuchten, was sich auch bei der
@@ -21,7 +19,9 @@ Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mi
 bereits abs 20 cm nur noch bei 83\%. Zusätzlich zu den 4 Grundgesten, untersuchte Kubik Nullgesten. Er stellte fest, dass ruckartige Veränderungen der Lichtverhältnisse mit 92\% erkannt wurden und Handbewegungen die wieder
 zurück gezogen wurden mit 96\%. Schwierigkeiten hat die Erkennung von diagonalen Bewegungen als Nullgeste bereitet, da diese eine hohe Ähnlichkeit zu der benachbarten horizontalen und vertikalen Geste hat. Kubiks Ansatz
 hat insgesamt 36 ms benötigt um das Model auszuwerten und 11 ms für die Skalierung \cite{kubikThesis}.
-
 \subsubsection{Klisch}
-
+Engelhardt stellte fest, dass RNNs schlechtere Erkennungsgenauigkeiten ergaben, als FFNNs, da sie schwerer zu trainieren sind \cite{engelhardtThesis}.
+Aus diesem Grund schlug Venzke vor, dass man ein RNN als mehrer FFNNs trainieren könnte. Diesen Ansatz hat Klisch in seiner Arbeit aufgegriffen. Klisch hat verschiedene Konfigurationen getestet und stellte am Ende fest,
+dass ein RNN als einzelnes Netzwerk zu trainieren bessere Ergebnisse liefert als ein RNN als mehrere FFNNs zu trainieren. Mit seinem RNN erzielte Klisch eine Erkennungsgenauigkeit von 71\% unter guten und verhältnismäßig
+schlechten Lichtverhältnissen, welches eine Verbesserung zu dem Ergebnis von Engelhardt ist. Klisch stellte fest, dass das sein Model schnell genug ist, um 50 Hz zu unterstützen \cite{klischThesis}.
 \subsubsection{Giese}
