@@ -1,4 +1,15 @@
-\section{Infrastructure}
+\section{Infrastruktur}
+Der Kern der Arbeit war es viele Verschiedene Feature, Konfigurationen der Entscheidungsbäume zu untersuchen und zu testen. Aus diesem Grund habe ich es als nötig erachtet eine wohldefinierte und dokumentierte Infrastruktur
+zu schaffen, die folgende Arbeiten vereinfachen. Die Infrastruktur umfasst die erstellung eines wohldefinierten Datenmodels und das Auswerten von Datenmengen unter verschiedenen Parsingmethoden. Außerdem wird die
+Generierung von synthetischen Daten vereinfacht und eine leicht zu erweiternde Architektur bereitgestellt um Feature zu definieren. All diese Funktionalitäten sind in Bibliotheken verpackt, die leicht in eigene Projekte zu
+integrieren sind. Darauf aufbauend wurden außerdem einige Programme erstellt, um den Arbeitsablauf zu vereinfachen.
+\begin{itemize}
+    \item Ein Programm, um aus definierten Datenmengen alle Feature zu extrahieren.
+    \item Ein Simulator, der den seriellen Ausgang des Arduino nutzt um lokal das Model auszuführen.
+    \item Ein Programm, dass den seriellen Ausgang des Arduino ausgibt.
+    \item Ein Programm, um Gesten effizient aufzunehmen.
+\end{itemize}
+
 \input{chapter/achievements/infrastructure/parsing}
 \input{chapter/achievements/infrastructure/feature_extraction}
 \input{chapter/achievements/infrastructure/training/training}
