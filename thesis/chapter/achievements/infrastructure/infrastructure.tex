@@ -1,8 +1,14 @@
 \section{Infrastruktur}
-Der Kern der Arbeit war es viele Verschiedene Feature, Konfigurationen der Entscheidungsbäume zu untersuchen und zu testen. Aus diesem Grund habe ich es als nötig erachtet eine wohldefinierte und dokumentierte Infrastruktur
-zu schaffen, die folgende Arbeiten vereinfachen. Die Infrastruktur umfasst die erstellung eines wohldefinierten Datenmodels und das Auswerten von Datenmengen unter verschiedenen Parsingmethoden. Außerdem wird die
-Generierung von synthetischen Daten vereinfacht und eine leicht zu erweiternde Architektur bereitgestellt um Feature zu definieren. All diese Funktionalitäten sind in Bibliotheken verpackt, die leicht in eigene Projekte zu
-integrieren sind. Darauf aufbauend wurden außerdem einige Programme erstellt, um den Arbeitsablauf zu vereinfachen.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/architecture_overview.jpg}
+    \caption{Abhängigkeitein der einzelnen Module.}
+    \label{fig:architecture_overview}
+\end{figure}
+Der Kern der Arbeit war es viele Verschiedene Feature und Konfigurationen der Entscheidungsbäume zu untersuchen und zu testen. Aus diesem Grund habe ich es als nötig erachtet eine umfangreiche und dokumentierte Infrastruktur
+zu schaffen, die die Auswertung meiner Arbeit und folgenden Arbeiten vereinfacht. Die Infrastruktur umfasst die Erstellung eines Datenmodels und das Auswerten von Datenmengen unter verschiedenen Parsingmethoden.
+Außerdem wird die Generierung von synthetischen Daten vereinfacht und eine leicht zu erweiternde Architektur bereitgestellt um Feature zu definieren. All diese Funktionalitäten sind in Bibliotheken verpackt,
+die leicht in eigene Projekte zu integrieren sind (siehe Abbildung \ref{fig:architecture_overview}). Darauf aufbauend wurden außerdem einige Programme erstellt, um den Arbeitsablauf zu vereinfachen.
 \begin{itemize}
     \item Ein Programm, um aus definierten Datenmengen alle Feature zu extrahieren.
     \item Ein Simulator, der den seriellen Ausgang des Arduino nutzt um lokal das Model auszuführen.
@@ -10,9 +16,11 @@ integrieren sind. Darauf aufbauend wurden außerdem einige Programme erstellt, u
     \item Ein Programm, um Gesten effizient aufzunehmen.
 \end{itemize}
 
-\input{chapter/achievements/infrastructure/parsing}
-\input{chapter/achievements/infrastructure/feature_extraction}
-\input{chapter/achievements/infrastructure/training/training}
-\input{chapter/achievements/infrastructure/arduino/arduino}
-\input{chapter/achievements/infrastructure/utility/utility}
-\input{chapter/achievements/infrastructure/workflow}
+\input{chapter/achievements/infrastructure/lib_gesture}
+\input{chapter/achievements/infrastructure/lib_feature}
+\input{chapter/achievements/infrastructure/lib_data_set}
+\input{chapter/achievements/infrastructure/lib_evaluation}
+\input{chapter/achievements/infrastructure/simulator}
+\input{chapter/achievements/infrastructure/extractor}
+\input{chapter/achievements/infrastructure/reader}
+\input{chapter/achievements/infrastructure/recorder}
