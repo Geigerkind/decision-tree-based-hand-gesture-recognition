@@ -25,3 +25,10 @@ Aus diesem Grund schlug Venzke vor, dass man ein RNN als mehrer FFNNs trainieren
 dass ein RNN als einzelnes Netzwerk zu trainieren bessere Ergebnisse liefert als ein RNN als mehrere FFNNs zu trainieren. Mit seinem RNN erzielte Klisch eine Erkennungsgenauigkeit von 71\% unter guten und verhältnismäßig
 schlechten Lichtverhältnissen, welches eine Verbesserung zu dem Ergebnis von Engelhardt ist. Klisch stellte fest, dass das sein Model schnell genug ist, um 50 Hz zu unterstützen \cite{klischThesis}.
 \subsubsection{Giese}
+Der Fokus von Gieses Arbeit lag auf Kompression und Optimierung. Er trainierte ein FFNN und erzielte eine Erkennungsgenauigkeit von 98,96\%. Dies ist signifikant besser als das FFNN von Kubik, welches lediglich 83\% erzielte.
+Giese geht davon aus, dass sein FFNN besere Ergebnisse lieferte, da ca. 19x mehr Trainingsdaten zur Verfügung hatte als Kubik. Er untersuchte die Auswirkungen von Pruning, Quantitisierung, Sparse Matrix Format, SeeDot und
+den Optimierungsparametern von GCC. Mit Pruning und Retraining konnte Giese 72\% aller Verbindungen entfernen ohne signifikanten Verlust in Erkennungsgenauigkeit. Das wiederholte ausführen von Quantitisierung und
+Retrainieren erhöhte die Erkennungsgenauigkeit sogar etwas. Die beste Ausführungszeit wurde mit dem CSC-MA-Bit Format erzielt, dass unnötige Multiplikationen vermied und den kleinste Programmgröße wurde mit dem
+CSC-Centroid Format erzielt. SeeDot hat im Vergleich zum Ausgangsmodel sowohl Ausführungszeit, als auch Programmgröße verringert, hat aber die Erkennungsgenauigkeit signifikant verringert. Der Vorteil von SeeDot
+ist die geringe Zeit, die diese Optimierung benötigt. Der Optimierungsparameter O2 hat den besten Kompromiss zwischen Programmgröße und Ausführungszeit erzielt. Insgesamt hat die beste Lösung 35,7\% weniger Speicher
+benötigt und die Ausführungszeit wurde von 26,1 ms auf 6,8 ms reduziert \cite{gieseThesis}.
