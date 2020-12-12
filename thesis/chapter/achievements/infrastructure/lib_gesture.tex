@@ -1,1 +1,9 @@
 \subsection{lib\_gesture}
+\texttt{lib\_gesture} definiert was eine Geste ist und die vorhandenen Gestentypen. Außerdem implementiert sie zwei Parsing-Methoden. Die erste parsed Gesten nach Annotation und die zweite nach Kubiks Algorithmus (siehe
+Sektion \ref{sec:gesture_extraction}). Die Geste selber implementiert Methoden um synthetische Daten zu generieren.
+\begin{itemize}
+    \item Rotation um 90°, 180° und 270°.
+    \item NullGesten durch das Kombinieren der ersten Hälfte der Ausgangsgeste und der zweiten Hälfte von dessen Rotationen.
+    \item Verschiebung der Pixel nach oben und unten für eine Links nach Rechts bzw. Rechts nach Links Geste und analog dazu eine Verschiebung nach links und rechts für die restlichen Gesten.
+    \item Rotation der äußeren Pixel um Diagonale Gesten zu generieren.
+\end{itemize}

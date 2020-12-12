@@ -1,1 +1,8 @@
 \subsection{lib\_feature}
+\begin{lstlisting}[label=lst:FeatureInterface,caption={Interface, um ein Feature zu implementieren.}]
+pub trait Feature {
+    fn calculate(gesture: &Gesture) -> Self where Self: Sized;
+    fn marshal(&self) -> String;
+}
+\end{lstlisting}
+\texttt{lib\_feature} bietet ein einfaches Interface an um Feature mit einer Geste (siehe Listing \ref{lst:FeatureInterface}) zu implementieren. Zurzeit sind 28 verschiedene Feature implementiert.

@@ -9,13 +9,6 @@ Der Kern der Arbeit war es viele Verschiedene Feature und Konfigurationen der En
 zu schaffen, die die Auswertung meiner Arbeit und folgenden Arbeiten vereinfacht. Die Infrastruktur umfasst die Erstellung eines Datenmodels und das Auswerten von Datenmengen unter verschiedenen Parsingmethoden.
 Außerdem wird die Generierung von synthetischen Daten vereinfacht und eine leicht zu erweiternde Architektur bereitgestellt um Feature zu definieren. All diese Funktionalitäten sind in Bibliotheken verpackt,
 die leicht in eigene Projekte zu integrieren sind (siehe Abbildung \ref{fig:architecture_overview}). Darauf aufbauend wurden außerdem einige Programme erstellt, um den Arbeitsablauf zu vereinfachen.
-\begin{itemize}
-    \item Ein Programm, um aus definierten Datenmengen alle Feature zu extrahieren.
-    \item Ein Simulator, der den seriellen Ausgang des Arduino nutzt um lokal das Model auszuführen.
-    \item Ein Programm, dass den seriellen Ausgang des Arduino ausgibt.
-    \item Ein Programm, um Gesten effizient aufzunehmen.
-\end{itemize}
-
 \input{chapter/achievements/infrastructure/lib_gesture}
 \input{chapter/achievements/infrastructure/lib_feature}
 \input{chapter/achievements/infrastructure/lib_data_set}
