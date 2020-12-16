@@ -1,7 +1,7 @@
 
 ccp_alphas=(0.0 0.001 0.01 0.1)
 min_leaf_samples=(1 2 4 8)
-num_cores_per_node=9
+num_cores_per_node=16
 
 i=0
 for ccp_alpha in ${ccp_alphas[*]}; do
