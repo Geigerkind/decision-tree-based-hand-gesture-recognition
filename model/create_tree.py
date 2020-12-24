@@ -19,6 +19,8 @@ def create_tree_native_main(file, clf, with_io, feature_set):
     elif feature_set == 6:
         file.write("float f_args[10];\n")
         file.write("long l_args[10];\n")
+    elif feature_set == 7:
+        file.write("float args[9];\n")
     if with_io:
         if feature_set == 1:
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
@@ -33,6 +35,8 @@ def create_tree_native_main(file, clf, with_io, feature_set):
         elif feature_set == 6:
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1], \"%f\", &f_args[i]);\n")
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1 + 10], \"%ld\", &l_args[i]);\n")
+        elif feature_set == 7:
+            file.write("for (char i = 0; i < 9; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
     if feature_set == 6:
         file.write("return decision_tree(f_args, l_args);\n")
     else:

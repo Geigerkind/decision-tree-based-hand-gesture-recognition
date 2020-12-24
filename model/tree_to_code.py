@@ -14,14 +14,14 @@ def tree_to_code(file, tree, classes, function_name, feature_set, return_voting,
     ]
 
     if return_voting:
-        if feature_set == 1:
+        if feature_set == 1 or feature_set == 7:
             file.write("void " + function_name + "(float* features, float* result)")
         elif feature_set == 6:
             file.write("void " + function_name + "(float* float_features, long* long_features, float* result)")
         else:
             file.write("void " + function_name + "(long* features, float* result)")
     else:
-        if feature_set == 1:
+        if feature_set == 1 or feature_set == 7:
             file.write("unsigned char " + function_name + "(float* features)")
         elif feature_set == 6:
             file.write("unsigned char " + function_name + "(float* float_features, long* long_features)")
@@ -36,7 +36,7 @@ def tree_to_code(file, tree, classes, function_name, feature_set, return_voting,
             name = feature_name[node]
             threshold = tree_.threshold[node]
 
-            if feature_set == 1:
+            if feature_set == 1 or feature_set == 7:
                 file.write("\n{}if (features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
             elif feature_set == 6:
                 if int(name) < 10:

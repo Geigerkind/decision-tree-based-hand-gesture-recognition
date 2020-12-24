@@ -1,10 +1,47 @@
 \section{Ähnliche Arbeiten}
 Es gibt viele Ansätze, die sich mit der Gestenerkennung beschäftigen. Es wird unterschieden zwischen optischen und nicht-optischen Ansätzen. Der optische Ansatz nutzt einen
-oder mehrere Kameras um eine Folge von Bildern aufzunehmen. Ein populäres Beispiel dafür ist die Kinect. Dieser Ansatz ist allerdings empfindlich gegenüber Lichtverhältnisse und der Distanz die der
-Nutzer zu den Kameras hat \cite{song2019design}. Nicht-optische Ansätze bedienen sich anderen Sensoren, z. B. Infrarot Abstandssensoren \cite{cheng2011contactless}, oder nutzen technische Hilfsmittel um zusätzliche Daten zu
-erfassen, z. B. einen tragbaren sEMG Recorder der die elektrischen Signale der Muskelaktivitäten erfasst \cite{song2019design}.
+oder mehrere Kameras um eine Folge von Bildern aufzunehmen. Dieser Ansatz ist allerdings empfindlich gegenüber Lichtverhältnisse und der Distanz die der
+Nutzer zu den Kameras hat \cite{song2019design}. Nicht-optische Ansätze bedienen sich anderen Sensoren, z. B. Infrarot Abstandssensoren \cite{cheng2011contactless},
+oder nutzen technische Hilfsmittel um zusätzliche Daten zu erfassen.
 \newline
 \newline
-Die Gestenerkennung ist Teil der Mensch-Computer Interaktion und ein häufig genanntes Anwendungsgebiet die Gebärdensprachenerkennung \cite{fang2003large}. Kadous demonstrierte eine Erkennungswahrscheinlichkeit von 80\%
-bei einer Auswahl von 95 australischen Gebärden mit einem Entscheidungsbaum basierten Ansatz der die Daten eines Power-Gloves nutzt \cite{kadous1996machine}. Cheng et al. demonstrierten eine
-Erkennungswahrscheinlichkeit von 98\% in Echtzeit bei einer Auswahl von 4 3D-Gesten mit einem Entscheidungsbaum basierten Ansatz der lediglich die Daten eines Infrarot Abstandssensor nutzt \cite{cheng2011contactless}.
+Song et al. \cite{song2019design} haben die Handgestenerkennung mit Gradient Boosting Entscheidungsbäumen untersucht. Sie wählten einen nicht-optischen Ansatz, der aus einen tragbaren sEMG Recorder
+der die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den Entscheidungsbaum wählten sie neun Features die in die Kategorie von zeitabhängigen Features einzuordnen sind
+(siehe Tabelle \ref{tab:songFeatures}). Damit erzielten sie eine Erkennungsgenauigkeit von 91\% unter 12 verschiedenen Handgesten.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{ c | c | c }
+        \hline
+        \hline
+        1 & Mean absolute value & $\frac{1}{N}\sum^N_{t=1} |x_t|$ \\\hline
+        2 & Simple square integral & $\sum^N_{t=1} |x_t|^2$ \\\hline
+        3 & Minimum value & $\min x_t$ \\\hline
+        4 & Maximum value & $\max x_t$ \\\hline
+        5 & Standard deviation & $\sqrt{\frac{1}{N}\sum^N_{t=1}(x_t - \tilde{x})^2}$ \\\hline
+        6 & Average amplitude change & $\frac{1}{N-1}\sum^{N-1}_{t=1} |x_{t + 1} - x_t|$ \\\hline
+        7 & Zero crossing & $\sum^{N-1}_{t=1}diff(sgn(x_{t+1}),sgn(x_t))$ \\\hline
+        8 & Slope sign change & $\sum^{N-2}_{t=1}diff(sgn(x_{t+1} - x_t),sgn(x_t - x_{t - 1}))$ \\\hline
+        9 & Willison amplitude & $\sum^{N-1}_{t=1}u(|x_{t+1} - x_t| - threshold)$ \\
+        \hline
+        \hline
+    \end{tabular}
+    \caption{Die von Song et al. genutzten Features \cite{song2019design}.}
+    \label{tab:songFeatures}
+\end{table}
+\newline
+\newline
+Ahad et al. \cite{ahad2012motion} diskutieren den Motion History Image (MHI) Ansatz. MHI ist ein optischer Ansatz, der eine Sequenz von Bildern in ein einziges komprimiert. Dabei werden dominate Bewegungen die
+kürzlich verarbeitet wurden heller angezeigt als nicht dominate Bewegungen oder Bewegungen die schon länger zurück liegen.
+\begin{align}
+    H_{\tau}(x,y,t) = \begin{cases}
+                          \tau & if \psi(x,y,t) = 1 \\
+                          \max(0, H_{\tau}(x,y,t-1) - \delta) & otherwise
+    \end{cases}
+    \label{formular:mhi}
+\end{align}
+Das MHI kann sequentiell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine dominate Bewegung in einem Pixel $(x,y)$ zu einem Zeitpunkt $t$ signalisiert, dann wird der Pixel zum Maximalwert $\tau$
+gesetzt. Mit jedem Bild in denen keine dominate Bewegung im Pixel $(x,y)$ stattgefunden hat, wird der Wert um den Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0 (siehe Formel \ref{formular:mhi}).
+\newline
+\newline
+MHI ist leicht zu berechnen und Invariant zu Lichtverhältnissen. Allerdings ist die Leistung stark abhängig von $\psi$, $\tau$ und $\delta$. MHI ist besonders anfällig für Bildfolgen mit verschiedener Länge.
+Jenachdem wie $\tau$ und $\delta$ gewählt sind, ist die Bewegungshistorie nicht sichtbar oder verloren gegangen.

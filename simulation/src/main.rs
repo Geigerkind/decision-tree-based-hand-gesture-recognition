@@ -20,7 +20,7 @@ use serialport::{DataBits, FlowControl, Parity, SerialPortSettings, StopBits};
 use lib_gesture::entities::{GestureReader, Frame, Gesture};
 use std::str::FromStr;
 use std::process::Command;
-use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature, DarknessDistribution6XYGeom, BrightnessDistribution6XYGeom, MotionHistory, CenterOfGravityDistributionY, CenterOfGravityDistributionX, SumOfSlopes};
+use lib_feature::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, Feature, DarknessDistribution6XYGeom, BrightnessDistribution6XYGeom, MotionHistory, CenterOfGravityDistributionY, CenterOfGravityDistributionX, SumOfSlopes, MotionHistory2};
 use std::ops::Deref;
 use lib_gesture::value_objects::GestureType;
 use num_traits::FromPrimitive;
@@ -105,6 +105,14 @@ fn calculate_features(gesture: &Gesture) -> (Vec<f32>, Vec<i32>) {
     l_args.append(&mut center_of_gravity_x.deref().to_vec());
     l_args.append(&mut center_of_gravity_y.deref().to_vec());
     (f_args, l_args)
+}
+
+#[cfg(feature="feature_set7")]
+fn calculate_features(gesture: &Gesture) -> Vec<f64> {
+    let mut args: Vec<f64> = Vec::new();
+    let motion_history_2 = MotionHistory2::calculate(&gesture);
+    args.append(&mut motion_history_2.deref().to_vec());
+    args
 }
 
 fn main() {

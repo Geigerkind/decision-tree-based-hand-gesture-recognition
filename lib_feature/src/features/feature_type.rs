@@ -1,6 +1,6 @@
 use lib_gesture::entities::Gesture;
 
-use crate::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, CenterOfGravityDistributionX, CenterOfGravityDistributionY};
+use crate::{CenterOfGravityDistributionFloatX, CenterOfGravityDistributionFloatY, CenterOfGravityDistributionX, CenterOfGravityDistributionY, MotionHistory2};
 use crate::features::{AverageAmplitudeChange, BrightnessDistribution3X, BrightnessDistribution3Y, BrightnessDistribution6X, BrightnessDistribution6XY, BrightnessDistribution6XYGeom, BrightnessDistribution6XYQuadrant, BrightnessDistribution6Y, DarknessDistribution3X, DarknessDistribution3Y, DarknessDistribution6X, DarknessDistribution6XY, DarknessDistribution6XYGeom, DarknessDistribution6XYQuadrant, DarknessDistribution6Y, DirectionMapX, DirectionMapY, Feature, LocalSumOfSlopeX, LocalSumOfSlopeY, MaximumValue, MeanValue, MinimumValue, MotionHistory, StandardDeviation, SumOfSlopes};
 
 /// This enum lists all available features.
@@ -23,6 +23,7 @@ pub enum FeatureType {
     BrightnessDistribution6XYGeom,
     BrightnessDistribution6XYQuadrant,
     MotionHistory,
+    MotionHistory2,
     MeanValue,
     MinimumValue,
     MaximumValue,
@@ -58,6 +59,7 @@ impl FeatureType {
             FeatureType::BrightnessDistribution6XYGeom => Box::new(BrightnessDistribution6XYGeom::calculate(gesture)),
             FeatureType::BrightnessDistribution6XYQuadrant => Box::new(BrightnessDistribution6XYQuadrant::calculate(gesture)),
             FeatureType::MotionHistory => Box::new(MotionHistory::calculate(gesture)),
+            FeatureType::MotionHistory2 => Box::new(MotionHistory2::calculate(gesture)),
             FeatureType::MeanValue => Box::new(MeanValue::calculate(gesture)),
             FeatureType::MinimumValue => Box::new(MinimumValue::calculate(gesture)),
             FeatureType::MaximumValue => Box::new(MaximumValue::calculate(gesture)),
