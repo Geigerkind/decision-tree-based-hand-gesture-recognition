@@ -130,6 +130,13 @@ elif feature_set == 8:
                                                          dtype=float)
     X2 = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
     max_features2 = 10
+elif feature_set == 9:
+    motion_history2 = pd.read_csv(storage_path + "/MotionHistory2", dtype=float)
+    center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX",
+                                                         dtype=float)
+    center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY",
+                                                         dtype=float)
+    X = pd.concat([motion_history2, center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
 
 
 

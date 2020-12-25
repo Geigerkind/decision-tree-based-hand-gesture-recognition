@@ -127,6 +127,18 @@ fn calculate_features(gesture: &Gesture) -> Vec<f32> {
     args
 }
 
+#[cfg(feature="feature_set9")]
+fn calculate_features(gesture: &Gesture) -> Vec<f32> {
+    let mut args: Vec<f32> = Vec::new();
+    let motion_history_2 = MotionHistory2::calculate(&gesture);
+    args.append(&mut motion_history_2.deref().to_vec());
+    let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
+    args.append(&mut center_of_gravity_x.deref().to_vec());
+    args.append(&mut center_of_gravity_y.deref().to_vec());
+    args
+}
+
 fn main() {
     // The Arduino serial sends to the /dev/ttyACM0 port.
     let mut port = serialport::posix::TTYPort::open(&Path::new("/dev/ttyACM0"), &SerialPortSettings {
