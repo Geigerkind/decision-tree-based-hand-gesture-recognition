@@ -265,32 +265,32 @@ def random_forest_stackedish():
     predicted1 = clf1.predict_proba(X_test_and_opt)
     predicted2 = clf2.predict_proba(X2_test_and_opt)
 
-    classes = clf1.classes_
+    if not silent_mode:
+        classes = clf1.classes_
+        true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        false_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for i in range(len(y_test_and_opt)):
+            prob = [0,0,0,0]
+            for j in range(4):
+                prob[j] += predicted1[i][j]
+                prob[j] += predicted2[i][j]
+            max_index = prob.index(max(prob))
 
-    true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    false_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    for i in range(len(y_test_and_opt)):
-        prob = [0,0,0,0]
-        for j in range(4):
-            prob[j] += predicted1[i][j]
-            prob[j] += predicted2[i][j]
-        max_index = prob.index(max(prob))
+            if classes[max_index] == y_test_and_opt[i]:
+                true_positive[classes[max_index]] += 1
+            else:
+                false_positive[classes[max_index]] += 1
 
-        if classes[max_index] == y_test_and_opt[i]:
-            true_positive[classes[max_index]] += 1
-        else:
-            false_positive[classes[max_index]] += 1
-
-    total_gestures = len(y_test_and_opt)
-    amount_correct = 0
-    for gesture_type in [1, 2, 3, 4, 9]:
-        amount_of_gesture = y_test_and_opt.tolist().count(gesture_type)
-        print("GestureType: " + str(gesture_type))
-        if amount_of_gesture > 0:
-            print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
-            print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
-            amount_correct += true_positive[gesture_type]
-    print("Total accuracy: %.3f" % (100 * (amount_correct / total_gestures)))
+        total_gestures = len(y_test_and_opt)
+        amount_correct = 0
+        for gesture_type in [1, 2, 3, 4, 9]:
+            amount_of_gesture = y_test_and_opt.tolist().count(gesture_type)
+            print("GestureType: " + str(gesture_type))
+            if amount_of_gesture > 0:
+                print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
+                print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
+                amount_correct += true_positive[gesture_type]
+        print("Total accuracy: %.3f" % (100 * (amount_correct / total_gestures)))
 
     file = open("decision_forest.c", "w")
     create_forest_native_main(file, clf1.estimators_ + clf2.estimators_, clf1.classes_, num_trees, with_io, feature_set)
