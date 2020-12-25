@@ -1,7 +1,7 @@
 \section{Entscheidungsbaum basiertes Model}
 Entscheidungsbäume sind sehr schnell und ressourcenschonend im Vergleich zu neuronalen Netzen. Allerdings eignen sich neuronale Netze oft besser für ML Probleme, da sie bessere Ergebnisse
 erzielen. Aus diesem Grund wird untersucht, wie gut Entscheidungsbaum basierte Klassifizierer im Vergleich zu neuronalen Netzen sind. Insgesamt werden 67584 verschiedene Konfigurationen getestet.
-Sie unterscheiden sich in der Baumgröße, Waldgröße, Featureauswahl, Ensamble-Methode, sowie in Blattgröße und Quantifizierungsschwellenwert.
+Sie unterscheiden sich in der Baumgröße, Waldgröße, Featureauswahl, Ensemble-Methode, sowie in Blattgröße und Quantifizierungsschwellenwert.
 \newline
 \begin{figure}
     \centering
@@ -11,12 +11,31 @@ Sie unterscheiden sich in der Baumgröße, Waldgröße, Featureauswahl, Ensamble
 \end{figure}
 \newline
 Jeder Entscheidungswald wird mit dem Python-Modul \texttt{Scikit-Learn} trainiert. Scikit-Learn implementiert den Konstruktionsalgorithmus CART (siehe Sektion \ref{sec:construction}) für den Entscheidungsbaum und bietet
-zusätzlich zahlreiche Ensamble-Methoden an. Jede Konfiguration folgt den in Abbildung \ref{fig:model_workflow} illustrierten Arbeitsablauf.
+zusätzlich zahlreiche Ensemble-Methoden an. Jede Konfiguration folgt den in Abbildung \ref{fig:model_workflow} illustrierten Arbeitsablauf.
 \newline
 \newline
 Zunächst wird die Trainingsmenge vorverarbeitet. Dabei werden die verschiedenen
 Features extrahiert, die während der Konstruktion eines Entscheidungsbaumes benötigt werden. Dann wird das Model mit Scikit-Learn und den gegebenen Konfigurationsparametern generiert. Anschließend wird aus dem Model
 ausführbarer C-Code generiert und kompeliert. Zuletzt wird die Erkennungsgenauigkeit des ausführbaren Models auf der Testmenge von Klisch und Dymel ermittelt.
+
+\subsection{Training}
+Mit Scikit-Learn werden Wahl basierte Entscheidungswaldklassifizierer mit den in Sektion \ref{sec:Ensemble} genannten Ensemble-Methoden trainiert. Insgesamt werden Waldgrößen zwischen 1 bis 16 betrachtet und
+Maximalhöhen von den einzelnen Entscheidungsbäumen zwischen 1 bis 22. Außerdem werden die Blattgrößen, d. h. die minimale Anzahl von Trainingsdateneinträgen pro Blatt, \textit{1, 2, 4 und 8} sowie die
+Quantifizierungsschwellenwerte, d. h. Zuwachs der Entscheidungsgenauigkeit pro Teilbaum, \textit{0, $10^{-3}$, $10^{-2}$ und $10^{-1}$} betrachtet.
+\newline
+\newline
+Die letzten beiden Parameter verringern potentiell die Erkenneungsgenauigkeit von den einzelnen Entscheidungsbäumen, sie verringern aber auch die Größe des Baumes signifikant.
+Dadurch können bessere Entscheidungswälder gefunden werden, die zuvor nicht in den Programmspeicher eines Arduino Boards gepasst haben (siehe Sektion \ref{sec:eval_size}).
+\newline
+\newline
+Die Konstruktion der Entscheidungswälder ist nicht deterministisch. Zuallererst muss die Konstruktion eines einzelnen Entscheidungsbaumes nicht deterministisch sein, da selbst wenn immer die beste Teilung
+ausgewählt wird, können mehrere Teilungen auch gleich gut sein. Aus diesen müsste zufällig eine ausgewählt werden. Folglich ist jede Ensemble-Methode zufällig. Außerdem wählt die RandomForest-Methode
+zufällig eine Featureauswahl, und die Bagging-Methode partitioniert die Trainingmenge zufällig. Aus diesem Grund kann in Scikit-Learn einen \texttt{random\_state} zuweisen, der den \textit{Seed} des
+unterliegenen Zufallszahlengenerators setzt.
+\newline
+\newline
+Dementsprechend kann man die Konstruktion als Monte Carlo Algorithmus betrachten, d. h. wiederholte Ausführungen erhöhen die Wahrscheinlichkeit, dass das beste Ergebnis dieser Konfiguration gefunden wurde.
+Jede Konfiguration wird aus diesem Grund mit 140 verschiedenen \texttt{random\_state} ausgeführt.
 
 \subsection{C-Code Generierung eines Entscheidungsbaumes}
 Das Model soll auf kleinen eingebetteten Systemen ausgeführt werden. Diese haben eine Toolchain um die Firmware zu generieren, die meistens auf der Programmiersprache \texttt{C} basiert. Dies trifft auch auf das in
