@@ -16,16 +16,30 @@ def shared_forest_print_stuff(file, feature_set, classes, num_trees):
     else:
         file.write("unsigned char result_map[5] = { " + str(classes[0]) + "," + str(classes[1]) + "," + str(
             classes[2]) + "," + str(classes[3]) + ", " + str(classes[4])+" };\n")
-    for i in range(num_trees):
-        if feature_set == 6:
-            file.write("tree" + str(i) + "(f_args, l_args, tree_res);\n")
-        else:
-            file.write("tree" + str(i) + "(args, tree_res);\n")
-        file.write("total_res[0] += tree_res[0];\n")
-        file.write("total_res[1] += tree_res[1];\n")
-        file.write("total_res[2] += tree_res[2];\n")
-        file.write("total_res[3] += tree_res[3];\n")
-        file.write("total_res[4] += tree_res[4];\n")
+
+    if feature_set == 8:
+        for j in [0, 9]:
+            for i in range(int(num_trees/2)):
+                tree_index = i
+                if j == 9:
+                    tree_index += int(num_trees/2)
+                file.write("tree" + str(tree_index) + "(args + " + str(j) + ", tree_res);\n")
+                file.write("total_res[0] += tree_res[0];\n")
+                file.write("total_res[1] += tree_res[1];\n")
+                file.write("total_res[2] += tree_res[2];\n")
+                file.write("total_res[3] += tree_res[3];\n")
+                file.write("total_res[4] += tree_res[4];\n")
+    else:
+        for i in range(num_trees):
+            if feature_set == 6:
+                file.write("tree" + str(i) + "(f_args, l_args, tree_res);\n")
+            else:
+                file.write("tree" + str(i) + "(args, tree_res);\n")
+            file.write("total_res[0] += tree_res[0];\n")
+            file.write("total_res[1] += tree_res[1];\n")
+            file.write("total_res[2] += tree_res[2];\n")
+            file.write("total_res[3] += tree_res[3];\n")
+            file.write("total_res[4] += tree_res[4];\n")
 
     file.write("unsigned char max_index = 0;\n")
     file.write("float max_value = 0;\n")
@@ -58,6 +72,8 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
         file.write("long l_args[10];\n")
     elif feature_set == 7:
         file.write("float args[9];\n")
+    elif feature_set == 8:
+        file.write("float args[19];\n")
 
     if with_io:
         if feature_set == 1:
@@ -75,13 +91,15 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1 + 10], \"%ld\", &l_args[i]);\n")
         elif feature_set == 7:
             file.write("for (char i = 0; i < 9; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
+        elif feature_set == 8:
+            file.write("for (char i = 0; i < 19; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
 
     shared_forest_print_stuff(file, feature_set, classes, num_trees)
 
 
 def create_forest_ino_evaluate(file, trees, classes, num_trees, feature_set):
     create_forest(file, trees, num_trees, feature_set)
-    if feature_set == 1 or feature_set == 7:
+    if feature_set == 1 or feature_set == 7 or feature_set == 8:
         file.write("unsigned char evaluate_forest(float* args) {\n")
     elif feature_set == 6:
         file.write("unsigned char evaluate_forest(float* f_args, long* l_args) {\n")

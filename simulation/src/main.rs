@@ -108,10 +108,22 @@ fn calculate_features(gesture: &Gesture) -> (Vec<f32>, Vec<i32>) {
 }
 
 #[cfg(feature="feature_set7")]
-fn calculate_features(gesture: &Gesture) -> Vec<f64> {
-    let mut args: Vec<f64> = Vec::new();
+fn calculate_features(gesture: &Gesture) -> Vec<f32> {
+    let mut args: Vec<f32> = Vec::new();
     let motion_history_2 = MotionHistory2::calculate(&gesture);
     args.append(&mut motion_history_2.deref().to_vec());
+    args
+}
+
+#[cfg(feature="feature_set8")]
+fn calculate_features(gesture: &Gesture) -> Vec<f32> {
+    let mut args: Vec<f32> = Vec::new();
+    let motion_history_2 = MotionHistory2::calculate(&gesture);
+    args.append(&mut motion_history_2.deref().to_vec());
+    let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
+    args.append(&mut center_of_gravity_x.deref().to_vec());
+    args.append(&mut center_of_gravity_y.deref().to_vec());
     args
 }
 

@@ -78,6 +78,7 @@ result = pd.read_csv(storage_path + "/result", dtype=int).values.flatten()
 
 # Specifying the features
 max_features = 10
+X2 = []
 if feature_set == 1:
     center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX",
                                                          dtype=float)
@@ -114,10 +115,22 @@ elif feature_set == 6:
     center_of_gravity_distribution_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionY", dtype=int)
     X = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y, center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
     max_features = 20
-else:
+elif feature_set == 7:
     motion_history2 = pd.read_csv(storage_path + "/MotionHistory2", dtype=float)
     X = pd.concat([motion_history2], axis=1).values
     max_features = 9
+elif feature_set == 8:
+    motion_history2 = pd.read_csv(storage_path + "/MotionHistory2", dtype=float)
+    X = pd.concat([motion_history2], axis=1).values
+    max_features = 9
+
+    center_of_gravity_distribution_float_x = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatX",
+                                                         dtype=float)
+    center_of_gravity_distribution_float_y = pd.read_csv(storage_path + "/CenterOfGravityDistributionFloatY",
+                                                         dtype=float)
+    X2 = pd.concat([center_of_gravity_distribution_float_x, center_of_gravity_distribution_float_y], axis=1).values
+    max_features2 = 10
+
 
 
 # Interestingly seems the order to effect the accuracy
@@ -128,6 +141,16 @@ else:
 
 y = result
 X_train, X_test_and_opt, y_train, y_test_and_opt = train_test_split(X, y, test_size=train_fraction, random_state=0)
+
+X2_test_and_opt = 0
+if len(X2) != 0:
+    X2_train, X2_test_and_opt, y2_train, y2_test_and_opt = train_test_split(X2, y, test_size=train_fraction, random_state=0)
+
+    # Assertion
+    for i in range(len(y_test_and_opt)):
+        if y_test_and_opt[i] != y2_test_and_opt[i]:
+            print("ERROR")
+
 
 
 # For cherry picking we will optimize on XX_opt and later validate on XX_test
@@ -153,7 +176,9 @@ def create_ensamble_tree(clf):
         file.close()
 
 
-def evaluate_classifier(clf):
+def evaluate_classifier(args):
+    clf, X_train, y_train, X_test_and_opt = args
+
     clf = clf.fit(X_train, y_train)
     predicted = clf.predict(X_test_and_opt)
 
@@ -167,14 +192,14 @@ def evaluate_classifier(clf):
     return clf, accuracy
 
 
-def cherry_picking(template):
+def cherry_picking(template, X_train, Y_train, X_test_and_opt):
     amount_tests = 140
     if not silent_mode:
         print("Test " + str(amount_tests) + " different classifier, and cherry pick best...")
     pool = multiprocessing.Pool(processes=num_cores_per_node)
     args = []
     for i in range(amount_tests):
-        args.append(template(i))
+        args.append([template(i), X_train, Y_train, X_test_and_opt])
     classifier = pool.map(evaluate_classifier, args)
     classifier.sort(key=lambda x: x[1], reverse=True)
     return classifier[0][0]
@@ -183,7 +208,7 @@ def cherry_picking(template):
 # Create the decision tree and train it
 def decision_tree():
     clf = cherry_picking(
-        lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id))
+        lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id), X_train, y_train, X_test_and_opt)
 
     # plt.figure(figsize=(40, 40))
     # tree.plot_tree(clf, impurity=False, filled=True)
@@ -217,13 +242,60 @@ def random_forest():
     clf = cherry_picking(
         lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=num_trees,
                                           random_state=id, n_jobs=1,
-                                          ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf))
+                                          ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf), X_train, y_train, X_test_and_opt)
     predicted = clf.predict(X_test_and_opt)
     if not silent_mode:
         print("Evaluating RandomForestClassifier:")
         evaluate_predicted(predicted, y_test_and_opt)
     create_ensamble_tree(clf)
     return max(x.tree_.max_depth for x in clf.estimators_)
+
+
+def random_forest_stackedish():
+    clf1 = cherry_picking(
+        lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=int(num_trees/2),
+                                          random_state=id, n_jobs=1,
+                                          ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf), X_train, y_train, X_test_and_opt)
+
+    clf2 = cherry_picking(
+        lambda id: RandomForestClassifier(max_depth=max_depth, criterion='entropy', n_estimators=int(num_trees/2),
+                                          random_state=id, n_jobs=1,
+                                          ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf), X2_train, y_train, X2_test_and_opt)
+
+    predicted1 = clf1.predict_proba(X_test_and_opt)
+    predicted2 = clf2.predict_proba(X2_test_and_opt)
+
+    classes = clf1.classes_
+
+    true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    false_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(y_test_and_opt)):
+        prob = [0,0,0,0]
+        for j in range(4):
+            prob[j] += predicted1[i][j]
+            prob[j] += predicted2[i][j]
+        max_index = prob.index(max(prob))
+
+        if classes[max_index] == y_test_and_opt[i]:
+            true_positive[classes[max_index]] += 1
+        else:
+            false_positive[classes[max_index]] += 1
+
+    total_gestures = len(y_test_and_opt)
+    amount_correct = 0
+    for gesture_type in [1, 2, 3, 4, 9]:
+        amount_of_gesture = y_test_and_opt.tolist().count(gesture_type)
+        print("GestureType: " + str(gesture_type))
+        if amount_of_gesture > 0:
+            print("True Positive: %.3f" % (100 * (true_positive[gesture_type] / amount_of_gesture)))
+            print("False Positive: %.3f" % (100 * (false_positive[gesture_type] / total_gestures)))
+            amount_correct += true_positive[gesture_type]
+    print("Total accuracy: %.3f" % (100 * (amount_correct / total_gestures)))
+
+    file = open("decision_forest.c", "w")
+    create_forest_native_main(file, clf1.estimators_ + clf2.estimators_, clf1.classes_, num_trees, with_io, feature_set)
+    file.close()
+
 
 
 # This is like GBM, but just more performant and applies regularization to avoid overfitting
@@ -252,7 +324,7 @@ def adaboost_decision_tree():
     clf = cherry_picking(lambda id: AdaBoostClassifier(
         base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy",
                                                    ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf),
-        n_estimators=num_trees, random_state=id, learning_rate=0.1))
+        n_estimators=num_trees, random_state=id, learning_rate=0.1), X_train, y_train, X_test_and_opt)
     clf.fit(X_train, y_train)
     if not silent_mode:
         print("AdaBoostClassifier: ")
@@ -281,7 +353,7 @@ def bagging_decision_tree():
 def gradient_boosting_decision_tree():
     clf = cherry_picking(
         lambda id: GradientBoostingClassifier(n_estimators=num_trees, random_state=id, learning_rate=0.01,
-                                              max_depth=max_depth))
+                                              max_depth=max_depth), X_train, y_train, X_test_and_opt)
     clf.fit(X_train, y_train)
     print("GradientBoostingClassifier: ")
     print(clf.score(X_test_and_opt, y_test_and_opt))
@@ -295,7 +367,7 @@ def extra_trees():
     clf = cherry_picking(
         lambda id: ExtraTreesClassifier(n_estimators=num_trees, random_state=id, n_jobs=1, max_depth=max_depth,
                                         max_features=max_features,
-                                        ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf))
+                                        ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf), X_train, y_train, X_test_and_opt)
     # clf.base_estimator = tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy")
     clf.fit(X_train, y_train)
     if not silent_mode:
@@ -332,17 +404,20 @@ def rotation_forest():
 if not only_ensemble:
     decision_tree()
 
-if ensemble_kind == 1:
-    sys.exit(random_forest())
-elif ensemble_kind == 2:
-    sys.exit(adaboost_decision_tree())
-elif ensemble_kind == 3:
-    sys.exit(bagging_decision_tree())
-elif ensemble_kind == 4:
-    sys.exit(extra_trees())
-#elif ensemble_kind == 5:
-#    sys.exit(rotation_forest())
+if feature_set == 8:
+    sys.exit(random_forest_stackedish())
 else:
-    gradient_boosting_decision_tree()
-    # xgboost_decision_tree()
-    # hist_gradient_boosting_decision_tree()
+    if ensemble_kind == 1:
+        sys.exit(random_forest())
+    elif ensemble_kind == 2:
+        sys.exit(adaboost_decision_tree())
+    elif ensemble_kind == 3:
+        sys.exit(bagging_decision_tree())
+    elif ensemble_kind == 4:
+        sys.exit(extra_trees())
+    #elif ensemble_kind == 5:
+    #    sys.exit(rotation_forest())
+    else:
+        gradient_boosting_decision_tree()
+        # xgboost_decision_tree()
+        # hist_gradient_boosting_decision_tree()
