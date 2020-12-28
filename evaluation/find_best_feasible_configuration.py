@@ -3,9 +3,9 @@ import pandas as pd
 # Manually tested
 default_size = 2508
 
-data = pd.read_csv("./saad_c4.csv")
+data = pd.read_csv("./saad_c6.csv")
 
-max_size_in_bytes = 45000 + default_size
+max_size_in_bytes = 110000 + default_size
 
 min_size = 99999999
 max_accuracy_klisch = 0
@@ -18,8 +18,10 @@ ensemble_technique = 0
 feature_set = 0
 ccp_alpha = 0
 min_leaf_sample = 0
+combined_accuracy = 0
 for item in data.query("forest_bytes <= " + str(max_size_in_bytes) + " and forest_bytes > 0").iterrows():
-    if (item[1].forest_bytes < min_size and item[1].accuracy_klisch == max_accuracy_klisch) or item[1].accuracy_klisch > max_accuracy_klisch:
+    temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null
+    if (item[1].forest_bytes < min_size and temp_comb == combined_accuracy) or temp_comb > combined_accuracy:
         max_accuracy_klisch = item[1].accuracy_klisch
         max_accuracy_dymel_gesture = item[1].accuracy_dymel_gesture
         max_accuracy_dymel_null = item[1].accuracy_dymel_null
@@ -31,6 +33,7 @@ for item in data.query("forest_bytes <= " + str(max_size_in_bytes) + " and fores
         set_fraction = item[1].set_fraction
         ccp_alpha = item[1].ccp_alpha
         min_leaf_sample = item[1].min_leaf_sample
+        combined_accuracy = max_accuracy_klisch + max_accuracy_dymel_null
 
 print("Best feasible result:")
 print("Max depth: " + str(max_depth))

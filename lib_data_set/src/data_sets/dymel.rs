@@ -55,9 +55,6 @@ lazy_static! {
                 CoveringObject::Hand, CameraDistance::CM25, BrightnessLevel::Low,
                 Some(AdditionalSpecification::NullGestureSameInAndOut), ParsingMethod::ByAnnotation),
             // MediumBrightness
-            DataSetEntry::new(format!("{}/{}", path_test, "TBBT_mediumBrightness_25cm_slow.csv"), DataSetName::DymelData,
-                CoveringObject::Hand, CameraDistance::CM25, BrightnessLevel::Medium,
-                Some(AdditionalSpecification::Slow), ParsingMethod::ByAnnotation),
             DataSetEntry::new(format!("{}/{}", path_test, "NULL_Corner_mediumBrightness_5cm_fast.csv"), DataSetName::DymelData,
                 CoveringObject::Hand, CameraDistance::CM5, BrightnessLevel::Medium,
                 Some(AdditionalSpecification::NullGestureCorner), ParsingMethod::ByAnnotation),
@@ -177,13 +174,13 @@ lazy_static! {
 
     pub static ref DYMEL_NULL_TRAINING: Vec<DataSetEntry> = {
         let mut data = DYMEL_NULL.clone();
-        data.iter_mut().for_each(|entry| entry.take_percent_until(0.25));
+        data.iter_mut().for_each(|entry| entry.take_percent_until(0.125));
         data
     };
 
     pub static ref DYMEL_NULL_TEST: Vec<DataSetEntry> = {
         let mut data = DYMEL_NULL.clone();
-        data.iter_mut().for_each(|entry| entry.take_percent_from(0.75));
+        data.iter_mut().for_each(|entry| entry.take_percent_from(0.125));
         data
     };
 
@@ -349,7 +346,7 @@ lazy_static! {
 
     pub static ref DYMEL_GESTURE_TEST: Vec<DataSetEntry> = {
         let mut data = DYMEL_GESTURE.clone();
-        data.iter_mut().for_each(|entry| entry.take_percent_from(0.75));
+        data.iter_mut().for_each(|entry| entry.take_percent_from(0.25));
         data
     };
 

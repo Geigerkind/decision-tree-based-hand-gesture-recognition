@@ -29,6 +29,7 @@ use lib_gesture::entities::Gesture;
 
 use crate::strum::IntoEnumIterator;
 use lib_data_set::entities::DataSetEntry;
+use lib_gesture::value_objects::GestureType;
 
 const ASCII_NEW_LINE: u8 = 10;
 
@@ -37,13 +38,15 @@ fn main() {
     let data_sets: Vec<&Vec<DataSetEntry>> = vec![
         EVA_9PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
         EVA_16PIXEL.get(&ParsingMethod::ByAnnotation).unwrap(),
-        //&DYMEL_NULL_TRAINING,
+        &DYMEL_NULL_TRAINING,
         &DYMEL_GESTURE_TRAINING,
         KUBIK_TRAINING.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KUBIK_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KLISCH_TEST.get(&ParsingMethod::ByAnnotation).unwrap(),
         //KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
     ];
+
+    //println!("{}", data_sets.iter().any(|ds| ds.iter().any(|entry| entry.gestures().iter().any(|gest| gest.gesture_type == GestureType::NotGesture))));
 
     let mut gestures: Vec<Gesture> = Vec::new();
     let mut synthetic_rotations: Vec<Gesture> = Vec::new();

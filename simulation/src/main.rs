@@ -218,6 +218,7 @@ mod test {
     use lib_evaluation::entities::Evaluation;
     use lib_evaluation::value_objects::EvaluationEntryKey;
     use crate::calculate_features;
+    use lib_gesture::value_objects::GestureType;
 
     fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName, program: &str) {
         let mut evaluation = Evaluation::new(data_set_name);

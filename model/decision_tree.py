@@ -277,8 +277,8 @@ def random_forest_stackedish():
         true_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         false_positive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for i in range(len(y_test_and_opt)):
-            prob = [0,0,0,0]
-            for j in range(4):
+            prob = [0,0,0,0,0]
+            for j in range(5):
                 prob[j] += predicted1[i][j]
                 prob[j] += predicted2[i][j]
             max_index = prob.index(max(prob))

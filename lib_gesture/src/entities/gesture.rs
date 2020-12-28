@@ -43,7 +43,11 @@ impl Gesture {
 
         if self.gesture_type != GestureType::TopToBottom {
             let mut gesture = Gesture::default();
-            gesture.gesture_type = GestureType::TopToBottom;
+            gesture.gesture_type = if self.gesture_type == GestureType::NotGesture {
+                GestureType::NotGesture
+            } else {
+                GestureType::TopToBottom
+            };
             gesture.frames = self.frames.iter().map(|frame| {
                 let mut new_frame = Frame::default();
                 new_frame.pixel[0] = frame.pixel[6];
@@ -62,7 +66,11 @@ impl Gesture {
 
         if self.gesture_type != GestureType::RightToLeft {
             let mut gesture = Gesture::default();
-            gesture.gesture_type = GestureType::RightToLeft;
+            gesture.gesture_type = if self.gesture_type == GestureType::NotGesture {
+                GestureType::NotGesture
+            } else {
+                GestureType::RightToLeft
+            };
             gesture.frames = self.frames.iter().map(|frame| {
                 let mut new_frame = frame.clone();
                 new_frame.pixel[0] = frame.pixel[2];
@@ -78,7 +86,11 @@ impl Gesture {
 
         if self.gesture_type != GestureType::BottomToTop {
             let mut gesture = Gesture::default();
-            gesture.gesture_type = GestureType::BottomToTop;
+            gesture.gesture_type = if self.gesture_type == GestureType::NotGesture {
+                GestureType::NotGesture
+            } else {
+                GestureType::BottomToTop
+            };
             gesture.frames = self.frames.iter().map(|frame| {
                 let mut new_frame = Frame::default();
                 new_frame.pixel[0] = frame.pixel[6];
