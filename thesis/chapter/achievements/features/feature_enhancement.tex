@@ -1,0 +1,15 @@
+\subsection{Feature Verbesserungen}
+Einige Anforderungen an ein Feature können durch Änderungen hinzugefügt werden. Relative Helligkeitsunterschiede können durch Normalisierung eleminiert werden, Positionen durch das Argument oder partielle Anwendung
+inferiert werden und die Entwicklung über Zeit durch die Duplizierung von Feature über Zeitfenster dargestellt werden.
+\newline
+\newline
+Normalisierung ersetzt die Aussage über die absolute gegen die lokale Gesamthelligkeit. Dies erzeugt eine Invarianz gegenüber Skalierung der Helligkeiten jedoch nicht über einen Offset. Die Skalierung passt den
+Kontrast zwischen hellen und dunklen Stellen mit an, der Offset jedoch nicht.
+\newline
+\newline
+Informationen über die Positionen können einerseits direkt aus dem Argument einer Funktion als Feature bereitgestellt werden, z. B. $\arg(\max X)$. Andererseits indirekt, indem das Feature dupliziert wird
+und auf Teilmengen der Definitionsmenge angewendet wird, z. B. die Berechnung eines Features für einzelne Spalten oder Zeilen.
+\newline
+\newline
+Ähnlich zur Position kann auch die Entwicklung über Zeit durch das Dupizieren von Feature dargestellt werden. Dabei wird die Geste in eine bestimmte Anzahl von gleich großen Zeitfenstern eingeteilt. Für jedes
+Zeitfenster wird das Feature berechnet.

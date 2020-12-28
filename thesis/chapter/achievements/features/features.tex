@@ -1,11 +1,21 @@
 \section{Features}
+Der Entscheidungsbaum nutzt Features um die einzelnen Klassen voneinander zu unterscheiden. Dies funktioniert aber nur, wenn die Klassen klar trennbar sind. Ist eine Trennung nicht möglich, so ist
+auch keine gute Generalisierung von dem Entscheidungsbaum zu erwarten.
+\newline
+\newline
+In dieser Arbeit muss die Richtung der Handbewegung erkannt werden. Die Bewegung kann mit verschiedenen Geschwindigkeiten durchgeführt werden. Aus diesem Grund sollte das Feature invariant
+gegenüber Geschwindigkeit sein. Außerdem wird die Handbewegung aus verschiedenen Distanzen zur Kamera durchgeführt. Dadurch variiert der Kontrast und die Helligkeit.
+Dementsprechend sollte das Feature invariant zu den Lichtverhältnissen sein. Die Richtung der Bewegung ist eine Kombination aus der derzeiten Position der Hand und dem Zeitpunkt. Das Feature soll
+also Auskunft über die Entwicklung über die Zeit geben und die Position die die Hand zu diesen Zeitpunkten hatte.
+\newline
+\newline
+Erschwerend ist, dass die Bewegung nie exakt gleich ausgeführt wird. Die Bewegung kann eine Kreisform haben, etwas schräg sein oder einige Fotowiderstände nicht verdecken. Das Feature muss dem gegenüber
+robust sein.
+\input{chapter/achievements/features/feature_enhancement}
+\input{chapter/achievements/features/selection}
 
-* Manuelle Feature selection (TODO: Lieber bei features rein?)
+\iffalse
+* Manuelle Feature selection (TODO: Lieber bei features rein?) @Diskussion => Hirarchisch?
 * RandomForest und ExtraTree machen das schon
 * Eigentlich sind unsere Featuresets keine Featuresets sondern einzelne Feature
-\input{chapter/achievements/features/requirements/requirements}
-\input{chapter/achievements/features/curse_of_dimensionality}
-\input{chapter/achievements/features/unpromising_features}
-\input{chapter/achievements/features/brightness_distribution}
-\input{chapter/achievements/features/motion_history/motion_history}
-\input{chapter/achievements/features/center_of_gravity/center_of_gravity}
+\fi

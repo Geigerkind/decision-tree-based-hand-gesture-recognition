@@ -21,13 +21,15 @@ impl Feature for CenterOfGravityDistributionFloatX {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized {
         let mut center_of_gravities = Vec::with_capacity(gesture.frames.len());
         for frame in gesture.frames.iter() {
-            let total_brightness = frame.pixel.iter().sum::<i16>();
+            let part1 = frame.pixel[2] + frame.pixel[5] + frame.pixel[8];
+            let part2 = frame.pixel[0] + frame.pixel[3] + frame.pixel[6];
+            let total_brightness = part1 + part2 + frame.pixel[1] + frame.pixel[4] + frame.pixel[7];
             if total_brightness == 0 {
                 center_of_gravities.push(0.0);
                 continue;
             }
 
-            let amount = frame.pixel[2] + frame.pixel[5] + frame.pixel[8] - frame.pixel[0] - frame.pixel[3] - frame.pixel[6];
+            let amount = part1 - part2;
             center_of_gravities.push((amount as f32) / (total_brightness as f32));
         }
 
