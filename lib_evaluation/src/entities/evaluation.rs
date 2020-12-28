@@ -21,6 +21,23 @@ impl Evaluation {
         }
     }
 
+    pub fn merge(evaluations: Vec<Evaluation>) -> Self {
+        let mut evaluation = Self::new(evaluations[0].data_set_name);
+        for eval in evaluations {
+            for (key, entry) in eval.entries {
+                for _ in 0..entry.true_positive().clone() {
+                    evaluation.add_true_positive(key);
+                }
+
+                for _ in 0..entry.false_negative().clone() {
+                    evaluation.add_false_negative(key);
+                }
+            }
+        }
+
+        evaluation
+    }
+
     /// Calculates the accuracy over all entries
     pub fn accuracy(&self) -> Option<f64> {
         let total = self.entries.iter().fold(0, |acc, (_, entry)| acc + entry.true_positive() + entry.false_negative());

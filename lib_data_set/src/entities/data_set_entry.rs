@@ -20,6 +20,9 @@ pub struct DataSetEntry {
     offset: Option<i16>
 }
 
+unsafe impl Sync for DataSetEntry {}
+unsafe impl Send for DataSetEntry {}
+
 impl DataSetEntry {
     /// Creates a new instance ob this structure and parses the data set specified in the path implicitly.
     pub fn new(file_path: String, data_set_name: DataSetName, covering_object: CoveringObject, camera_distance: CameraDistance,

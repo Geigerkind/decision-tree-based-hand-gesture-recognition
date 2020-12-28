@@ -11,6 +11,7 @@ extern crate lib_feature;
 extern crate lib_gesture;
 extern crate serialport;
 extern crate num_traits;
+extern crate rayon;
 
 use std::io::{Write, Read};
 use std::path::Path;
@@ -219,10 +220,12 @@ mod test {
     use lib_evaluation::value_objects::EvaluationEntryKey;
     use crate::calculate_features;
     use lib_gesture::value_objects::GestureType;
+    use rayon::iter::ParallelIterator;
+    use rayon::iter::{IntoParallelRefIterator, IntoParallelRefMutIterator, IntoParallelIterator};
 
     fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName, program: &str) {
-        let mut evaluation = Evaluation::new(data_set_name);
-        for data_set_entry in data_set.iter() {
+        let evaluations: Vec<Evaluation> = data_set.clone().into_par_iter().map(|data_set_entry| {
+            let mut evaluation = Evaluation::new(data_set_name);
             let evaluation_entry_key = EvaluationEntryKey::new(*data_set_entry.covering_object(), *data_set_entry.camera_distance(),
                                                                *data_set_entry.brightness_level(), *data_set_entry.additional_specification(),
                                                                *data_set_entry.offset(), *data_set_entry.scaling());
@@ -250,9 +253,10 @@ mod test {
                     evaluation.add_false_negative(evaluation_entry_key);
                 }
             }
-        }
+            evaluation
+        }).collect();
 
-        evaluation.print_results();
+        Evaluation::merge(evaluations).print_results();
     }
 
     #[test]
