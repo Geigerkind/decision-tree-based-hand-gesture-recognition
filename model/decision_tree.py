@@ -92,7 +92,7 @@ elif feature_set == 2:
     X = pd.concat([center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
     max_features = 10
 elif feature_set == 3:
-    motion_history = pd.read_csv(storage_path + "/MotionHistory", dtype=int)
+    motion_history = pd.read_csv(storage_path + "/MotionHistory2", dtype=int)
     X = pd.concat([motion_history], axis=1).values
     max_features = 9
 elif feature_set == 4:
@@ -101,7 +101,7 @@ elif feature_set == 4:
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom], axis=1).values
     max_features = 12
 elif feature_set == 5:
-    motion_history = pd.read_csv(storage_path + "/MotionHistory", dtype=int)
+    motion_history = pd.read_csv(storage_path + "/MotionHistory2", dtype=int)
     brightness_dist_6xy_geom = pd.read_csv(storage_path + "/BrightnessDistribution6XYGeom", dtype=int)
     darkness_dist_6xy_geom = pd.read_csv(storage_path + "/DarknessDistribution6XYGeom", dtype=int)
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history], axis=1).values
@@ -302,6 +302,7 @@ def random_forest_stackedish():
     file = open("decision_forest.c", "w")
     create_forest_native_main(file, clf1.estimators_ + clf2.estimators_, clf1.classes_, num_trees, with_io, feature_set)
     file.close()
+    return max(x.tree_.max_depth for x in clf1.estimators_ + clf2.estimators_)
 
 
 
@@ -331,7 +332,7 @@ def adaboost_decision_tree():
     clf = cherry_picking(lambda id: AdaBoostClassifier(
         base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy",
                                                    ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf),
-        n_estimators=num_trees, random_state=id, learning_rate=0.1), X_train, y_train, X_test_and_opt)
+        n_estimators=num_trees, random_state=id, learning_rate=0.2), X_train, y_train, X_test_and_opt)
     clf.fit(X_train, y_train)
     if not silent_mode:
         print("AdaBoostClassifier: ")

@@ -11,13 +11,15 @@ echo "max_depth,forest_size,optimization_level,ensemble_technique,feature_set,se
 # Optimization O0, Os, O2, O3
 
 optimizations=(O0 Os O2 O3)
-set_fractions=(0.3 0.5)
+set_fractions=(0.5)
+feature_sets=(1 2 3 4 5)
+
 ccp_alpha=$1
 min_leaf_sample=$2
 num_cores_per_node=$3
 env_num=$4
 
-for feature_set in {1..6}; do
+for feature_set in ${feature_sets[*]}; do
   for set_fraction in ${set_fractions[*]}; do
     for ensemble_technique in {1..4}; do
       for max_depth in {1..22}; do

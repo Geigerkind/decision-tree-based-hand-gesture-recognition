@@ -18,7 +18,7 @@ impl Deref for MotionHistory2 {
 impl Feature for MotionHistory2 {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized {
         let max_value: f32 = 1.0;
-        let decay: f32 = 2.0 * max_value / (gesture.frames.len() as f32);
+        let decay: f32 = max_value / (gesture.frames.len() as f32);
         let mut result: [f32; 9] = [0.0; 9];
 
         let average_amplitude_change = *AverageAmplitudeChange::calculate(gesture).deref() as i16;
