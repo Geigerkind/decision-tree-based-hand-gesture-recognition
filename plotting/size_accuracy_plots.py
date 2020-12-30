@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 # Manually tested
-default_size = 2508
+default_size = 2500
 
 data_size = pd.read_csv("./size_and_accuracy_data.csv")
 

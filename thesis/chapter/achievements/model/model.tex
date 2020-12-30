@@ -38,6 +38,7 @@ Dementsprechend kann man die Konstruktion als Monte Carlo Algorithmus betrachten
 Jede Konfiguration wird aus diesem Grund mit 140 verschiedenen \texttt{random\_state} ausgeführt.
 
 \subsection{C-Code Generierung eines Entscheidungsbaumes}
+\label{sec:cCodeTree}
 Das Model soll auf kleinen eingebetteten Systemen ausgeführt werden. Diese haben eine Toolchain um die Firmware zu generieren, die meistens auf der Programmiersprache \texttt{C} basiert. Dies trifft auch auf das in
 dieser Arbeit benutzten Arduino Board zu.
 \begin{lstlisting}[label=lst:sklearnTreeStructure,caption={Skizze der rekursiven Datenstruktur für Entscheidungsbäume die von Scikit-Learn genutzt wird.}]

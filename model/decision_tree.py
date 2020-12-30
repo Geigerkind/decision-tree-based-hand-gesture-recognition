@@ -215,7 +215,7 @@ def cherry_picking(template, X_train, Y_train, X_test_and_opt):
 # Create the decision tree and train it
 def decision_tree():
     clf = cherry_picking(
-        lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id), X_train, y_train, X_test_and_opt)
+        lambda id: tree.DecisionTreeClassifier(criterion="entropy", max_depth=max_depth, random_state=id, ccp_alpha=ccp_alpha, min_samples_leaf=min_samples_leaf), X_train, y_train, X_test_and_opt)
 
     # plt.figure(figsize=(40, 40))
     # tree.plot_tree(clf, impurity=False, filled=True)
