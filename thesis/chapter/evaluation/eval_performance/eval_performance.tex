@@ -1,0 +1,35 @@
+\section{Erkennungsgenauigkeit}
+Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Aus denen werden 6 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden X(TODO)
+verschiedene Konfigurationen trainiert und getestet (siehe Sektion \ref{sec:Training}).
+\newline
+\newline
+Betrachtet wird die beste Konfiguration, die innerhalb der Restriktion des Programmspeichers, nach möglichen Optimierungen (siehe Sektion \ref{sec:eval_size}), die Summe der Erkennungsgenauigkeiten
+der Testmenge von Klisch und der Nullgestentestmenge maximiert.
+\newline
+\newline
+Die verschiedenen Featuremengen werden im Hinblick auf die Erkennungsgenauigkeit auf der Testmenge von Klisch, der Nullgestentestmenge, der neuerstellten Gestentestmenge und der synthetischen
+Helligkeitstestmenge untereinander verglichen. Außerdem wird die Auswirkung von verschiedenen Baumhöhen und Waldgrößen untersucht. Zuletzt wird die beste Konfiguration mit den Ergebnissen von Giese verglichen.
+
+\input{chapter/evaluation/eval_performance/brightness_distribution}
+\input{chapter/evaluation/eval_performance/motion_history}
+\input{chapter/evaluation/eval_performance/brightness_distribution_and_motion_history}
+\input{chapter/evaluation/eval_performance/cocd_dist_float}
+\input{chapter/evaluation/eval_performance/cocd_dist_int}
+\input{chapter/evaluation/eval_performance/cocd_dist_and_motion_history}
+\input{chapter/evaluation/eval_performance/comparison_to_previous}
+
+
+\iffalse
+* Es wurden 3 Features näher betrachtet und daraus insgesamt 6 Featuremengen erstellt.
+* Es wurden X Konfigurationen getestet (siehe Training)
+    => Davon wurden die besten ausgewählt
+* Was ist eine feasible solution
+    => Lösungen mit mehr Verbrauch werden gewählt, da bis zu 66\% Reduktion noch möglich ist (siehe Size eval)
+* Verglichen werden insgesamt 4 Testmengen:
+    => Klisch zum Vergleich vorherigen Arbeiten
+    => Dymel
+    => Null
+    => Brightness (Das am Ende, um die Ansätze untereinander zu vergleichen?)
+    => Garbage Kubik (?)
+* Es werden verschiedene Baumhöhen und Waldhöhen betrachtet und welchen Einfluss die auf die Erkennungsgenauigkeit haben
+\fi

@@ -1,0 +1,32 @@
+\subsection{Feature-Extrahierung}
+Die Ausführungszeit um das Bild zu lesen wird als konstant angenommen. Diskutiert wird nur die Schwerpunktverteilung, da diese die beste Erfolgsgenauigkeit erzielte.
+\newline
+\newline
+Jedes mal wenn ein Bild
+aufgenommen wird der Schwerpunkt des Bildes berechnet und gespeichert. In den WCEP fließt also nur ein mal die Schwerpunktberechnung eines Bildes ein. Insgesamt sind das jedoch bis zu $116,5625\ \mu s$.
+Diese setzen sich zusammen aus 201 Zyklen für die einzelnen Instruktionen ($12,5625\ \mu s$), $6\ \cdot\ 4\ \mu s\ =\ 24\ \mu s$ für die Konvertierungsfunktion
+\textit{\_\_floatsisf}, $2\ \cdot\ 36\ \mu s\ =\ 72\ \mu s$ für die Dividierungsfunktion \textit{\_\_divsf3} und $2\ \cdot\ 4\ \mu s\ =\ 8\ \mu s$ für die Vergleichsfunktion \textit{\_\_lesf2}.
+\begin{lstlisting}[label=lst:cocdAlgo,caption={Algorithmus um die Schwerpunktverteilung zu berechnen.}]
+Initialisierung.
+for (char i = 0; i < 5; ++i) {
+    features[i] = 0;
+    for (char j = 0; j < zusammenfass_muster[i]; ++j)
+        features[i] += *(schwerpunkt_buffer++);
+    features[i] /= ((float)zusammenfass_muster[i]);
+}
+\end{lstlisting}
+Verbleibend ist nur für jedes der, in diesem Fall 5, Zeitfenster den zusammenfassenden Schwerpunkt durch den Durchschnitt zu ermitteln (siehe Listing \ref{lst:cocdAlgo}). Die innere Schleife wird im
+schlimmsten Fall für die gesamte Schwerpunktbuffergröße durchlaufen, die zurzeit 125 ist. Die äußere Schleife wird exakt 5 mal durchlaufen.
+\newline
+\newline
+Jeder Durchlauf der inneren Schleife bedarf im schlimmsten Fall bis zu $13,6875\ \mu s$. Dies setzt sich zusammen aus 27 Zyklen für die einzelnen Instruktionen ($1,6875\ \mu s$),
+und $12\ \mu s$ für die Addierungsfunktion \textit{\_\_addsf3}. Bei 125 Durchläufen beläuft sich die Gesamtausführunszeit der inneren Schleife auf bis zu $1710,9375\ \mu s\ \approx\ 1,7\ ms$.
+\newline
+\newline
+Jeder Durchlauf der äußeren Schleife bedarf im Schlimmsten Fall bis zu $43,5625\ \mu s$. Dies setzt sich zusammen aus 57 Zyklen für die einzelnen Instruktionen ($3,5625\ \mu s$),
+$4\ \mu s$ für die Funktion \textit{\_\_floatsisf} und $36\ \mu s$ für die Funktion \textit{\_\_divsf3}. Bei 5 Durchläufen beläuft sich die Gesamtausführungszeit
+der äußeren Schleife auf bis zu $217,8125\ \mu s \approx 0,2\ ms$.
+\newline
+\newline
+Für die Initialisierung werden weitere $27,6875\ \mu s$ benötigt. Die Schwerpunktverteilung wird in horizontaler und vertikaler Richtung berechnet. Zusammenfassend beläuft sich die WCET zur Berechnung der
+Schwerpunktverteilung mit Gleitkommazahlen auf bis zu $4029,4375\ \mu s\ \approx\ 4\ ms$.
