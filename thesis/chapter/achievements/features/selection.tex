@@ -66,13 +66,17 @@ Außerdem können die Anzahl der Zeitfenster variiert werden und Pixel zu Gruppe
     \end{pmatrix}
     \label{formular:pictureAsFormular}
 \end{align}
-Der Schwerpunkt ($(X_Q, Y_Q)$) in einem Bild $Q$ (\ref{formular:pictureAsFormular}) ist über die Helligkeit in den einzelnen Pixel definiert. Der Pixel $q_{11}$ bildet den Nullpunkt des Koordinatensystems.
+Der Schwerpunkt $(X_Q, Y_Q)$ in einem Bild $Q$ (\ref{formular:pictureAsFormular}) ist über die Helligkeit in den einzelnen Pixel definiert. Der Pixel $q_{11}$ bildet den Nullpunkt des Koordinatensystems.
 Dann ist relativ zur Gesamthelligkeit $P = \sum_{i,j} q_{i,j}$, $X_Q=\frac{\sum_{i=0}^{2} q_{i,2} - \sum_{i=0}^{2} q_{i,0}}{P}$ die horizontale Komponente
-und $Y_Q = \frac{\sum_{i=0}^{2} q_{0,i} - \sum_{i=0}^{2} q_{2,i}}{P}$ die vertikale Komponente des Schwerpunktes.
+und $Y_Q = \frac{\sum_{i=0}^{2} q_{0,i} - \sum_{i=0}^{2} q_{2,i}}{P}$ die vertikale Komponente des Schwerpunktes \cite{schwerpunktAnsatz}.
 \newline
 \newline
 Ähnlich zur Helligkeitsverteilung wird das Feature mit einer Zeithistorie erweitert durch die multiple Anwendung auf verschiedene Zeitfenster, wobei die Anzahl der Zeitfenster variiert werden kann. Die
-einzelnen Schwerpunkte innerhalb eines Zeitfensters werden über den Durchschnitt zusammengefasst (TODO: Erkläre MergePattern).
+einzelnen Schwerpunkte innerhalb eines Zeitfensters werden über den Durchschnitt zusammengefasst.
+\newline
+\newline
+Sollte die Anzahl der Bilder einer Handgeste ein Vielfaches von der Anzahl der Zeitfenster sein, wird die gleiche Anzahl an Bilder auf jedes Zeitfenster verteilt. Ansonsten werden Überschüsse einem Muster
+nach bestimmten Zeitfenstern zugeordnet. Bei 5 Zeitfenstern wird der erste Überschuss dem letzten Zeitfenster zugeordnet, der zweite dem ersten, der dritte dem dritten, der vierte dem zweiten.
 \newline
 \newline
 Die Schwerpunktverteilung ist durch die Dividierung mit $P$ invariant gegenüber Skalierung der Helligkeit, jedoch nicht gegenüber einen Offset.
