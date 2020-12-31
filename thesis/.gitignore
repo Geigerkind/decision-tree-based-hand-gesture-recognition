@@ -10,6 +10,8 @@ thesis.toc
 thesis.log
 thesis.bbl
 thesis.blg
+thesis.lot
+thesis.lof
 
 images/app_setup.*
 images/createPicture.sh

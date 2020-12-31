@@ -26,16 +26,14 @@ und das Ende nicht vollständig ist. Aus diesem Grund schlug Kubik zusätzlich v
         \node [block,align=center,initial] (s0) {READ-INITIAL-FRAMES};
         \node [block,align=center] (s1) [right of=s0] {SEARCH-DARKER-FRAMES};
         \node [block,align=center] (s2) [right of=s1] {RECORD-CANDIDATE-FRAMES};
-        \node [block,align=center] (s3) [below of=s2] {RECORD-ENDING-FRAMES};
-        \node [block,align=center, node distance=6cm] (s4) [left of=s3] {GESTURE-CANDIDATE-CLASSIFIED};
+        \node [block,align=center] (s3) [below of=s1] {RECORD-ENDING-FRAMES};
         \path [->, text width=2cm, align=center] (s0) edge [loop below] node {\#Bilder<3: BGMH} (s0);
         \path [->, text width=2cm, align=center] (s0) edge node {\#Bilder=3: BGMH} (s1);
         \path [->, text width=4cm, align=center] (s1) edge [loop below] node {ØHelligkeit$\geq$GMH$\cdot 0.9$: BGMH, pop\_first(Bilder)} (s1);
         \path [->, text width=3cm, align=center] (s1) edge node {ØHelligkeit < GMH$\cdot 0.9$} (s2);
         \path [->, text width=2cm, align=center] (s2) edge node {ØHelligkeit $\geq$ GMH$\cdot 0.9$: AnzahlEndBilder:=3} (s3);
         \path [->, text width=3cm, align=center] (s3) edge [loop below] node {AnzahlEndBilder>0: AnzahlEndBilder-=1} (s3);
-        \path [->, text width=3cm, align=center] (s3) edge node {AnzahlEndBilder=0} (s4);
-        \path [->] (s4) edge node {Variablen zurücksetzen} (s0);
+        \path [->, text width=3cm, align=center] (s3) edge node {AnzahlEndBilder=0} (s0);
     \end{tikzpicture}
     \caption{Implementierung von Kubik's Algorithmus um Gestenkandidaten zu erkennen von Dr. Marcus Venzke. BGMH steht für die Aktion \glqq \textbf{B}erechnung \textbf{G}leitender \textbf{M}ittelwert der \textbf{H}elligkeit\grqq und GMH steht für die Variable \glqq \textbf{G}leitender \textbf{M}ittelwert der \textbf{H}elligkeit\grqq.}
     \label{fig:venzkeAlgoImpl}
