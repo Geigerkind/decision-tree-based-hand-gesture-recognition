@@ -92,7 +92,7 @@ elif feature_set == 2:
     X = pd.concat([center_of_gravity_distribution_x, center_of_gravity_distribution_y], axis=1).values
     max_features = 10
 elif feature_set == 3:
-    motion_history = pd.read_csv(storage_path + "/MotionHistory2", dtype=int)
+    motion_history = pd.read_csv(storage_path + "/MotionHistory", dtype=int)
     X = pd.concat([motion_history], axis=1).values
     max_features = 9
 elif feature_set == 4:
@@ -101,7 +101,7 @@ elif feature_set == 4:
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom], axis=1).values
     max_features = 12
 elif feature_set == 5:
-    motion_history = pd.read_csv(storage_path + "/MotionHistory2", dtype=int)
+    motion_history = pd.read_csv(storage_path + "/MotionHistory", dtype=int)
     brightness_dist_6xy_geom = pd.read_csv(storage_path + "/BrightnessDistribution6XYGeom", dtype=int)
     darkness_dist_6xy_geom = pd.read_csv(storage_path + "/DarknessDistribution6XYGeom", dtype=int)
     X = pd.concat([darkness_dist_6xy_geom, brightness_dist_6xy_geom, motion_history], axis=1).values

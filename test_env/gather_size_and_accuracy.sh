@@ -12,7 +12,7 @@ echo "max_depth,forest_size,optimization_level,ensemble_technique,feature_set,se
 
 optimizations=(O0 Os O2 O3)
 set_fractions=(0.5)
-feature_sets=(1 2 3 4 5)
+feature_sets=(7)
 
 ccp_alpha=$1
 min_leaf_sample=$2
