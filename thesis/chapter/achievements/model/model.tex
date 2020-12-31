@@ -19,6 +19,7 @@ Features extrahiert, die während der Konstruktion eines Entscheidungsbaumes ben
 ausführbarer C-Code generiert und kompeliert. Zuletzt wird die Erkennungsgenauigkeit des ausführbaren Models auf der Testmenge von Klisch und Dymel ermittelt.
 
 \subsection{Training}
+\label{sec:Training}
 Mit Scikit-Learn werden Wahl basierte Entscheidungswaldklassifizierer mit den in Sektion \ref{sec:Ensemble} genannten Ensemble-Methoden trainiert. Insgesamt werden Waldgrößen zwischen 1 bis 16 betrachtet und
 Maximalhöhen von den einzelnen Entscheidungsbäumen zwischen 1 bis 22. Außerdem werden die Blattgrößen, d. h. die minimale Anzahl von Trainingsdateneinträgen pro Blatt, \textit{1, 2, 4 und 8} sowie die
 Quantifizierungsschwellenwerte, d. h. Zuwachs der Entscheidungsgenauigkeit pro Teilbaum, \textit{0, $10^{-3}$, $10^{-2}$ und $10^{-1}$} betrachtet.
@@ -36,6 +37,11 @@ unterliegenen Zufallszahlengenerators setzt.
 \newline
 Dementsprechend kann man die Konstruktion als Monte Carlo Algorithmus betrachten, d. h. wiederholte Ausführungen erhöhen die Wahrscheinlichkeit, dass das beste Ergebnis dieser Konfiguration gefunden wurde.
 Jede Konfiguration wird aus diesem Grund mit 140 verschiedenen \texttt{random\_state} ausgeführt.
+\newline
+\newline
+Zum trainieren wird eine Kombination aus der Trainingsmenge von Fey und Kubik verwendet, sowie 25\% der Gestenmenge und 12,5\% der Nullgestenmenge von Dymel (siehe Sektion \ref{sec:DymelData}). Insgesamt 7629
+Ausführungen der Handgesten. Davon werden 50\% zufällig zum trainieren genutzt und die überbleibenden 50\% werden genutzt, um den besten Entscheidungswald aus den 140 verschiedenen \texttt{random\_state}
+zu ermitteln.
 
 \subsection{C-Code Generierung eines Entscheidungsbaumes}
 \label{sec:cCodeTree}

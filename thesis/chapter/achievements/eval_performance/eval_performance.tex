@@ -1,16 +1,35 @@
-\section{Performance Evaluation}
+\section{Erkennungsgenauigkeit}
+Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Aus denen werden 6 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden X(TODO)
+verschiedene Konfigurationen trainiert und getestet (siehe Sektion \ref{sec:Training}).
+\newline
+\newline
+Betrachtet wird die beste Konfiguration, die innerhalb der Restriktion des Programmspeichers, nach möglichen Optimierungen (siehe Sektion \ref{sec:eval_size}), die Summe der Erkennungsgenauigkeiten
+der Testmenge von Klisch und der Nullgestentestmenge maximiert.
+\newline
+\newline
+Die verschiedenen Featuremengen werden im Hinblick auf die Erkennungsgenauigkeit auf der Testmenge von Klisch, der Nullgestentestmenge, der neuerstellten Gestentestmenge und der synthetischen
+Helligkeitstestmenge untereinander verglichen. Außerdem wird die Auswirkung von verschiedenen Baumhöhen und Waldgrößen untersucht. Zuletzt wird die beste Konfiguration mit den Ergebnissen von Giese verglichen.
 
-
-Talk about what was searched for, i.e. not all sizes had been tried out.
-Talk about different testset sizes?
-Talk about the greedy nature of the training algorithm? (Was that done in Cherry Picking?)
-\input{chapter/achievements/eval_performance/testset/testset}
-\input{chapter/achievements/eval_performance/feasible_solution}
-\input{chapter/achievements/eval_performance/considering_null_gestures}
 \input{chapter/achievements/eval_performance/brightness_distribution}
 \input{chapter/achievements/eval_performance/motion_history}
 \input{chapter/achievements/eval_performance/brightness_distribution_and_motion_history}
 \input{chapter/achievements/eval_performance/cocd_dist_float}
 \input{chapter/achievements/eval_performance/cocd_dist_int}
-\input{chapter/achievements/eval_performance/cocd_dist_both}
+\input{chapter/achievements/eval_performance/cocd_dist_and_motion_history}
 \input{chapter/achievements/eval_performance/comparison_to_previous}
+
+
+\iffalse
+* Es wurden 3 Features näher betrachtet und daraus insgesamt 6 Featuremengen erstellt.
+* Es wurden X Konfigurationen getestet (siehe Training)
+    => Davon wurden die besten ausgewählt
+* Was ist eine feasible solution
+    => Lösungen mit mehr Verbrauch werden gewählt, da bis zu 66\% Reduktion noch möglich ist (siehe Size eval)
+* Verglichen werden insgesamt 4 Testmengen:
+    => Klisch zum Vergleich vorherigen Arbeiten
+    => Dymel
+    => Null
+    => Brightness (Das am Ende, um die Ansätze untereinander zu vergleichen?)
+    => Garbage Kubik (?)
+* Es werden verschiedene Baumhöhen und Waldhöhen betrachtet und welchen Einfluss die auf die Erkennungsgenauigkeit haben
+\fi
