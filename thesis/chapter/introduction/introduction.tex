@@ -1,34 +1,32 @@
 \chapter{Einleitung}
 Machinelles Lernen (ML) gewann in den vergangenen Jahren an Popularität, u.a. durch die Fortschritte in parallelen Rechnen,
-sinkende Speicherpreise, schnelleren Speicher und den Zugang zu Bibliotheken, wie zum Beispiel Scikit-Learn, Keras und PyTorch, welche
-den Einstieg in maschinellen Lernen erleichtern (TODO: Quelle?).
-Ein namenhaftes Beispiel für das Potential von maschinellen Lernen ist die AlphaGo-KI, die einen Sieg gegen den besten menschlichen Spieler
-erringen konnte in dem Spiel Go, welches als besonders schwierig für Computer zu meistern galt durch den enormen Suchraum von möglichen Aktionen (TODO: Quelle).
+sinkende Speicherpreise und schnelleren Speicher. Zudem sind sehr gute ML-Bibliotheken frei verfügbarr, wie Scikit-Learn, Keras oder PyTorch, die
+den Einstieg in maschinellen Lernen erleichtern erleichtern (TODO: Quelle?). Ein namenhaftes Beispiel für das Potential von maschinellen Lernen ist \textit{AlphaZero},
+die einen Sieg gegen den besten menschlichen Spieler im Brettspiel Go erringen konnte. Das galt als besonders schwierig für Computer zu meistern,
+da der Suchraum von möglichen Aktionen sehr groß ist (TODO: Quelle).
 \newline
 \newline
 Ein häufiges Anwendungsgebiet in eingebetteten Systemen ist die optische Gestenerkennung, die zur kontaktlosen Interaktion mit technischen Geräten u. a. genutzt wird (Todo: Quelle).
-Die eingesetzten Micro-Controller sind jedoch häufig nicht ausreichend leistungsstark, um ein trainiertes Model in passabler Zeit auszuführen (TODO: Quelle). Gründe dafür sind
-Kosten oder Anforderungen an die Batterielanglebigkeit (TODO: Quelle). Eine Lösung ist das Auslagern der Modelle in einen leistungsstarken Rechenkluster, indem die nötigen Eingabedaten auf dem
-Mikro-Controller gesammelt werden und anschließend an den Rechenkluster gesendet werden (TODO: Quelle). Dies erzeugt allerdings Latenz und eine Abhängigkeit zu einer solchen
-Infrastruktur. Ein alternativer Ansatz ist das lokale Ausführen der Modelle, was allerdings die Komplexität des Modells limitiert um eine passable Ausführungszeit zu gewährleisten.
+Die eingesetzten Mikrocontroller sind jedoch häufig nicht ausreichend leistungsstark, um ein trainiertes Model in passabler Zeit auszuführen (TODO: Quelle). Gründe dafür sind
+Kosten oder Anforderungen an die Batterielanglebigkeit (TODO: Quelle). Häufig wird dieses Problem umgangen, indem die Modelle in leistungsstarken Rechen-Clustern ausgeführt werden.
+Dabei werden die nötigen Daten auf dem Mikrocontroller gesammelt und an den Rechen-Cluster gesendet. Nachteile dieses Ansatzes sind einerseits die Abhängigkeit zu dieser
+Infrastruktur und andererseits kommt dadurch eine Latenz hinzu. Alternativ können die Modelle lokal ausgeführt werden. Dies erfordert aber, dass die Komplexität des Modells reduziert wird,
+sodass eine passable Ausführungszeit gewährleistet wird.
 \newline
 \newline
-In dieser Arbeit wird die Handgestenerkennung mit Entscheidungsbäumen auf dem Arduino-Board ATmega328P untersucht, das mit 9 Fotowiderständen ausgestattet ist, die in einer 3x3 Matrix angeordnet sind.
-Der ATmega328P verfügt über eine 8-Bit APU, 2 kB RAM, 32 kB Flash-Speicher und operiert unter 16 MHz. Im Vergleich zu vorherigen Arbeiten, die sich mit Künstlichen Neuronalen Netzen (KNN) auseinander
-gesetzt haben, versprechen Entscheidungsbäume einen geringeren Rechenaufwand.
+In dieser Arbeit wird die Entscheidungsbaum basierte Handgestenerkennung auf kleinen Mikrocontrollern untersucht. Vermutet wird, dass Entscheidungsbäume schneller sind als neuronale Netze (NN) und
+trotzdem eine passable Erkennungsgenauigkeit erzielen. Untersucht werden muss welcher Entscheidungsbaum basierte Klassifizierer und welche Feature sich am besten eignen. Maßgeblich dafür ist die Leistung
+im Hinblick auf Erkennungsgenauigkeit, Ausführungszeit und Resourcenverbrauch des Modells auf dem Mikrocontroller. Dafür ist ein Konzept zur Übersetzung des Modells auf den Mikrocontroller nötig.
 \newline
 \newline
-Um dieses Ziel zu erreichen, werden Entscheidungsbaum basierte Klassifizierer auf einem leistungsstarken Computer trainiert und anschließend in eine bestehende Infrastruktur eingebettet,
-die Gestenkandidaten als Folge von Bildern identifiziert. Es werden insgesamt zwei Komponenten hinzugefügt. Die erste Komponente extrahiert Features, welche an die zweite Komponente,
-der Klassifizierer, weitergegeben werden um die Handgesten zu erkennen. Der Klassifizierer wird mit den vorherigen Arbeiten verglichen im Hinblick auf Ausführungszeit, Resourcenverbrauch
-und Erkennungsgenauigkeit unter verschiedenen Verhältnissen, wie Geschwindigkeit, Licht und Entfernung. Zusätzlich wird untersucht inwiefern \texttt{Nullgesten}, i. e. invalide Gesten,
-erkannt werden können und welche Konsequenzen es auf die Erkennungsgenauigkeit hat.
+Insgesamt wurden 28 Varianten von Feature analysiert. Die Feature mit der besten Tauglichkeit wurden mit verschiedenen Ensemble-Methoden und Parametern für Entscheidungsbäume kombiniert. Daraus sind
+X(TODO) verschiedene Konfigurationen entstanden, die auf ihre Erkennungsgenauigkeit hin verglichen wurden. Die beste Konfiguration wurde auf ihre Worst-Case-Execution-Time (WCET) und auf den Resourcenverbrauch
+hin analysiert und mit den vorherigen Arbeiten verglichen. Dabei wurden zusätzliche Optimierungen diskutiert um den WCET und Resourcenverbrauch zu minimieren. Währendessen ist eine komplexe Infrastruktur
+enstanden, die in Rust und Python geschrieben ist. Sie umfasst das Handgesten Modell und stellt Code-Bibliotheken bereit, um die verschiedenen Konfigurationen zu generieren, zu trainieren und zu validieren.
+Zudem stellt sie verschiedene Werkzeuge zur verfügung. Ein wichtiges Werkzeug ist ein Codegenerator der aus den Entscheidungsbaum basierten Modellen C-Code erzeugt. Mit einem anderen Werkzeug wurden
+innerhalb kürzester Zeit 14410 weitere Handgesten erfasst.
 \newline
 \newline
-Zunächst werden in Kapitel 2 Entscheidungsbäume eingeführt, verschiedene Ensemble-Methoden erläutert und auf die Generierung von den Modellen eingegangen.
-In Kapitel 3 wird erläutert, wie Gestenkandidaten extrahiert werden und welche Ansätze vorherige Arbeiten bereits verfolgt hatten.
-Anschließend präsentiert Kapitel 4 den Kern der Arbeit. Zuallererst wird die Infrastruktur vorgestellt, welche im Rahmen dieser Arbeit angefertigt wurde, um
-Klassifizierer zu trainieren und zu evaluieren. Anschließend wird das Datenset \texttt{Dymel} vorgestellt, was zusätzlich zu dem bestehenden Datenset von \texttt{Klisch}
-erstellt wurde, um Nullgesten zu und verschiedene Helligkeitsstufen zu untersuchen. Danach werden die Features vorgestellt, die im Laufe dieser Arbeit untersucht wurden.
-Zuletzt wird die Erkennungsgenauigkeit, die Ausführungsgeschwindigkeit und der Resourcenverbrauch evaluiert.
-In Kapitel 5 werden die Schlussfolgerungen dargestellt.
+Kapitel 2 führt in Entscheidungsbäume und Ensemble-Methoden ein. Kapitel 3 erläutert die bisherigen Arbeiten zur Handgestenerkennung. In Kapitel 4 wird auf die Generierung des Models, die Tauglichkeit von
+Features und die Infrastruktur eingegangen, sowie die neu erstelle Trainings- und Testmenge erläutert. Darauf folgt die Evaluation der Erkennungsgenauigkeit, Ausführungszeit und des Resourcenverbrauchs in
+Kapitel 5. Kapitel 6 enthält einen kritischen Rückblick auf die Entscheidungen dieser Arbeit bevor Kapitel 6 Schlussfolgerungen zieht.
