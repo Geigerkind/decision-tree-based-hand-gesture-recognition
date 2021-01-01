@@ -1,7 +1,7 @@
 \subsection{Exrahierung von Gestenkandidaten}
 \label{sec:gesture_extraction}
 Die Lichtsensorenmatrix liefert einen kontinuierlichen Strom an Bildern. Dabei limitiert die Verarbeitungszeit eines Bildes die Anzahl an Bilder pro Sekunde. Als Gestenkandidat wird eine Folge von Bildern definiert, die
-ein Ereignis einschließt. In diesem Fall wird das Ereignis durch die Veränderung im gleitenden Mittelwert der Lichtverhältnisse definiert, i. e. sobald der gleitende Mittelwert unterschritten wird ein Gestenkandidat
+ein Ereignis einschließt. In diesem Fall wird das Ereignis durch die Veränderung im gleitenden Mittelwert der Helligkeit definiert, i. e. sobald der gleitende Mittelwert unterschritten wird ein Gestenkandidat
 angefangen aufgenommen zu werden und sobald die Lichtverhältnisse zu dem Wert zurückkehren wird die Aufnahme beendet. Der gleitende Mittelwert wird dabei immer angepasst, wenn kein Gestenkandidat aufgenommen wird, um
 sich den veränderden Lichtverhältnissen anzupassen. Da leichte Veränderungen natürlich sind, muss eine Toleranzgrenze von 10\% unterschritten werden, damit die Aufnahme gestartet wird. Dies hat als Folge, dass der Anfang
 und das Ende nicht vollständig ist. Aus diesem Grund schlug Kubik zusätzlich vor am Anfang und Ende weitere Bilder anzufügen \cite{kubikThesis}.
@@ -40,8 +40,8 @@ und das Ende nicht vollständig ist. Aus diesem Grund schlug Kubik zusätzlich v
 \end{figure}
 Abbildung \ref{fig:venzkeAlgoImpl} zeigt die konkrete Implementierung dieses Algorithmus mit einem Zustandsautomaten von Dr. Marcus Venzke. In jedem Zustand wird das aktuelle Bild dem Puffer angefügt. Der Automat
 verbleibt im Zustand \texttt{READ-INITIAL-FRAMES} bis der Puffer 3 Bilder enthält und passt stets den gleitenden Mittelwert der Helligkeit an. Anschließend geht der Automat in den Zustand
-\texttt{SEARCH-DARKER-FRAMES} über, indem er weiterhin den gleitenden Mittelwert anpasst und immer das erste Bild aus dem Puffer entfernt, da lediglich 3 Bilder jeweils vorm Aufnehmen und nach dem Aufnehmen des
+\texttt{SEARCH-DARKER-FRAMES} über, indem er weiterhin den gleitenden Mittelwert anpasst und immer das erste Bild aus dem Puffer entfernt, da lediglich 3 Bilder jeweils vor dem Aufnehmen und nach dem Aufnehmen des
 Gestenkandidates angefügt werden sollen. Sobald die Durchschnittshelligkeit den 90\% des gleitenden Mittelwerts unterschreitet wird die Aufnahme begonnen. Der Automat geht in den Zustand \texttt{RECORD-CANDIDATE-FRAMES}
 über. Dort verbleibt der Automat solange bis die Durchschnittshelligkeit 90\% des gleitenden Mittelwerts überschreitet, woraufhin der Automat in den Zustand \texttt{RECORD-ENDING-FRAMES} über geht, indem die letzten 3
-Bilder an den Puffer angehängt werden. Der Zustand des Puffers im Zustand \texttt{GESTURE-CANDIDATE-CLASSIFIED} repräsentiert den Gestenkandidaten. Zuletzt werden alle nötigen Variablen zurückgesetzt und der
-Automat geht in den initialen Zustand wieder über.
+Bilder an den Puffer angehängt werden. Sobald 3 Bilder angehängt wurde, wird der Puffer dem Klassifizierer übergeben und anschließend der Zustandsautomat zurückgesetzt, woraufhin der Automat in den initialen
+Zustand wieder übergeht.

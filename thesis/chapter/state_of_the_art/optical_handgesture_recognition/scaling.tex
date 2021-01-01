@@ -1,7 +1,13 @@
 \subsection{Skalierung des Gestenkandidaten}
 \label{sec:scaling}
 Ein Gestenkandidat besteht aus einer variablen Anzahl an Bildern. Durch die künstlich angefügten Bilder am Anfang und Ende sind es mindestens 8 Bilder. Kubik erkannte, dass ein neuronales Netz eine feste Anzahl an
-Eingaben hat und diskutierte verschiedene Ansätze. Er verwarf die Idee den Puffer mit irrelevanten Bildern oder Nullen auszufüllen, Bilder zu duplizieren oder Teile des Gestenkandidaten zu verwerfen, da dadurch
-nicht die vollständie Geste auf die Eingangs-Ebene abgebildet werden würde, oder dass die Geste womöglich verzerrt wäre. Aus diesem Grund hat Kubik sich für lineare Interpolation auf eine fixe Anzahl von 20 Bildern
-entschieden im Falle wenn weniger als 20 Bilder vorhanden sind. Im Falle, wenn mehr als 20 Bilder vorhanden sind, werden 20 Bilder gleichverteilt ausgewählt \cite{kubikThesis}.
-Dieser Ansatz wurde auch von Anton Giese aufgegriffen, der sich in diesem Zusammenhang ebenfalls mit künstlichen neuronalen Netzen beschäftigt hatte \cite{gieseThesis}.
+Eingaben hat und diskutierte verschiedene Ansätze.
+\newline
+\newline
+Er verwarf die Idee den Puffer mit irrelevanten Bildern oder Nullen auszufüllen, Bilder zu duplizieren oder Teile des Gestenkandidaten zu verwerfen, da dadurch
+nicht die vollständige Geste auf die Eingangs-Ebene des NN abgebildet werden würde, oder dass die Geste womöglich verzerrt wäre.
+\newline
+\newline
+Aus diesem Grund hat Kubik sich für lineare Interpolation auf eine fixe Anzahl von 20 Bildern entschieden, wenn weniger als 20 Bilder vorhanden sind. Wenn mehr als 20 Bilder vorhanden sind,
+werden 20 Bilder gleichverteilt ausgewählt \cite{kubikThesis}. Dieser Ansatz wurde auch von Anton Giese aufgegriffen, der sich in diesem Zusammenhang ebenfalls mit künstlichen neuronalen Netzen
+beschäftigt hatte \cite{gieseThesis}.
