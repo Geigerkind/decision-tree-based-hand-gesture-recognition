@@ -92,6 +92,8 @@ fn calculate_features(gesture: &Gesture) -> Vec<i32> {
     args
 }
 
+/*
+// DEPRECATED IN FAVOR OF FEATURE_SET10
 #[cfg(feature="feature_set6")]
 fn calculate_features(gesture: &Gesture) -> (Vec<f32>, Vec<i32>) {
     let mut f_args: Vec<f32> = Vec::new();
@@ -107,6 +109,7 @@ fn calculate_features(gesture: &Gesture) -> (Vec<f32>, Vec<i32>) {
     l_args.append(&mut center_of_gravity_y.deref().to_vec());
     (f_args, l_args)
 }
+ */
 
 #[cfg(feature="feature_set7")]
 fn calculate_features(gesture: &Gesture) -> Vec<f32> {
@@ -138,6 +141,23 @@ fn calculate_features(gesture: &Gesture) -> Vec<f32> {
     args.append(&mut center_of_gravity_x.deref().to_vec());
     args.append(&mut center_of_gravity_y.deref().to_vec());
     args
+}
+
+#[cfg(feature="feature_set10")]
+fn calculate_features(gesture: &Gesture) -> (Vec<i32>, Vec<f32>) {
+    let mut f_args: Vec<f32> = Vec::new();
+
+    let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionFloatY::calculate(&gesture);
+    f_args.append(&mut center_of_gravity_x.deref().to_vec());
+    f_args.append(&mut center_of_gravity_y.deref().to_vec());
+
+    let mut l_args: Vec<i32> = Vec::new();
+    let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
+    let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);
+    l_args.append(&mut center_of_gravity_x.deref().to_vec());
+    l_args.append(&mut center_of_gravity_y.deref().to_vec());
+    (l_args, f_args)
 }
 
 fn main() {
@@ -177,15 +197,15 @@ fn main() {
                         if let Some(gesture) = gesture_reader.feed_frame(frame) {
                             println!("#Frames: {}", gesture.frames.len());
 
-                            #[cfg(feature="feature_set6")]
+                            #[cfg(feature="feature_set10")]
                             let program_args: Vec<String> = {
-                                let (f_args, l_args) = calculate_features(&gesture);
-                                let mut args = f_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
-                                args.append(&mut l_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>());
+                                let (l_args, f_args) = calculate_features(&gesture);
+                                let mut args = l_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
+                                args.append(&mut f_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>());
                                 args
                             };
 
-                            #[cfg(not(feature="feature_set6"))]
+                            #[cfg(not(feature="feature_set10"))]
                             let program_args: Vec<String> = calculate_features(&gesture).into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
 
                             let decision_tree = Command::new("./decision_forest")
@@ -234,7 +254,7 @@ mod test {
 
             let path = std::env::var("PROGRAM_PATH").unwrap();
             for gesture in data_set_entry.gestures() {
-                #[cfg(feature="feature_set6")]
+                #[cfg(feature="feature_set10")]
                     let program_args: Vec<String> = {
                     let (f_args, l_args) = calculate_features(&gesture);
                     let mut args = f_args.into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
@@ -242,7 +262,7 @@ mod test {
                     args
                 };
 
-                #[cfg(not(feature="feature_set6"))]
+                #[cfg(not(feature="feature_set10"))]
                 let program_args: Vec<String> = calculate_features(&gesture).into_iter().map(|value| value.to_string()).collect::<Vec<String>>();
                 let decision_tree = Command::new(&format!("{}/{}", path, program))
                     .args(&program_args)
