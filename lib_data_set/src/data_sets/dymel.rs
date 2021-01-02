@@ -355,7 +355,7 @@ lazy_static! {
         let mut additional_entries = Vec::new();
         // Infer lighting conditions by scaling and offsets
         for entry in data.iter() {
-            for i in 0..20 {
+            for i in 1..17 {
                 let mut scaled = entry.clone();
                 let mut offset = entry.clone();
                 scaled.scale_by((i as f32) * 0.5);

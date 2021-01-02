@@ -222,8 +222,10 @@ mod test {
     use lib_gesture::value_objects::GestureType;
     use rayon::iter::ParallelIterator;
     use rayon::iter::{IntoParallelRefIterator, IntoParallelRefMutIterator, IntoParallelIterator};
+    use std::fs::File;
+    use std::io::Write;
 
-    fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName, program: &str) {
+    fn evaluate_data_set(data_set: &[DataSetEntry], data_set_name: DataSetName, program: &str) -> Evaluation {
         let evaluations: Vec<Evaluation> = data_set.clone().into_par_iter().map(|data_set_entry| {
             let mut evaluation = Evaluation::new(data_set_name);
             let evaluation_entry_key = EvaluationEntryKey::new(*data_set_entry.covering_object(), *data_set_entry.camera_distance(),
@@ -256,7 +258,9 @@ mod test {
             evaluation
         }).collect();
 
-        Evaluation::merge(evaluations).print_results();
+        let res_eval = Evaluation::merge(evaluations);
+        res_eval.print_results();
+        res_eval
     }
 
     #[test]
@@ -427,6 +431,15 @@ mod test {
 
     #[test]
     fn test_dymel_test_light_by_annotation_decision_forest() {
-        evaluate_data_set(&DYMEL_LIGHT_TEST, DataSetName::DymelData, "decision_forest");
+        let evaluation = evaluate_data_set(&DYMEL_LIGHT_TEST, DataSetName::DymelData, "decision_forest");
+
+        let mut file = File::create("../light_test.csv").unwrap();
+        file.write_all(b"ansatz,offset,scaling,accuracy");
+        for (key, entry) in evaluation.entries.iter() {
+            let offset = key.offset.unwrap_or(0);
+            let scaling = key.scaling.unwrap_or(0);
+            file.write_all(b"\n");
+            file.write_all(format!("4,{},{},{}", offset, scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
+        }
     }
 }

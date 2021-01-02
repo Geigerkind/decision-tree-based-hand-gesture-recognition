@@ -11,7 +11,7 @@ for feature_set in range(9):
                         "ccp_alpha": item[1].ccp_alpha, "min_leaf_sample": item[1].min_leaf_sample,
                         "ensemble_technique": item[1].ensemble_technique,
                         "Klisch": item[1].accuracy_klisch,
-                        "Dymel Gesture": item[1].accuracy_dymel_gesture,
+                        "Dymel Gesten": item[1].accuracy_dymel_gesture,
                         "Dymel Null": item[1].accuracy_dymel_null,
                         "acc_accuracy": item[1].accuracy_dymel_null + item[1].accuracy_klisch},
                        ignore_index=True)
@@ -24,7 +24,7 @@ for feature_set in range(9):
     plt.figure(figsize=(15, 15))
     figur, ax1 = plt.subplots()
 
-    fig = data.plot(ax=ax1, x="forest_size", y=["Klisch", "Dymel Gesture", "Dymel Null"],
+    fig = data.plot(ax=ax1, x="forest_size", y=["Klisch", "Dymel Gesten", "Dymel Null"],
                     ylabel="Erkennungsgenauigkeit",
                     xlabel="Waldgröße")
     fig.axes.set_xlim([1, 16])

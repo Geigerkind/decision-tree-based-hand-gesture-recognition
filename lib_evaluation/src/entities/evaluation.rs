@@ -9,7 +9,7 @@ use crate::value_objects::EvaluationEntryKey;
 #[derive(Debug, Getters)]
 pub struct Evaluation {
     data_set_name: DataSetName,
-    entries: HashMap<EvaluationEntryKey, EvaluationEntry>,
+    pub entries: HashMap<EvaluationEntryKey, EvaluationEntry>,
 }
 
 impl Evaluation {
