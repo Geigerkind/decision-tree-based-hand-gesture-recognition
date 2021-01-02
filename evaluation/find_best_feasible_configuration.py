@@ -30,7 +30,7 @@ for i in range(4):
     min_leaf_sample = 0
     combined_accuracy = 0
     best_acc_klisch = 0
-    for item in data.query("feature_set == 4 and ensemble_technique == " + str(i+1)).iterrows():
+    for item in data.query("feature_set == 7 and ensemble_technique == " + str(i+1)).iterrows():
         temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null
         if (item[1].forest_bytes < min_size and temp_comb == combined_accuracy) or temp_comb > combined_accuracy:
             max_accuracy_klisch = item[1].accuracy_klisch

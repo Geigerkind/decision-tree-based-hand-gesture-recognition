@@ -13,13 +13,13 @@
         Genauigkeit Dymel Gesten & 55.4\% & 46.5\% & 39.2\% & 39.2\% \\\hline
         Genauigkeit Dymel Null & 54.2\% & 56.2\% & 49.5\% & 61.0\% \\\hline
     \end{tabular}
-    \label{tab:helligkeitsverteilung}
     \caption{Beste Konfigurationen je Ensemble-Methode der Helligkeitsverteilung.}
+    \label{tab:helligkeitsverteilung}
 \end{table}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/helligkeitsverteilung_acc_per_size.png}
-    \caption{Die beste summierte Erkennungsgenauigkeit pro Waldgröße.}
+    \caption{Die beste summierte Erkennungsgenauigkeit pro Waldgröße mit der Helligkeitsverteilung.}
     \label{fig:helligkeitsverteilung_per_forest_size}
 \end{figure}
 Die Featuremenge der Helligkeitsverteilung beinhaltet insgesamt 12 Features. Jeweils 6 Feature repräsentieren Zeitfenster der Minimalen Helligkeit und der Maximalen Helligkeit. Die Zeitfenster wurden
@@ -34,17 +34,3 @@ schlechter sind als die der Extra-Tress Methode. Mit einer Programmgröße von 4
 \newline
 \newline
 Abbildung \ref{fig:helligkeitsverteilung_per_forest_size} zeigt keinen nennenswerten Anstieg der Erkennungsgenauigkeit durch eine größere Waldgröße.
-
-\iffalse
-Pro Analyse:
-* Explain the featureset a little
-* Beste Konfiguration specs, pro Ensemble-Methode
-    => Acc und size vor und nach optimierung
-* Verschiedene Waldgrößen verglichen
-
-Show graphs about:
-Best solution,
-Best feasible solution,
-With and WithOUT considering null gestures.
-Talk when it starts to generalize more poorly(?)
-\fi
