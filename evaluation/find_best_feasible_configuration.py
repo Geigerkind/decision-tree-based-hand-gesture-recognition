@@ -30,7 +30,7 @@ for i in range(4):
     min_leaf_sample = 0
     combined_accuracy = 0
     best_acc_klisch = 0
-    for item in data.query("feature_set == 7 and ensemble_technique == " + str(i+1)).iterrows():
+    for item in data.query("feature_set == 2 and ensemble_technique == " + str(i+1)).iterrows():
         temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null
         if (item[1].forest_bytes < min_size and temp_comb == combined_accuracy) or temp_comb > combined_accuracy:
             max_accuracy_klisch = item[1].accuracy_klisch
@@ -71,6 +71,7 @@ for i in range(4):
     print("Accuracy Klisch: " + str(max_accuracy_klisch))
     print("Accuracy Dymel Gesture: " + str(max_accuracy_dymel_gesture))
     print("Accuracy Dymel Null: " + str(max_accuracy_dymel_null))
+    print("Best Klisch: " + str(best_acc_klisch))
     print("-------------------------------------------------------------")
 
 print("\\begin{table}[h!]")
@@ -94,6 +95,6 @@ print("    Genauigkeit Klisch & - & - & - & - \\\\\\hline")
 print("    Genauigkeit Dymel Gesten & - & - & - & - \\\\\\hline")
 print("    Genauigkeit Dymel Null & - & - & - & - \\\\\\hline")
 print("\\end{tabular}")
-print("\\label{tab:TODO}")
 print("\\caption{Beste Konfigurationen je Ensemble-Methode der TODO.}")
+print("\\label{tab:TODO}")
 print("\\end{table}")

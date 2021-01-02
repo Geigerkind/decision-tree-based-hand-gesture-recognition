@@ -28,7 +28,7 @@ for feature_set in range(9):
                     ylabel="Erkennungsgenauigkeit",
                     xlabel="Waldgröße")
     fig.axes.set_xlim([1, 16])
-    fig.axes.set_ylim([0, 1])
+    fig.axes.set_ylim([0.8, 1])
 
     max_acc = data.iloc[data["acc_accuracy"].argmax()]
     plt.plot([max_acc.forest_size, max_acc.forest_size], [0, ax1.get_ylim()[1]], '--')
