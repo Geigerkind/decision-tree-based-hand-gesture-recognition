@@ -1,6 +1,50 @@
-\subsection{Brightness Distribution}
+\subsection{Helligkeitsverteilung}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{ | c | c | c | c | c |}
+        \hline
+        & RandomForest & Boosting & Bagging & ExtraTrees \\\hline
+        Maximalhöhe & 10 & 15 & 1 & 7 \\\hline
+        Waldgröße & 9 & 13 & 1 & 4 \\\hline
+        ccp\_alpha & 0.01 & 0.0 & 0.01 & 0.01 \\\hline
+        min\_samples\_leaf & 1 & 1 & 1 & 1 \\\hline
+        Größe in Bytes & 25844 & - & - & 4560 \\\hline
+        Genauigkeit Klisch & 78.1\% & 59.4\% & 47.9\% & 82.3\% \\\hline
+        Genauigkeit Dymel Gesten & 55.4\% & 46.5\% & 39.2\% & 39.2\% \\\hline
+        Genauigkeit Dymel Null & 54.2\% & 56.2\% & 49.5\% & 61.0\% \\\hline
+    \end{tabular}
+    \label{tab:helligkeitsverteilung}
+    \caption{Beste Konfigurationen je Ensemble-Methode der Helligkeitsverteilung.}
+\end{table}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{images/helligkeitsverteilung_acc_per_size.png}
+    \caption{Die beste summierte Erkennungsgenauigkeit pro Waldgröße.}
+    \label{fig:helligkeitsverteilung_per_forest_size}
+\end{figure}
+Die Featuremenge der Helligkeitsverteilung beinhaltet insgesamt 12 Features. Jeweils 6 Feature repräsentieren Zeitfenster der Minimalen Helligkeit und der Maximalen Helligkeit. Die Zeitfenster wurden
+geometrisch zusammengefasst.
+\newline
+\newline
+Die beste Konfiguration wurde mit der ExtraTrees Ensemble-Methode gefunden (siehe Tabelle \ref{tab:helligkeitsverteilung}). Sie erzielt eine Erkennungsgenauigkeit von $82,3\%$ auf der Testmenge von Klisch
+und ist damit nur $17,7\%$ schlechter als das neuronale Netzwerk von Giese \cite{gieseThesis}. Außerdem klassifiziert diese Konfiguration $61\%$ aller Nullgesten aus der Testmenge von Dymel korrekt und ist
+damit in Summe deutlich besser als die anderen Ensemble-Methoden. Allerdings ist die Erkennungsgenauigkeit auf der Gestentestmenge von Dymel nur bei $39,2\%$, wobei RandomForest deutlich besser ist mit
+einer Erkennungsgenauigkeit von $55,4\%$. Insgesamt hat RandomForest damit ein besseres balanciertes Ergebnis, da die Erkennungsgenauigkeit auf dei Nulltestmenge und Testmenge von Klisch nur leicht
+schlechter sind als die der Extra-Tress Methode. Mit einer Programmgröße von 4560 Bytes und 25844 Bytes passen beide Konfigurationen, ohne Optimierungen vorzunehmen, auf das Arduino Board.
+\newline
+\newline
+Abbildung \ref{fig:helligkeitsverteilung_per_forest_size} zeigt keinen nennenswerten Anstieg der Erkennungsgenauigkeit durch eine größere Waldgröße.
+
+\iffalse
+Pro Analyse:
+* Explain the featureset a little
+* Beste Konfiguration specs, pro Ensemble-Methode
+    => Acc und size vor und nach optimierung
+* Verschiedene Waldgrößen verglichen
+
 Show graphs about:
 Best solution,
 Best feasible solution,
 With and WithOUT considering null gestures.
 Talk when it starts to generalize more poorly(?)
+\fi
