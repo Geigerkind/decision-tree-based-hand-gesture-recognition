@@ -39,3 +39,7 @@ noch effektiver, da es nur genau $N$ verschiedene Rückgabewerte gibt, für $N$ 
 Der Nachteil ist, dass die Ergebnisse instabil werden können, wenn viele Rückgaben nicht klar Eindeutig sind, sondern die Klasse nur eine knappe Mehrheit haben. Das ist insbesonders der Fall in
 Kombination mit einem hohen Wert für \texttt{min\_samples\_leaf}. Dennoch kann auf dieser Art und Weise die Programmgröße von einem Teil des Waldes oder der ganze Wald reduziert werden und die
 Stabilität des gefundenen Baumes mit den Testmengen revalidiert werden. Tests haben ergeben, dass die Erkennungsgenauigkeit der Testmengen nur geringfügig schwankt.
+\newline
+\newline
+Denkbar wäre ein hybrider Ansatz, der bei einem eindeutigen Ergebnis die Klasse zurück gibt im \texttt{return} und ansonsten die Wahrscheinlichkeitsverteilung. Die \glqq Eindeutigkeit\grqq\ kann über
+einen Schwellenwert definiert sein. Ein Schwellenwert von $0$ würde an der Korrektheit und damit an der Stabilität nichts ändern.
