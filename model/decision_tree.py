@@ -358,7 +358,7 @@ def bagging_decision_tree():
     clf = cherry_picking(lambda id: BaggingClassifier(
         base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth, criterion="entropy", ccp_alpha=ccp_alpha,
                                                    min_samples_leaf=min_samples_leaf),
-        n_estimators=num_trees, random_state=id))
+        n_estimators=num_trees, random_state=id), X_train, y_train, X_test_and_opt)
     clf.fit(X_train, y_train)
     if not silent_mode:
         print("BaggingClassifier: ")
