@@ -31,4 +31,6 @@ data_min_sample_leaf_small.csv
 ccp_alpha_big.csv
 ccp_alpha_small.csv
 light_eval.csv
+light_eval2.csv
 light_test.csv
+light_test2.csv

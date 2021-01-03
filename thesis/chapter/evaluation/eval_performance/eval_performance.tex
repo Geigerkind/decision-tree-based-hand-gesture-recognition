@@ -1,19 +1,18 @@
 \section{Erkennungsgenauigkeit}
-Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Aus denen werden 6 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden X(TODO)
+Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Aus denen werden 5 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden X(TODO)
 verschiedene Konfigurationen trainiert und getestet (siehe Sektion \ref{sec:Training}).
 \newline
 \newline
 Betrachtet wird die beste Konfiguration, die innerhalb der Restriktion des Programmspeichers, nach möglichen Optimierungen (siehe Sektion \ref{sec:eval_size}), die Summe der Erkennungsgenauigkeiten
-der Testmenge von Klisch und der Nullgestentestmenge maximiert.
+der Testmenge von Klisch, der Gestentestmenge und der Nullgestentestmenge maximiert.
 \newline
 \newline
-Die verschiedenen Featuremengen werden im Hinblick auf die Erkennungsgenauigkeit auf der Testmenge von Klisch, der Nullgestentestmenge, der neuerstellten Gestentestmenge und der synthetischen
-Helligkeitstestmenge untereinander verglichen. Außerdem wird die Auswirkung von verschiedenen Baumhöhen und Waldgrößen untersucht. Zuletzt wird die beste Konfiguration mit den Ergebnissen von Giese verglichen.
+Die verschiedenen Featuremengen werden im Hinblick auf die Erkennungsgenauigkeit auf der Testmenge von Klisch, der Nullgestentestmenge, der neuerstellten Gestentestmenge und den synthetischen
+Helligkeitstestmengen untereinander verglichen. Außerdem wird die Auswirkung von verschiedenen Waldgrößen untersucht. Zuletzt wird die beste Konfiguration mit den Ergebnissen von Giese verglichen.
 
 \input{chapter/evaluation/eval_performance/brightness_distribution}
 \input{chapter/evaluation/eval_performance/motion_history}
 \input{chapter/evaluation/eval_performance/cocd_dist_float}
 \input{chapter/evaluation/eval_performance/cocd_dist_int}
-\input{chapter/evaluation/eval_performance/brightness_testset}
 \input{chapter/evaluation/eval_performance/cocd_dist_float_and_int}
-\input{chapter/evaluation/eval_performance/distance_robustness}
+\input{chapter/evaluation/eval_performance/brightness_testset}

@@ -31,8 +31,9 @@ for i in range(4):
     combined_accuracy = 0
     best_acc_klisch = 0
     for item in data.query("feature_set == 2 and ensemble_technique == " + str(i+1)).iterrows():
-        temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null
+        temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null + item[1].accuracy_dymel_gesture
         if (item[1].forest_bytes < min_size and temp_comb == combined_accuracy) or temp_comb > combined_accuracy:
+            # Max ist hier nicht mehr passend!
             max_accuracy_klisch = item[1].accuracy_klisch
             max_accuracy_dymel_gesture = item[1].accuracy_dymel_gesture
             max_accuracy_dymel_null = item[1].accuracy_dymel_null
@@ -44,7 +45,7 @@ for i in range(4):
             set_fraction = item[1].set_fraction
             ccp_alpha = item[1].ccp_alpha
             min_leaf_sample = item[1].min_leaf_sample
-            combined_accuracy = max_accuracy_klisch + max_accuracy_dymel_null
+            combined_accuracy = temp_comb
 
         if best_acc_klisch < item[1].accuracy_klisch:
             best_acc_klisch = item[1].accuracy_klisch

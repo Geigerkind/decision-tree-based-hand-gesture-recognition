@@ -229,7 +229,7 @@ mod test {
     use std::ops::Deref;
     use std::process::Command;
 
-    use lib_data_set::data_sets::dymel::{DYMEL_GESTURE_TEST, DYMEL_NULL_TEST, DYMEL_LIGHT_TEST};
+    use lib_data_set::data_sets::dymel::{DYMEL_GESTURE_TEST, DYMEL_NULL_TEST, DYMEL_LIGHT_TEST, DYMEL_VANISHING_CONTRAST_TEST};
     use lib_data_set::data_sets::eva::{EVA_16PIXEL, EVA_9PIXEL};
     use lib_data_set::data_sets::klisch::{KLISCH_DATA, KLISCH_TEST};
     use lib_data_set::data_sets::kubik::{KUBIK_TEST, KUBIK_TRAINING};
@@ -454,12 +454,25 @@ mod test {
         let evaluation = evaluate_data_set(&DYMEL_LIGHT_TEST, DataSetName::DymelData, "decision_forest");
 
         let mut file = File::create("../light_test.csv").unwrap();
-        file.write_all(b"ansatz,offset,scaling,accuracy");
+        let _ =file.write_all(b"ansatz,offset,scaling,accuracy");
         for (key, entry) in evaluation.entries.iter() {
             let offset = key.offset.unwrap_or(0);
             let scaling = key.scaling.unwrap_or(0);
-            file.write_all(b"\n");
-            file.write_all(format!("4,{},{},{}", offset, scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
+            let _ =file.write_all(b"\n");
+            let _ =file.write_all(format!("4,{},{},{}", offset, scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
+        }
+    }
+
+    #[test]
+    fn test_dymel_test_vanashing_contrast_by_annotation_decision_forest() {
+        let evaluation = evaluate_data_set(&DYMEL_VANISHING_CONTRAST_TEST, DataSetName::DymelData, "decision_forest");
+
+        let mut file = File::create("../light_test2.csv").unwrap();
+        let _ =file.write_all(b"ansatz,offset,scaling,accuracy");
+        for (key, entry) in evaluation.entries.iter() {
+            let scaling = key.scaling.unwrap_or(0);
+            let _ =file.write_all(b"\n");
+            let _ =file.write_all(format!("4,0,{},{}", scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
         }
     }
 }

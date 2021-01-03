@@ -356,12 +356,42 @@ lazy_static! {
         // Infer lighting conditions by scaling and offsets
         for entry in data.iter() {
             for i in 1..17 {
-                let mut scaled = entry.clone();
                 let mut offset = entry.clone();
-                scaled.scale_by((i as f32) * 0.5);
                 offset.add_offset((i as i16) * 50);
-                additional_entries.push(scaled);
                 additional_entries.push(offset);
+
+                if 1.0 + (i as f32) * 0.5 < 7.5 {
+                    let mut scaled = entry.clone();
+                    scaled.scale_by(1.0 + (i as f32) * 0.5);
+                    additional_entries.push(scaled);
+                }
+            }
+        }
+        data.append(&mut additional_entries);
+        data
+    };
+
+    pub static ref DYMEL_VANISHING_CONTRAST_TEST: Vec<DataSetEntry> = {
+        let mut data: Vec<DataSetEntry> = DYMEL_GESTURE.clone().into_iter().filter(|entry| *entry.brightness_level() == BrightnessLevel::Medium).collect();
+        let mut additional_entries = Vec::new();
+
+        // Maintain same brightness but reduce contrast
+        for entry in data.iter() {
+            for i in 1..20 {
+                let mut new_entry = entry.clone();
+                let pixel_sum_before: Vec<Vec<i16>> = entry.gestures().iter().map(|gesture| gesture.frames.iter().map(|frame| frame.pixel.iter().sum()).collect::<Vec<i16>>()).collect();
+                new_entry.scale_by(((1.0f32 - (i as f32) * 0.05f32) * 100.0f32).round() / 100.0f32);
+                for gesture_count in 0..new_entry.gestures.len() {
+                    for frame_count in 0..new_entry.gestures[gesture_count].frames.len() {
+                        let frame = new_entry.gestures[gesture_count].frames.get_mut(frame_count).unwrap();
+                        let pixel_sum: i16 = frame.pixel.iter().sum();
+                        let pixel_diff_avg = (pixel_sum_before[gesture_count][frame_count] - pixel_sum) / 9;
+                        for pixel in frame.pixel.iter_mut() {
+                            *pixel += pixel_diff_avg;
+                        }
+                    }
+                }
+                additional_entries.push(new_entry);
             }
         }
         data.append(&mut additional_entries);

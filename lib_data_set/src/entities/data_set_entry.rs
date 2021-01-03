@@ -12,7 +12,7 @@ pub struct DataSetEntry {
     camera_distance: CameraDistance,
     brightness_level: BrightnessLevel,
     additional_specification: Option<AdditionalSpecification>,
-    gestures: Vec<Gesture>,
+    pub gestures: Vec<Gesture>,
     #[getter(skip)]
     file_path: String,
     parsing_method: ParsingMethod,
@@ -69,7 +69,7 @@ impl DataSetEntry {
     }
 
     pub fn scale_by(&mut self, factor: f32) {
-        self.scaling = Some((factor * 10.0) as i32);
+        self.scaling = Some((factor * 100.0) as i32);
         for gesture in self.gestures.iter_mut() {
             for frame in gesture.frames.iter_mut() {
                 for i in 0..9 {
