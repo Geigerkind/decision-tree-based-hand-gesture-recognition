@@ -1,2 +1,10 @@
 \chapter{Diskussion}
-TODO:?
+Es wurde früh angefangen verschiedene Konfigurationen zu erproben und der Fokus lag schnell auf die Evaluierung verschiedener Ensemble-Methoden. Im Verlauf der Arbeit wurde aber klar, dass der Ansatz
+nicht optimal ist. Die Featuremengen, die generiert werden sind an sich keine Featuremengen, sondern eigene Features. Aus diesem Grund können einige Ensemble-Methoden, die die Featureauswahl varrieren,
+z. B. ExtraTrees, nicht ihr volles Potential ausschöpfen. Außerdem, wuchsen damit die Anforderungen an ein einzelnes Feature, was die Suche erheblich erschwerte. Vermutlich wäre ein besserer Ansatz Stacking
+gewesen mit Klassifizierern auf verschiedenen Featuremengen. Dieser Ansatz kombiniert verschiedene Klassifizierer, dessen Ergebnisse in jeweils nächsten mit einbezogen werden. Es wird vermutet, dass
+das Resultat deutlich simpler wäre bei trotzdem hoher Erkennungsgenauigkeit.
+\newline
+\newline
+Die momentanen Trainingsdaten wurden weitesgehend unter den gleichen Lichtverhältnissen aufgenommen. Damit sind aber nicht alle möglichen Lichtverhältnisse gut repräsentiert. Womöglich könnte ein
+Teil der synthetischen Daten zur Überprüfung der Lichtverhältnisse dazu genutzt werden, um Modelle zu generieren die robuster gegenüber verschiedenen Kontrasten und Helligkeiten sind.
