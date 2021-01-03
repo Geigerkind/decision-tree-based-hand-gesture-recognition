@@ -6,6 +6,7 @@ tree.png
 decision_tree
 decision_forest.c
 decision_forest
+decision_forest_avr
 size_data.csv
 size_data_test.csv
 size_data_default.csv

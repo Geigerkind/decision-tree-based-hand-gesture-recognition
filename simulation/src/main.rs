@@ -53,8 +53,8 @@ fn calculate_features(gesture: &Gesture) -> Vec<f32> {
 }
 
 #[cfg(feature="feature_set2")]
-fn calculate_features(gesture: &Gesture) -> Vec<i32> {
-    let mut args: Vec<i32> = Vec::new();
+fn calculate_features(gesture: &Gesture) -> Vec<i16> {
+    let mut args: Vec<i16> = Vec::new();
     let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);
     args.append(&mut center_of_gravity_x.deref().to_vec());
@@ -144,7 +144,7 @@ fn calculate_features(gesture: &Gesture) -> Vec<f32> {
 }
 
 #[cfg(feature="feature_set10")]
-fn calculate_features(gesture: &Gesture) -> (Vec<i32>, Vec<f32>) {
+fn calculate_features(gesture: &Gesture) -> (Vec<i16>, Vec<f32>) {
     let mut f_args: Vec<f32> = Vec::new();
 
     let center_of_gravity_x = CenterOfGravityDistributionFloatX::calculate(&gesture);
@@ -152,7 +152,7 @@ fn calculate_features(gesture: &Gesture) -> (Vec<i32>, Vec<f32>) {
     f_args.append(&mut center_of_gravity_x.deref().to_vec());
     f_args.append(&mut center_of_gravity_y.deref().to_vec());
 
-    let mut l_args: Vec<i32> = Vec::new();
+    let mut l_args: Vec<i16> = Vec::new();
     let center_of_gravity_x = CenterOfGravityDistributionX::calculate(&gesture);
     let center_of_gravity_y = CenterOfGravityDistributionY::calculate(&gesture);
     l_args.append(&mut center_of_gravity_x.deref().to_vec());

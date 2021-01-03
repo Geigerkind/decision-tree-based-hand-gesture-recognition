@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 
 # from xgboost.sklearn import XGBClassifier
 
-_, max_depth, num_trees, with_io, ensemble_kind, only_ensemble, feature_set, train_fraction, ccp_alpha, min_samples_leaf, silent_mode, prefix, num_cores_per_node = sys.argv
+_, max_depth, num_trees, with_io, ensemble_kind, only_ensemble, feature_set, train_fraction, ccp_alpha, min_samples_leaf, silent_mode, prefix, num_cores_per_node, enable_floating_point = sys.argv
 max_depth = int(max_depth)
 num_trees = int(num_trees)
 with_io = 1 == int(with_io)
@@ -25,6 +25,7 @@ ccp_alpha = float(ccp_alpha)
 min_samples_leaf = int(min_samples_leaf)
 silent_mode = 1 == int(silent_mode)
 num_cores_per_node = int(num_cores_per_node)
+enable_floating_point = 1 == int(enable_floating_point)
 
 
 # This is a helper function to quickly print some results of the tree's performance.
@@ -177,20 +178,20 @@ if len(X2) != 0:
 
 def create_ensamble_tree(clf):
     file = open("decision_forest.c", "w")
-    create_forest_native_main(file, clf.estimators_, clf.classes_, num_trees, with_io, feature_set)
+    create_forest_native_main(file, clf.estimators_, clf.classes_, num_trees, with_io, feature_set, enable_floating_point)
     file.close()
 
     if not silent_mode:
         file = open("ino_tree/decision_forest.cpp", "w")
-        create_forest_ino_evaluate(file, clf.estimators_, clf.classes_, num_trees, feature_set)
+        create_forest_ino_evaluate(file, clf.estimators_, clf.classes_, num_trees, feature_set, enable_floating_point)
         file.close()
 
         file = open("ino_tree2/decision_forest.cpp", "w")
-        create_forest_ino_evaluate(file, clf.estimators_, clf.classes_, num_trees, feature_set)
+        create_forest_ino_evaluate(file, clf.estimators_, clf.classes_, num_trees, feature_set, enable_floating_point)
         file.close()
 
         file = open("ino_tree3/decision_forest.cpp", "w")
-        create_forest_ino_evaluate(file, clf.estimators_, clf.classes_, num_trees, feature_set)
+        create_forest_ino_evaluate(file, clf.estimators_, clf.classes_, num_trees, feature_set, enable_floating_point)
         file.close()
 
 

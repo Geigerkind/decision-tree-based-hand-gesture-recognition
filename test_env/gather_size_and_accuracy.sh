@@ -25,7 +25,7 @@ for feature_set in ${feature_sets[*]}; do
       for max_depth in {1..22}; do
         for forest_size in {1..16}; do
           echo "Working on: ${max_depth},${forest_size},${ensemble_technique},${feature_set},${set_fraction},${ccp_alpha},${min_leaf_sample}..."
-          python3 ../../model/decision_tree.py ${max_depth} ${forest_size} 1 ${ensemble_technique} 1 ${feature_set} ${set_fraction} ${ccp_alpha} ${min_leaf_sample} 1 "../../" ${num_cores_per_node}
+          python3 ../../model/decision_tree.py ${max_depth} ${forest_size} 1 ${ensemble_technique} 1 ${feature_set} ${set_fraction} ${ccp_alpha} ${min_leaf_sample} 1 "../../" ${num_cores_per_node} 0
           real_max_depth=$?
           gcc -O2 ./decision_forest.c -o decision_forest
           accuracy_klisch=$(DATA_PATH=".." PROGRAM_PATH="./../test_env/env_${env_num}" cargo test test_klisch_test_by_annotation_decision_forest --target-dir "./" --bin simulation --manifest-path "../../simulation/Cargo.toml" --features "feature_set${feature_set}" -- --nocapture | grep "Total accuracy:" | grep -o -E "[0-9]\.[0-9]+")
