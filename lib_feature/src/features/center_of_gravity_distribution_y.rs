@@ -9,10 +9,10 @@ const AMOUNT_WINDOWS: usize = 5;
 /// Calculates the average center of gravity for 6 time slots, i.e. if more than 6 samples are obtained, they
 /// are squished into 6 values by applying the average of the sum.
 /// y_g = (top_row - bottom_row) (For performance reasons the divide has been dismissed)
-pub struct CenterOfGravityDistributionY(pub [i16; AMOUNT_WINDOWS]);
+pub struct CenterOfGravityDistributionY(pub [i32; AMOUNT_WINDOWS]);
 
 impl Deref for CenterOfGravityDistributionY {
-    type Target = [i16; AMOUNT_WINDOWS];
+    type Target = [i32; AMOUNT_WINDOWS];
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -23,7 +23,7 @@ impl Feature for CenterOfGravityDistributionY {
     fn calculate(gesture: &Gesture) -> Self where Self: Sized {
         let mut center_of_gravities = Vec::with_capacity(gesture.frames.len());
         for frame in gesture.frames.iter() {
-            center_of_gravities.push((frame.pixel[0] + frame.pixel[1] + frame.pixel[2] - frame.pixel[6] - frame.pixel[7] - frame.pixel[8]) as i16);
+            center_of_gravities.push((frame.pixel[0] + frame.pixel[1] + frame.pixel[2] - frame.pixel[6] - frame.pixel[7] - frame.pixel[8]) as i32);
         }
 
         let amount_always_merge = center_of_gravities.len() / AMOUNT_WINDOWS;
@@ -35,7 +35,7 @@ impl Feature for CenterOfGravityDistributionY {
             4 => [1, 1, 1, 0, 1],
             _ => unreachable!()
         };
-        let mut perma_result: [i16; AMOUNT_WINDOWS] = [0; AMOUNT_WINDOWS];
+        let mut perma_result: [i32; AMOUNT_WINDOWS] = [0; AMOUNT_WINDOWS];
         let mut perma_result_index = 0;
         let mut values = Vec::new();
         for i in 0..center_of_gravities.len() {
@@ -43,7 +43,7 @@ impl Feature for CenterOfGravityDistributionY {
             if values.len() < amount_always_merge + add_pattern[perma_result_index] {
                 continue;
             }
-            perma_result[perma_result_index] = values.iter().sum::<i16>() / (values.len() as i16);
+            perma_result[perma_result_index] = values.iter().sum::<i32>() / (values.len() as i32);
             perma_result_index += 1;
             values.clear();
         }
@@ -52,7 +52,7 @@ impl Feature for CenterOfGravityDistributionY {
     }
 
     fn marshal(&self) -> String {
-        self.deref().iter().map(i16::to_string).collect::<Vec<String>>().join(",")
+        self.deref().iter().map(i32::to_string).collect::<Vec<String>>().join(",")
     }
 }
 

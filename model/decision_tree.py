@@ -399,17 +399,65 @@ def extra_trees():
 
 
 def stackedish_cocd():
+    # clf1 => Integer
+    max_depth1 = 21
+    num_trees1 = 11
+    min_samples_leaf1 = 2
+    """
     clf1 = cherry_picking(
-        lambda id: RandomForestClassifier(max_depth=15, criterion='entropy', n_estimators=14,
+        lambda id: RandomForestClassifier(max_depth=15, criterion='entropy', n_estimators=num_trees1,
                                           random_state=id, n_jobs=1,
-                                          ccp_alpha=0.0, min_samples_leaf=1), X2_train, y_train, X2_test_and_opt)
-    clf2 = cherry_picking(
-        lambda id: ExtraTreesClassifier(n_estimators=11, random_state=id, n_jobs=1, max_depth=21,
+                                          ccp_alpha=0.0, min_samples_leaf=1), X_train, y_train, X_test_and_opt)
+                                          
+    clf1 = cherry_picking(
+        lambda id: ExtraTreesClassifier(n_estimators=num_trees1, random_state=id, n_jobs=1, max_depth=max_depth1,
                                         max_features=max_features,
-                                        ccp_alpha=0.0, min_samples_leaf=2), X_train, y_train, X_test_and_opt)
+                                        ccp_alpha=0.0, min_samples_leaf=min_samples_leaf1), X_train, y_train, X_test_and_opt)
+    
+    clf1 = cherry_picking(lambda id: AdaBoostClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth1, criterion="entropy",
+                                                   ccp_alpha=0.0, min_samples_leaf=min_samples_leaf1),
+        n_estimators=num_trees1, random_state=id, learning_rate=0.2), X_train, y_train, X_test_and_opt)
+    """
 
-    predicted1 = clf1.predict_proba(X2_test_and_opt)
-    predicted2 = clf2.predict_proba(X_test_and_opt)
+    clf1 = cherry_picking(
+        lambda id: ExtraTreesClassifier(n_estimators=num_trees1, random_state=id, n_jobs=1, max_depth=max_depth1,
+                                        max_features=max_features,
+                                        ccp_alpha=0.0, min_samples_leaf=min_samples_leaf1), X_train, y_train, X_test_and_opt)
+    # clf2 => Float
+    max_depth2 = 20
+    num_trees2 = 10
+    min_samples_leaf2 = 8
+
+    """
+    clf2 = cherry_picking(
+        lambda id: ExtraTreesClassifier(n_estimators=num_trees2, random_state=id, n_jobs=1, max_depth=21,
+                                        max_features=max_features,
+                                        ccp_alpha=0.0, min_samples_leaf=2), X2_train, y_train, X2_test_and_opt)
+    
+    clf2 = cherry_picking(
+        lambda id: RandomForestClassifier(max_depth=max_depth2, criterion='entropy', n_estimators=num_trees2,
+                                          random_state=id, n_jobs=1,
+                                          ccp_alpha=0.0, min_samples_leaf=min_samples_leaf2), X2_train, y_train, X2_test_and_opt)
+    
+    clf2 = cherry_picking(lambda id: BaggingClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth2, criterion="entropy", ccp_alpha=0.0,
+                                                   min_samples_leaf=min_samples_leaf2),
+        n_estimators=num_trees2, random_state=id), X2_train, y_train, X2_test_and_opt)
+    
+     clf2 = cherry_picking(lambda id: AdaBoostClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth2, criterion="entropy",
+                                                   ccp_alpha=0.0, min_samples_leaf=min_samples_leaf2),
+        n_estimators=num_trees2, random_state=id, learning_rate=0.2), X2_train, y_train, X2_test_and_opt)
+    """
+
+    clf2 = cherry_picking(lambda id: AdaBoostClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth2, criterion="entropy",
+                                                   ccp_alpha=0.0, min_samples_leaf=min_samples_leaf2),
+        n_estimators=num_trees2, random_state=id, learning_rate=0.2), X2_train, y_train, X2_test_and_opt)
+
+    predicted1 = clf1.predict_proba(X_test_and_opt)
+    predicted2 = clf2.predict_proba(X2_test_and_opt)
 
     if not silent_mode:
         classes = clf1.classes_
@@ -439,7 +487,7 @@ def stackedish_cocd():
         print("Total accuracy: %.3f" % (100 * (amount_correct / total_gestures)))
 
     file = open("decision_forest.c", "w")
-    create_stacked_forest_native_main(file, clf2.estimators_, clf1.estimators_, 11, 14, 2, 1)
+    create_stacked_forest_native_main(file, clf1.estimators_, clf2.estimators_, num_trees1, num_trees2, 2, 1, enable_floating_point)
     file.close()
     return max(x.tree_.max_depth for x in clf1.estimators_ + clf2.estimators_)
 

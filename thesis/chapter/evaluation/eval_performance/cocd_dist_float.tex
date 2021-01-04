@@ -1,25 +1,19 @@
 \subsection{Schwerpunktverteilung mit Gleitkommazahlen}
 \begin{table}[h!]
-    \centering
-    \begin{tabular}{ | c | c | c | c | c |}
+    \hspace{-0.5cm}
+    \begin{tabular}{ | l | c | c | c | c |}
         \hline
-        & RandomForest & Boosting & Bagging & ExtraTrees \\\hline
-        Maximalhöhe & 15 & 20 & - & 22 \\\hline
-        Waldgröße & 14 & 10 & - & 14 \\\hline
-        ccp\_alpha & 0.0 & 0.0 & - & 0.0 \\\hline
-        min\_samples\_leaf & 1 & 8 & - & 2 \\\hline
-        \textbf{Ohne Optimierung} &  &  &  &  \\\hline
-        Größe in Bytes & - & - & - & - \\\hline
-        Genauigkeit Klisch & 91.7\% & 94.8\% & - & 89.6\% \\\hline
-        Genauigkeit Dymel Gesture & 98.1\% & 97.0\% & - & 99.0\% \\\hline
-        Genauigkeit Dymel Null & 91.9\% & 92.2\% & - & 94.0\% \\\hline
-        \textbf{Mit Optimierung} &  &  &  &  \\\hline
-        Größe in Bytes & - & - & - & - \\\hline
-        Genauigkeit Klisch & - & - & - & - \\\hline
-        Genauigkeit Dymel Gesten & - & - & - & - \\\hline
-        Genauigkeit Dymel Null & - & - & - & - \\\hline
+        Konfiguration & Beste & Unter 50 kB & Unter 28 kB & Unter 14 kB \\\hline
+        Ensemble-Methode & Boosting & Boosting & RandomForest & Bagging  \\\hline
+        Maximalhöhe & 20 & 19 & 10 & 7 \\\hline
+        Waldgröße & 10 & 6 & 4 & 3 \\\hline
+        min\_samples\_leaf & 8 & 8 & 2 & 8 \\\hline
+        Programmgröße in Bytes & 83304 & 43678 & 20188 & 6656 \\\hline
+        Genauigkeit Testmenge von Klisch & 94,8\% & 94.8\% & 89,6\% & 87,5\% \\\hline
+        Genauigkeit Gestentestmenge & 97,0\% & 96,1\% & 95,6\% & 94,1\% \\\hline
+        Genauigkeit Nullgestentestmenge & 92,2\% & 91,1\% & 88,8\% & 89,9\% \\\hline
     \end{tabular}
-    \caption{Beste Konfigurationen je Ensemble-Methode der Schwerpunktverteilung mit Gleitkommazahlen.}
+    \caption{Beste Konfigurationen der Schwerpunktverteilung mit Gleitkommazahlen.}
     \label{tab:schwerpunktverteilung_float}
 \end{table}
 \begin{figure}[h!]

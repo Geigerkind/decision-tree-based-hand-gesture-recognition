@@ -35,7 +35,7 @@ ccp_alpha = 0
 min_leaf_sample = 0
 combined_accuracy = 0
 best_acc_klisch = 0
-for item in data.query("feature_set == 7").iterrows():
+for item in data.query("feature_set == 2").iterrows():
     temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null + item[1].accuracy_dymel_gesture
     if (item[1].forest_bytes < min_size and temp_comb == combined_accuracy) or temp_comb > combined_accuracy:
         # Max ist hier nicht mehr passend!
@@ -102,7 +102,7 @@ print("\\begin{table}[h!]")
 print("\\centering")
 print("\\begin{tabular}{ | l | c | c | c |}")
 print("    \\hline")
-print("    Konfiguration & Beste Unter 50 kB & Unter 28 kB \\\\\\hline")
+print("    Konfiguration & Beste & Unter 50 kB & Unter 28 kB \\\\\\hline")
 print("    Ensemble-Methode & {} & & \\\\\\hline".format("RandomForest" if ensemble_technique == 1 else ("Boosting" if ensemble_technique == 2 else ("Bagging" if ensemble_technique == 3 else "ExtraTrees"))))
 print("    Maximalhöhe & {} & & \\\\\\hline".format(max_depth))
 print("    Waldgröße & {} & & \\\\\\hline".format(forest_size))
