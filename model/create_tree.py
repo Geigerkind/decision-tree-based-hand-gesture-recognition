@@ -19,7 +19,9 @@ def create_tree_native_main(file, clf, with_io, feature_set):
     elif feature_set == 6:
         file.write("float f_args[10];\n")
         file.write("long l_args[10];\n")
-    elif feature_set == 7 or feature_set == 8:
+    elif feature_set == 7:
+        file.write("unsigned char args[9];\n")
+    elif feature_set == 8:
         file.write("float args[9];\n")
     elif feature_set == 9:
         file.write("float args[19];\n")

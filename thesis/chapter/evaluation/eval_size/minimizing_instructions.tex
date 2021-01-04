@@ -25,7 +25,7 @@ Vergleichsfunktion aus. Insgesamt sind es 15 Instruktionen, was ziemlich teuer f
 \newline
 Zu Vermeiden sind Zeile 5 bis 11 indem alle Features nur einmal in Register geladen werden. Dies ist allerdings nur möglich, wenn die gesamte Featuremenge in die Register reinpassen und zusätzlich
 noch Register verfügbar sind, um die Konstanten zu laden. Der Kompiler übernimmt diese Optimierung schon automatisch. Der ATmega328P verfügt allerdings nur über 32 Register.
-Bei einer Featuremenge von 10 werden dementsprechend regelmäßig Register verdrängt wodurch zusätzliche Instruktionen bestehen. Die Anzahl der Instruktionen können also reduziert werden, indem
+Bei einer Featuremenge von 10 werden dementsprechend regelmäßig Register verdrängt wodurch zusätzliche Instruktionen entstehen. Die Anzahl der Instruktionen können also reduziert werden, indem
 die Featuremenge reduziert wird bei der gleichen Anzahl von Vergleichen.
 \begin{lstlisting}[label=lst:assemblyVergleich8Bit,caption={Vergleich von 8-Bit-Feature mit konstanter 8-Bit Zahl.}]
 01: adiw r26,4

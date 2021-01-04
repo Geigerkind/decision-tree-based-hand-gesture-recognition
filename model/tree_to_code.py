@@ -18,15 +18,19 @@ def tree_to_code(file, tree, classes, function_name, feature_set, return_voting,
         float_type = "short _Fract"
 
     if return_voting:
-        if feature_set == 1 or feature_set == 7 or feature_set == 8 or feature_set == 9:
+        if feature_set == 1 or feature_set == 8 or feature_set == 9:
             file.write("unsigned char " + function_name + "(" + float_type + "* features, " + float_type + "* result)")
+        elif feature_set == 7:
+            file.write("unsigned char " + function_name + "(unsigned char* features, " + float_type + "* result)")
         elif feature_set == 6:
             file.write("unsigned char " + function_name + "(" + float_type + "* float_features, short* long_features, " + float_type + "* result)")
         else:
             file.write("unsigned char " + function_name + "(short* features, " + float_type + "* result)")
     else:
-        if feature_set == 1 or feature_set == 7 or feature_set == 8 or feature_set == 9:
+        if feature_set == 1 or feature_set == 8 or feature_set == 9:
             file.write("unsigned char " + function_name + "(" + float_type + "* features)")
+        elif feature_set == 7:
+            file.write("unsigned char " + function_name + "(unsigned char* features, " + float_type + "* result)")
         elif feature_set == 6:
             file.write("unsigned char " + function_name + "(" + float_type + "* float_features, short* long_features)")
         else:
@@ -40,7 +44,7 @@ def tree_to_code(file, tree, classes, function_name, feature_set, return_voting,
             name = feature_name[node]
             threshold = tree_.threshold[node]
 
-            if feature_set == 1 or feature_set == 7 or feature_set == 8 or feature_set == 9:
+            if feature_set == 1 or feature_set == 8 or feature_set == 9:
                 file.write("\n{}if (features[{}] <= {:0.9f})".format(indent, name, threshold) + " {")
             elif feature_set == 6:
                 if int(name) < 10:

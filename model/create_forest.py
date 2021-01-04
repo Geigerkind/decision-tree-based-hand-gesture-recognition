@@ -64,7 +64,7 @@ def shared_forest_print_stuff(file, feature_set, classes, num_trees, enable_fixe
             file.write("total_res[return_res] += 1.0;\n")
             file.write("}\n")
 
-    file.write("printf(\"%f, %f, %f, %f, %f\\n\", total_res[0], total_res[1], total_res[2], total_res[3], total_res[4]);")
+    #file.write("printf(\"%f, %f, %f, %f, %f\\n\", total_res[0], total_res[1], total_res[2], total_res[3], total_res[4]);")
     file.write("unsigned char max_index = 0;\n")
     file.write(float_type + " max_value = 0;\n")
     file.write("for (unsigned char i = 0; i < 5; ++i) {\n")
@@ -90,16 +90,16 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
     elif feature_set == 2:
         file.write("short args[10];\n")
     elif feature_set == 3:
-        file.write("long args[9];\n")
+        file.write("short args[9];\n")
     elif feature_set == 4:
-        file.write("long args[12];\n")
+        file.write("short args[12];\n")
     elif feature_set == 5:
-        file.write("long args[21];\n")
+        file.write("short args[21];\n")
     elif feature_set == 6:
         file.write(float_type + " f_args[10];\n")
         file.write("short l_args[10];\n")
     elif feature_set == 7:
-        file.write(float_type + " args[9];\n")
+        file.write("unsigned char args[9];\n")
     elif feature_set == 8 or feature_set == 9:
         file.write(float_type + " args[19];\n")
 
@@ -109,16 +109,16 @@ def create_forest_native_main(file, trees, classes, num_trees, with_io, feature_
         elif feature_set == 2:
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1], \"%hd\", &args[i]);\n")
         elif feature_set == 3:
-            file.write("for (char i = 0; i < 9; ++i) sscanf(argv[i+1], \"%ld\", &args[i]);\n")
+            file.write("for (char i = 0; i < 9; ++i) sscanf(argv[i+1], \"%hd\", &args[i]);\n")
         elif feature_set == 4:
-            file.write("for (char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%ld\", &args[i]);\n")
+            file.write("for (char i = 0; i < 12; ++i) sscanf(argv[i+1], \"%hd\", &args[i]);\n")
         elif feature_set == 5:
-            file.write("for (char i = 0; i < 21; ++i) sscanf(argv[i+1], \"%ld\", &args[i]);\n")
+            file.write("for (char i = 0; i < 21; ++i) sscanf(argv[i+1], \"%hd\", &args[i]);\n")
         elif feature_set == 6:
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1], \"%f\", &f_args[i]);\n")
             file.write("for (char i = 0; i < 10; ++i) sscanf(argv[i+1 + 10], \"%hd\", &l_args[i]);\n")
         elif feature_set == 7:
-            file.write("for (char i = 0; i < 9; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
+            file.write("for (char i = 0; i < 9; ++i) sscanf(argv[i+1], \"%hhu\", &args[i]);\n")
         elif feature_set == 8 or feature_set == 9:
             file.write("for (char i = 0; i < 19; ++i) sscanf(argv[i+1], \"%f\", &args[i]);\n")
 

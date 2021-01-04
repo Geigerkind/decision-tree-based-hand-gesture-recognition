@@ -1,19 +1,20 @@
 \subsection{Helligkeitsverteilung}
 \begin{table}[h!]
     \centering
-    \begin{tabular}{ | c | c | c | c | c |}
+    \begin{tabular}{ | l | c | c | c |}
         \hline
-        & RandomForest & Boosting & Bagging & ExtraTrees \\\hline
-        Maximalhöhe & 10 & 15 & - & 7 \\\hline
-        Waldgröße & 9 & 13 & - & 4 \\\hline
-        ccp\_alpha & 0.01 & 0.0 & - & 0.01 \\\hline
-        min\_samples\_leaf & 1 & 1 & - & 1 \\\hline
-        Größe in Bytes & 25844 & - & - & 4560 \\\hline
-        Genauigkeit Klisch & 78.1\% & 59.4\% & - & 82.3\% \\\hline
-        Genauigkeit Dymel Gesten & 55.4\% & 46.5\% & - & 39.2\% \\\hline
-        Genauigkeit Dymel Null & 54.2\% & 56.2\% & - & 61.0\% \\\hline
+        Konfiguration & Beste & Unter 50 kB & Unter 28 kB \\\hline
+        Ensemble-Methode & ExtraTrees & ExtraTrees & ExtraTrees \\\hline
+        Maximalhöhe & 14 & 10 & 15 \\\hline
+        Waldgröße & 10 & 6 & 1 \\\hline
+        ccp\_alpha & 0.0 & 0.0 & 0.0 \\\hline
+        min\_samples\_leaf & 4 & 4 & 4 \\\hline
+        Programmgröße in Bytes & 76628 & 33284 & 9364 \\\hline
+        Genauigkeit Testmenge von Klisch & 74,0\% & 63,5\% & 67,7\% \\\hline
+        Genauigkeit Gestentestmenge & 74,1\% & 79,2\% & 76,6\% \\\hline
+        Genauigkeit Nullgestentestmenge & 69,0\% & 71,0\% & 67,0\% \\\hline
     \end{tabular}
-    \caption{Beste Konfigurationen je Ensemble-Methode der Helligkeitsverteilung.}
+    \caption{Beste Konfigurationen der Helligkeitsverteilung.}
     \label{tab:helligkeitsverteilung}
 \end{table}
 \begin{figure}[h!]
