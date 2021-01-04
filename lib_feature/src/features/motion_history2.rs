@@ -27,7 +27,7 @@ impl Feature for MotionHistory2 {
             for i in 0..9 {
                 if (last_frame.pixel[i] - frame.pixel[i]).abs() < average_amplitude_change {
                     if decay > result[i] {
-                        result[i] = max_value;
+                        result[i] = 0;
                     } else {
                         result[i] = (0).max(result[i] - decay);
                     }
