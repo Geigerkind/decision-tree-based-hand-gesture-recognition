@@ -3,16 +3,17 @@ Diese Arbeit hat gezeigt, dass sich Entscheidungsbaum basierte Klassifizierer se
 relativ schlechten Lichtverhältnissen. Nullgesten können von validen Handgesten unterschieden werden. Dabei sind sie signifikant schneller als KNNs und benötigen keinen RAM zur Evaluierung.
 \newline
 \newline
-Die beste Konfiguration, der kombinierte Schwerpunktverteilungklassifizierer, erzielte $96,9\%$ auf der Testmenge von Klisch, $99,4\%$ auf der Gestentestmenge und $95,2\%$ auf der Nullgestentestmenge. Damit
+Die beste Konfiguration, der kombinierte Schwerpunktverteilungklassifizierer, erzielte $94,8\%$ auf der Testmenge von Klisch, $99\%$ auf der Gestentestmenge und $95,8\%$ auf der Nullgestentestmenge. Damit
 ist der Ansatz nur marginal schlechter als die beste Konfiguration der vorherigen Arbeiten, die $100\%$ erzielte. Die kombinierte Schwerpunktverteilung erwies sich als äußerst Robust gegenüber skalierte
 Helligkeiten und Helligkeiten mit einem Offset. Selbst bei geringem Kontrast erzielt der Ansatz eine hohe Erkennungsgenauigkeit. Die WCET beläuft sich auf $X$(TODO). Der Großteil $Y$(TODO) wird davon für
 die Berechnung der Features benötigt. Damit ist man $Z$(TODO) schneller, als der beste vorherige Ansatz. Nach Anwendung aller Optimierungen und unter Annahme, dass Festkommazahlen keine Auswirkung auf
-die Entscheidungsgenauigkeit haben, ist der Klassifizierer mit $175\ kB$, $147\ kB$ zu groß für den ATmega328P, wenn man $4\ kB$ für die restlichen Funktionen der Firmware alloziiert.
+die Entscheidungsgenauigkeit haben, ist der Klassifizierer zu groß für den ATmega328P.
 \newline
 \newline
-Mit einer Beschränkung von $50 kB$(TODO, ist so groß das andere Board) kann der beste kombinierte Schwerpunktverteilungklassifizierer $XX\%$(TODO) auf der Testmenge von Klisch erzielen, $XX\%$(TODO) auf
-der Gestentestmenge und $XX\%$ auf der Nullgestentestmenge. Mit der Beschränkung des ATmega328P von $32\ kB$, $XX\%$(TODO) auf der Testmenge von Klisch erzielen, $XX\%$(TODO) auf
-der Gestentestmenge und $XX\%$ auf der Nullgestentestmenge.
+Mit einer Beschränkung von $64 kB$ kann der kombinierte Schwerpunktverteilungklassifizierer $90,6\%$ auf der Testmenge von Klisch erzielen, $98,3\%$ auf
+der Gestentestmenge und $92,3\%$ auf der Nullgestentestmenge bei einer Programmgröße von 48040 Byte. Mit der Beschränkung des ATmega328P von $32\ kB$, $87,5\%$ auf der
+Testmenge von Klisch erzielen, $96,9\%$ auf der Gestentestmenge und $92,5\%$ auf der Nullgestentestmenge bei einer Programmgröße von 205252 Byte.
+Beide haben damit noch genug Raum, um andere Funktionen unter zu bringen.
 \newline
 \newline
 Die Schwerpunktverteilung mit ausschließtlich Integer hat eine WCET von $X$(TODO) und ist damit $X\%$(TODO) schneller als die kombinierte Schwerpunktverteilung und $X\%$(TODO) schneller als der beste vorherige
@@ -31,7 +32,7 @@ Programmgröße verringern als auch einen Einfluss auf die Erkennungsgenauigkeit
 \newline
 \newline
 Insgesamt ist es sehr aufwändig den potentiell besten Klassifizierer zu finden, da es viele Parameter gibt die in Kombination untereinander unterschiedliche Klassifizierer produzieren. Zudem ist die
-Konstruktion nicht immer deterministisch, weswegen sie als Monte Carlo Methode betrachtet werden kann. Insgesamt wurden $X$(TODO) verschiedene Konfigurationen untersucht und $28$ Variationen von Feature.
+Konstruktion nicht immer deterministisch, weswegen sie als Monte Carlo Methode betrachtet werden kann. Insgesamt wurden 22528 verschiedene Konfigurationen untersucht und $28$ Variationen von Feature.
 Darunter wurden neben der Schwerpunktverteilung die Helligkeitsverteilung und Motion History betrachtet, die wesentlich schlechtere Erkennungsgenauigkeiten auf die Testmengen erzielten.
 \newline
 \newline

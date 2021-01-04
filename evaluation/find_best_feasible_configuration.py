@@ -8,7 +8,7 @@ max_size_in_bytes = 150000 + default_size
 d1 = pd.read_csv("./saad_c8.csv").query(
     "optimization_level == 'Os' and ensemble_technique != 3 and feature_set != 3 and feature_set != 5 and feature_set != 6 and feature_set != 7")
 d2 = pd.read_csv("./saad_c9.csv").query("optimization_level == 'Os' and ensemble_technique != 3")
-d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'Os'")
+d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'Os' and feature_set != 2")
 
 data = pd.concat([d1, d2, d3], ignore_index=True)
 

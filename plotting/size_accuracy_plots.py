@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 d1 = pd.read_csv("./saad_c8.csv").query(
     "optimization_level == 'O0' and ensemble_technique != 3 and feature_set != 3 and feature_set != 5 and feature_set != 6 and feature_set != 7")
 d2 = pd.read_csv("./saad_c9.csv").query("optimization_level == 'O0' and ensemble_technique != 3")
-d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'O0'")
+d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'O0' and feature_set != 2")
 
 data_size = pd.concat([d1, d2, d3], ignore_index=True)
 
