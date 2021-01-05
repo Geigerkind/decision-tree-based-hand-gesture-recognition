@@ -1,30 +1,30 @@
 \chapter{Einleitung}
 Machinelles Lernen (ML) gewann in den vergangenen Jahren an Popularität, u.a. durch die Fortschritte in parallelen Rechnen,
-sinkende Speicherpreise und schnelleren Speicher. Zudem sind sehr gute ML-Bibliotheken frei verfügbarr, wie Scikit-Learn, Keras oder PyTorch, die
-den Einstieg in maschinellen Lernen erleichtern erleichtern (TODO: Quelle?). Ein namenhaftes Beispiel für das Potential von maschinellen Lernen ist \textit{AlphaZero},
+sinkende Speicherpreise und schnelleren Speicher. Zudem sind sehr gute ML-Bibliotheken frei verfügbar, wie Scikit-Learn, Keras oder PyTorch, die
+den Einstieg in maschinellen Lernen erleichtern erleichtern \cite{abadi2016tensorflow}. Ein namenhaftes Beispiel für das Potential von maschinellen Lernen ist \textit{AlphaGo Zero},
 die einen Sieg gegen den besten menschlichen Spieler im Brettspiel Go erringen konnte. Das galt als besonders schwierig für Computer zu meistern,
-da der Suchraum von möglichen Aktionen sehr groß ist (TODO: Quelle).
+da der Suchraum von möglichen Aktionen sehr groß ist \cite{silver2017mastering}.
 \newline
 \newline
-Ein häufiges Anwendungsgebiet in eingebetteten Systemen ist die optische Gestenerkennung, die zur kontaktlosen Interaktion mit technischen Geräten u. a. genutzt wird (Todo: Quelle).
-Die eingesetzten Mikrocontroller sind jedoch häufig nicht ausreichend leistungsstark, um ein trainiertes Model in passabler Zeit auszuführen (TODO: Quelle). Gründe dafür sind
-Kosten oder Anforderungen an die Batterielanglebigkeit (TODO: Quelle). Häufig wird dieses Problem umgangen, indem die Modelle in leistungsstarken Rechen-Clustern ausgeführt werden.
-Dabei werden die nötigen Daten auf dem Mikrocontroller gesammelt und an den Rechen-Cluster gesendet. Nachteile dieses Ansatzes sind einerseits die Abhängigkeit zu dieser
-Infrastruktur und andererseits kommt dadurch eine Latenz hinzu. Alternativ können die Modelle lokal ausgeführt werden. Dies erfordert aber, dass die Komplexität des Modells reduziert wird,
+Ein häufiges Anwendungsgebiet in eingebetteten Systemen ist die optische Gestenerkennung, die zur kontaktlosen Interaktion, u. a. mit technischen Geräten, genutzt wird \cite{pavlovic1997visual}.
+Die eingesetzten Mikrocontroller sind jedoch häufig nicht ausreichend leistungsstark, um ein trainiertes Model in passabler Zeit auszuführen. Gründe dafür sind
+Kosten oder Anforderungen an die Batterielanglebigkeit. Häufig wird dieses Problem umgangen, indem die Modelle in leistungsstarken Rechen-Clustern ausgeführt werden.
+Dabei werden die nötigen Daten auf dem Mikrocontroller gesammelt und an das Rechen-Cluster gesendet \cite{venzkeArticle}. Nachteile dieses Ansatzes sind einerseits die Abhängigkeit zu dieser
+Infrastruktur und andererseits vergrößert sich die Latenz. Alternativ können die Modelle lokal ausgeführt werden. Dies erfordert aber, dass die Komplexität des Modells reduziert wird,
 sodass eine passable Ausführungszeit gewährleistet wird.
 \newline
 \newline
-In dieser Arbeit wird die Entscheidungsbaum basierte Handgestenerkennung auf kleinen Mikrocontrollern untersucht. Vermutet wird, dass Entscheidungsbäume schneller sind als neuronale Netze (NN) und
+In dieser Arbeit wird die Entscheidungsbaum basierter Handgestenerkennung auf kleinen Mikrocontrollern untersucht. Vermutet wird, dass Entscheidungsbäume schneller sind als neuronale Netze (NN) und
 trotzdem eine passable Erkennungsgenauigkeit erzielen. Untersucht werden muss welcher Entscheidungsbaum basierte Klassifizierer und welche Feature sich am besten eignen. Maßgeblich dafür ist die Leistung
 im Hinblick auf Erkennungsgenauigkeit, Ausführungszeit und Resourcenverbrauch des Modells auf dem Mikrocontroller. Dafür ist ein Konzept zur Übersetzung des Modells auf den Mikrocontroller nötig.
 \newline
 \newline
-Insgesamt wurden 28 Varianten von Feature analysiert. Die Feature mit der besten Tauglichkeit wurden mit verschiedenen Ensemble-Methoden und Parametern für Entscheidungsbäume kombiniert. Daraus sind
+Insgesamt wurden 28 Varianten an Features analysiert. Die Features mit der besten Tauglichkeit wurden mit verschiedenen Ensemble-Methoden und Parametern für Entscheidungsbäume kombiniert. Daraus sind
 22528 verschiedene Konfigurationen entstanden, die auf ihre Erkennungsgenauigkeit hin verglichen wurden. Die beste Konfiguration wurde auf ihre Worst-Case-Execution-Time (WCET) und auf den Resourcenverbrauch
-hin analysiert und mit den vorherigen Arbeiten verglichen. Dabei wurden zusätzliche Optimierungen diskutiert um den WCET und Resourcenverbrauch zu minimieren. Währendessen ist eine komplexe Infrastruktur
-enstanden, die in Rust und Python geschrieben ist. Sie umfasst das Handgesten Modell und stellt Code-Bibliotheken bereit, um die verschiedenen Konfigurationen zu generieren, zu trainieren und zu validieren.
-Zudem stellt sie verschiedene Werkzeuge zur verfügung. Ein wichtiges Werkzeug ist ein Codegenerator der aus den Entscheidungsbaum basierten Modellen C-Code erzeugt. Mit einem anderen Werkzeug wurden
-innerhalb kürzester Zeit 14410 weitere Handgesten erfasst.
+hin analysiert und mit den vorherigen Arbeiten, aus der gleichen Fallstudie \cite{venzkeArticle}, verglichen. Dabei wurden zusätzliche Optimierungen diskutiert um den WCET und Resourcenverbrauch zu minimieren.
+Währendessen ist eine komplexe Infrastruktur enstanden, die in Rust und Python geschrieben ist. Sie umfasst das Handgesten Modell und stellt Code-Bibliotheken bereit,
+um die verschiedenen Konfigurationen zu generieren, zu trainieren und zu validieren. Zudem stellt sie verschiedene Werkzeuge zur Verfügung. Ein wichtiges Werkzeug ist ein Codegenerator,
+der aus den Entscheidungsbaum basierten Modellen C-Code erzeugt. Mit einem anderen Werkzeug wurden innerhalb kürzester Zeit 14410 weitere Handgesten erfasst.
 \newline
 \newline
 Kapitel 2 führt in Entscheidungsbäume und Ensemble-Methoden ein. Kapitel 3 erläutert die bisherigen Arbeiten zur Handgestenerkennung. In Kapitel 4 wird auf die Generierung des Models, die Tauglichkeit von
