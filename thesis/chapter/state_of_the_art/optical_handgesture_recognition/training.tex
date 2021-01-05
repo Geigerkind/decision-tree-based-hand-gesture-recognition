@@ -21,17 +21,17 @@
     \caption{Illustration der Handgeste von Links nach Rechts aus Listing \ref{lst:sampleGesture}.}
     \label{fig:sample_gesture}
 \end{figure}
-Die Modelle werden auf Basis von aufgenommenen Daten trainiert und getestet. Jedes aufgenommene Bild wird durch einen Komma separierten Vektor von Zahlen dargestellt gefolgt von einer Annotation für den Gestentyp.
+Die Modelle werden auf Basis von aufgenommenen Daten trainiert und getestet. Jedes aufgenommene Bild wird durch einen Komma separierten Vektor von Zahlen dargestellt, gefolgt von einer Annotation für den Gestentyp.
 Eine Geste ist eine Folge von Bildern, die die gleiche Annotation teilen (siehe Listing \ref{lst:sampleGesture}). Insgesamt gibt es 4792 Aufnahmen von validen Handgesten, die unter verschiedenen Lichtverhältnissen
-und Distanzen zur Kamera aufgenommen wurden. Dabei wurde die Gesten mit der Hand und Finger ausgeführt in verschiedenen Geschwindigkeiten.
+und Distanzen zur Kamera aufgenommen wurden. Dabei wurde die Gesten mit der Hand und dem Finger in verschiedenen Geschwindigkeiten ausgeführt.
 \newline
 \newline
-Synthetische Daten können erzeugt werden, um die Datenmenge zu vergößern. Dabei wird aus einer aufgenommenen Geste Variationen durch Rotation und Rauschen generiert. Außerdem können Helligkeiten,
+Synthetische Daten können erzeugt werden, um die Datenmenge zu vergößern. Dabei werden aus einer aufgenommenen Geste Variationen durch Rotation und Rauschen generiert. Außerdem können Helligkeiten,
 Kontraste und Gamma verändert werden \cite{venzkeArticle}.
 \newline
 \newline
 Als Testdaten wird ein Teil der Datenmenge bezeichnet, die nicht zum trainieren verwendet wurde. Kubik hat Testdaten unter verschiedenen Lichtverhältnissen und Entfernungen zur Kamera aufgenommen. Klisch hat
-daraus eine Testmenge erstellt die von Klisch und Giese zur Verifikation verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die Erkennungsgenauigkeit als Verhältnis zwischen der Anzahl an korrekt
+daraus eine Testmenge erstellt, die von Klisch und Giese zur Verifikation verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die Erkennungsgenauigkeit als Verhältnis zwischen der Anzahl an korrekt
 erkannten Gesten und der Gesamtanzahl (siehe Formel \ref{klisch_metric}) \cite{klischThesis}.
 \begin{align}
     accuracy = \frac{\#true\ positives}{\#total\ gestures}
