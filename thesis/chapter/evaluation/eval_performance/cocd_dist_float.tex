@@ -26,25 +26,13 @@ Die Featuremenge Schwerpunktverteilung mit Gleitkommazahlen folgt der Definition
 Koordinate des Schwerpunktes darstellen in insgesamt 5 Zeitfenstern.
 \newline
 \newline
-Die beste Konfiguration wurde mit der Boosting Ensemble-Methode erzielt (siehe Tabelle \ref{tab:schwerpunktverteilung_float}). Mit einer Erkennungsgenauigkeit von $94,8\%$ auf der Testmenge von Klisch
-ist dieser Ansatz nur $5,2\%$ schlechter als das neuronale Netz von Giese \cite{gieseThesis}. Es ist anzumerken, dass mit einer kleineren Trainingsmenge ohne Nullgesten eine Lösung gefunden wurde, die
-$97,9\%$ erzielte und damit nur $2,1\%$ schlechter ist. Außerdem werden $92,2\%$ der Nullgestentestmenge von Dymel korrekt klassifiziert und $97\%$ der Gestentestmenge von Dymel. Die anderen
-Ensemble-Methoden sind nur marginal schlechter.
+Die beste Konfiguration wurde mit der Ensemble-Methode Boosting erzielt (siehe Tabelle \ref{tab:schwerpunktverteilung_float}). Mit einer Erkennungsgenauigkeit von 94,8\% auf der Testmenge von Klisch
+ist dieser Ansatz nur 5,2\% schlechter als das neuronale Netz von Giese \cite{gieseThesis}. Es ist anzumerken, dass mit einer kleineren Trainingsmenge ohne die Gestentrainingsmenge und Nullgestentrainingsmenge eine Lösung
+gefunden wurde, die 97,9\% erzielte und damit nur 2,1\% schlechter ist. Außerdem werden 97\% der Gestentestmenge und 92,2\% der Nullgestentestmenge korrekt klassifiziert.
 \newline
 \newline
-Alle Konfigurationen sind ohne Optimierung aber zu groß um kompeliert zu werden. Aus diesem Grund wurden die gleichen Konfigurationen mit Festkommazahlen und dem diskreten Wahlklassifizierer reevaluiert.
-TODO: Evaluieren, evtl. kleinere Waldgröße nutzen, e.g. 6 und mit Graphen begründen.
-\newline
-\newline
-In Abbildung \ref{fig:cocd_float_per_forest_size} kann man einen Anstieg der Erkennungsgenauigkeit mit zunehmender Waldgröße auf den Testmengen von Dymel erkennen. Bis zu einer Waldgröße von 6 gilt das
-auch für die Testmenge von Klisch, allerdings fängt sie ab dort an zu schwanken.
-
-\iffalse
-!! Merke beste Klisch Genauigkeit an. Problem beim finden mit größerer Trainingsmenge
-
-Pro Analyse:
-* Explain the featureset a little
-* Beste Konfiguration specs, pro Ensemble-Methode
-=> Acc und size vor und nach optimierung
-* Verschiedene Waldgrößen verglichen
-\fi
+Im Vergleich zu der Helligkeitsverteilung und Motion History ist die Erkennungsgenauigkeit dieses Ansatzes signifikant besser, sogar wenn nur 6656 Byte Programmspeicher verwendet werden. Wird die beste Konfiguration mit
+der \textit{Unter 14 kB} verglichen, nimmt die Gesamterkennungsganuigkeit nur um 4,17\% ab bei der Reduktion der Programmgröße von 92\%. Dies verspricht, dass mit zunehmender Waldgröße der die Erkennungsgenauigkeit steigt.
+Abbildung \ref{fig:cocd_float_per_forest_size} zeigt, dass dies zwar der Fall ist, aber schon ab einer Waldgröße von 6 ist die Durchschnittliche Erkennungsgenauigkeit keinen signifikanten Zuwachs mehr verzeichnet.
+Dementsprechend ist der Unterschied der Gesamterkennungsgenauigkeit der besten Konfiguraiton und \textit{Unter 60 kB} mit 0,7\% nicht groß, wodurch sich dieses Feature gut für kleine eingebettete Systeme mit
+wenig Programmspeicher eignet.
