@@ -1,4 +1,4 @@
-\subsection{Schwerpunktverteilung mit Integer}
+\subsection{Schwerpunktverteilung mit Ganzzahlen}
 \begin{table}[h!]
     \hspace{-0.9cm}
     \begin{tabular}{ | l | c | c | c | c |}
@@ -13,28 +13,27 @@
         Genauigkeit Gestentestmenge & 98,8\% & 97,9\% & 97,8\% & 95,5\% \\\hline
         Genauigkeit Nullgestentestmenge & 95,6\% & 93,9\% & 91,5\% & 88,9\% \\\hline
     \end{tabular}
-    \caption{Beste Konfigurationen der Schwerpunktverteilung mit Integer.}
+    \caption{Die besten Konfigurationen der Schwerpunktverteilung mit Ganzzahlen.}
     \label{tab:schwerpunktverteilung_int}
 \end{table}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/cocd_int_acc_per_size.png}
-    \caption{Die beste summierte Erkennungsgenauigkeit pro Waldgröße der Schwerpunktverteilung mit Integer.}
+    \caption{Die besten Konfigurationen pro Waldgröße der Schwerpunktverteilung mit Ganzzahlen.}
     \label{fig:cocd_int_per_forest_size}
 \end{figure}
-Die Featuremenge Schwerpunktverteilung mit Integer folgt der Definition aus Sektion \ref{sec:schwerpunktverteilung} und beinhaltet insgesamt 10 Einträge, wobei jeweils 2 Einträge die X und Y
-Koordinate des Schwerpunktes darstellen in insgesamt 5 Zeitfenstern. Anders als die Schwerpunktverteilung mit Gleitkommazahlen wird diese nicht durch die Summe aller Pixel dividiert, wodurch
-X und Y zwischen -3072 und 3072 liegen anstatt -1 und 1.
+Die Featuremenge Schwerpunktverteilung mit Ganzzahlen folgt der Definition aus Kapitel \ref{sec:schwerpunktverteilung} und beinhaltet insgesamt 10 Einträge. Jeweils 2 Einträge bilden die X und Y
+Koordinate des Schwerpunktes. Damit spiegeln 10 Einträge insgesamt 5 Zeitfenster wieder.
 \newline
 \newline
-Auch bei diesem Ansatz, weisen alle Ensemble-Methoden nur marginale Unterschiede auf (siehe Tabelle \ref{tab:schwerpunktverteilung_int}) im Hinblick auf die Erkennungsgenauigkeit. Insgesamt ist
-die Konfigurationen mit ExtraTrees am besten, da die summierte Erkennungsgenauigkeit dort maximal ist. Der RandomForest hat aber die höchste Erkennungsgenauigkeit auf der Testmenge von Klisch.
-Mit $96,9\%$ ist das noch besser als die Schwerpunktverteilung mit Gleitkommazahlen und $0,1\%$ besser als die beste Lösung die mit einer kleineren Trainingmenge ohne Nullgesten gefunden wurde.
+Aus der Tabelle \ref{tab:schwerpunktverteilung_int} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode ExtraTrees gefunden.
+Mit einer Klassifizierungsgenauigkeit von 95,8\% auf der Testmenge von Klisch ist dieser Ansatz nur 3,2\% schlechter als das neuronale Netz von Giese \cite{gieseThesis}. Es wurde aber auch eine Konfiguration
+gefunden, die 96,9\% der Testmenge von Klisch korrekt klassifiziert und damit nur 2,1\% schlechter ist. Diese maximiert aber in keiner Kategorie die Gesamtklassifizierungsgenauigkeit.
+Außerdem werden 98,8\% der Gestentestmenge und 95,6\% der Nullgestentestmenge korrekt klassifiziert.
 \newline
 \newline
-Leider ist die Programmgröße aller Konfigurationen, ohne Optimierungen, zu groß um kompeliert zu werden. Zurzeit nutzt der Ansatz 32-Bit Integer. Als Optimierung wurde der Datentyp auf 16-Bit
-Integer bzw. 8-Bit Integer reduziert und der hybride Wahlklassifizierer wurde genutzt. TODO: Reevaluierung.
-\newline
-\newline
-Abbildung \ref{fig:cocd_int_per_forest_size} zeigt, dass die Erkennungsgenauigkeit der Testmengen mit zunehmender Waldgröße ebenfalls zunimmt. Wobei besonders die Erkennungsgenauigkeit der
-Testmenge von Klisch stark schwankt.
+Der Ansatz mit Ganzzahlen erzielte eine 2,1\% höhere Gesamtklassifizierungsgenauigkeit als der Ansatz mit Gleitkommazahlen. Der 16-Bit Integer Datentyp erlaubt der Schwerpuntktverteilung mit Ganzzahlen unter jeder
+Restriktion größere Entscheidungswälder zu bilden, als die Schwerpunktverteilung mit Gleitkommazahlen. Abbildung \ref{fig:cocd_int_per_forest_size} zeigt einen Zuwachs der durchschnittlichen Klassifizierungsgenauigkeit
+mit zunehmender Waldgröße. Es ist auszugehen, dass eine noch bessere Konfiguration gefunden werden könnte, wenn der Suchraum auf eine größere Waldgröße erweitert wird. Ähnlich wie Schwerpunktverteilung mit
+Gleitkommazahlen ist der Zuwachs der durchschnittlichen Klassifizierungsgenauigkeit ab einer Waldgröße von 7 Bäumen gering. Somit kann bereits bei einer geringen Programmgröße eine hohe Klassifizierungsgenauigkeit
+erzielt werden. Damit eignet sich die Schwerpunktverteilung mit Ganzzahlen ebenfalls für kleine eingebettete Systeme.
