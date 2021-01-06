@@ -2,11 +2,12 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 d1 = pd.read_csv("./saad_c8.csv").query(
-    "optimization_level == 'O0' and ensemble_technique != 3 and feature_set != 3 and feature_set != 5 and feature_set != 6 and feature_set != 7")
-d2 = pd.read_csv("./saad_c9.csv").query("optimization_level == 'O0' and ensemble_technique != 3")
-d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'O0' and feature_set != 2")
+    "optimization_level == 'O0' and ensemble_technique != 3 and feature_set != 3 and feature_set != 5 and feature_set != 6 and feature_set != 7 and feature_set != 7")
+d2 = pd.read_csv("./saad_c9.csv").query("optimization_level == 'O0' and ensemble_technique != 3 and feature_set != 7")
+d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'O0' and feature_set != 2 and feature_set != 7")
+d4 = pd.read_csv("./saad_c11.csv").query("optimization_level == 'Os'")
 
-data_size = pd.concat([d1, d2, d3], ignore_index=True)
+data_size = pd.concat([d1, d2, d3, d4], ignore_index=True)
 
 for feature_set in range(9):
     current_data = data_size.query("feature_set == " + str(feature_set + 1))
@@ -33,7 +34,7 @@ for feature_set in range(9):
                     ylabel="Erkennungsgenauigkeit",
                     xlabel="Waldgröße")
     fig.axes.set_xlim([1, 16])
-    fig.axes.set_ylim([0.7, 1])
+    fig.axes.set_ylim([0.0, 1])
 
     # max_acc = data.iloc[data["Durchschnitt"].argmax()]
     # plt.plot([max_acc.forest_size, max_acc.forest_size], [0, ax1.get_ylim()[1]], '--')

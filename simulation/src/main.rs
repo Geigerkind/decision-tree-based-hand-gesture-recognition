@@ -463,7 +463,7 @@ mod test {
             let offset = key.offset.unwrap_or(0);
             let scaling = key.scaling.unwrap_or(0);
             let _ =file.write_all(b"\n");
-            let _ =file.write_all(format!("4,{},{},{}", offset, scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
+            let _ =file.write_all(format!("2,{},{},{}", offset, scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
         }
     }
 
@@ -476,7 +476,7 @@ mod test {
         for (key, entry) in evaluation.entries.iter() {
             let scaling = key.scaling.unwrap_or(0);
             let _ =file.write_all(b"\n");
-            let _ =file.write_all(format!("4,0,{},{}", scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
+            let _ =file.write_all(format!("2,0,{},{}", scaling, entry.accuracy().unwrap_or(0.0)).as_bytes());
         }
     }
 }

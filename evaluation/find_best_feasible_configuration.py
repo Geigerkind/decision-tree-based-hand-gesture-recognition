@@ -6,11 +6,12 @@ default_size = 2500
 max_size_in_bytes = 150000 + default_size
 # data = pd.read_csv("./saad_c8.csv").query("forest_bytes <= " + str(max_size_in_bytes) + " and forest_bytes > 0")
 d1 = pd.read_csv("./saad_c8.csv").query(
-    "optimization_level == 'Os' and ensemble_technique != 3 and feature_set != 3 and feature_set != 5 and feature_set != 6 and feature_set != 7")
-d2 = pd.read_csv("./saad_c9.csv").query("optimization_level == 'Os' and ensemble_technique != 3")
-d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'Os' and feature_set != 2")
+    "optimization_level == 'Os' and ensemble_technique != 3 and feature_set != 3 and feature_set != 5 and feature_set != 6 and feature_set != 7 and feature_set != 7")
+d2 = pd.read_csv("./saad_c9.csv").query("optimization_level == 'Os' and ensemble_technique != 3 and feature_set != 7")
+d3 = pd.read_csv("./saad_c10.csv").query("optimization_level == 'Os' and feature_set != 2 and feature_set != 7")
+d4 = pd.read_csv("./saad_c11.csv").query("optimization_level == 'Os'")
 
-data = pd.concat([d1, d2, d3], ignore_index=True)
+data = pd.concat([d1, d2, d3, d4], ignore_index=True)
 
 res_max_height = []
 res_forest_size = []
@@ -35,7 +36,7 @@ ccp_alpha = 0
 min_leaf_sample = 0
 combined_accuracy = 0
 best_acc_klisch = 0
-for item in data.query("feature_set == 2").iterrows():
+for item in data.query("feature_set == 7").iterrows():
     temp_comb = item[1].accuracy_klisch + item[1].accuracy_dymel_null + item[1].accuracy_dymel_gesture
     if (item[1].forest_bytes < min_size and temp_comb == combined_accuracy) or temp_comb > combined_accuracy:
         # Max ist hier nicht mehr passend!
@@ -106,7 +107,7 @@ print("    Konfiguration & Beste & Unter 50 kB & Unter 28 kB \\\\\\hline")
 print("    Ensemble-Methode & {} & & \\\\\\hline".format("RandomForest" if ensemble_technique == 1 else ("Boosting" if ensemble_technique == 2 else ("Bagging" if ensemble_technique == 3 else "ExtraTrees"))))
 print("    Maximalhöhe & {} & & \\\\\\hline".format(max_depth))
 print("    Waldgröße & {} & & \\\\\\hline".format(forest_size))
-print("    ccp\\_alpha & {} & & \\\\\\hline".format(ccp_alpha))
+# print("    ccp\\_alpha & {} & & \\\\\\hline".format(ccp_alpha))
 print("    min\\_samples\\_leaf & {} & & \\\\\\hline".format(min_leaf_sample))
 print("    Programmgröße in Bytes & {} & & \\\\\\hline".format(min_size))
 print("    Genauigkeit Testmenge von Klisch & {:.1f}\\% & & \\\\\\hline".format(100.0 * max_accuracy_klisch))
