@@ -22,20 +22,17 @@
     \caption{Die beste summierte Erkennungsgenauigkeit pro Waldgröße mit Motion History.}
     \label{fig:motion_history_per_forest_size}
 \end{figure}
-Die Featuremenge von Motion History beinhaltet für jeden Pixel einen Eintrag, die der Definition des Motion History Image folgen (siehe Formel \ref{formular:mhi}).
+Die Featuremenge von Motion History beinhaltet für jeden Pixel einen Eintrag, die der Definition des Motion History Image folgen (siehe Formel \ref{formular:mhi}), wobei $\tau=100$ und $\delta=\frac{\tau}{\#Bilder}$ ist.
 \newline
 \newline
-Zu erwarten war, dass Motion History am besten von allen Konfigurationen abschneidet, da es alle Anforderungen an ein Feature erfüllt. In der Praxis schneidet die Motion History allerdings am schlechtesten
-im Hinblick auf die Erkennungsgenauigkeit der Testmenge von Klisch ab (siehe Tabelle \ref{tab:motion_history}). Die beste Ensemble-Methode ist ExtraTrees mit dieser Featuremenge. Allerdings ähnlich, wie die
-Helligkeitsverteilung, ist der RandomForest insgesamt balancierter im Hinblick auf die Gestentestmenge von Dymel. Die Bagging Ensemble-Methode verursachte Fehler und konnte nicht evaluiert werden.
+Die beste Konfiguration wurde mit der Ensemble-Methode \textit{ExtraTrees} gefunden (siehe Tabelle \ref{tab:helligkeitsverteilung}). Sie erzielt eine Erkennungsgenauigkeit von 68,8\% auf der Testmenge von Klisch,
+74\% auf der Gestentestmenge und 69\% auf der Nullgestentestmenge. Im Vergleich zu der Helligkeitsverteilung wird mehr Programm-Speicher benötigt und die Gesamterkennungsganuigkeit ist 1,84\% geringer.
 \newline
 \newline
-Motion History ist mit Gleitkommazahlen implementiert. Allerdings sollte es keine Probleme bereiten sie mit 8-Bit Integer zu reimplementieren. Damit sollte die Programmgröße deutlich sinken. Obwohl die
-Konfiguration mit ExtraTrees am besten abschneidet, konnte die Konfiguration mit dem RandomForest nicht für den ATmega328P kompeliert werden aufgrund der Programmgröße. Es ist zu erwarten, dass dieser nach
-der Reimplementierung klein genug ist.
+Wird die beste Konfiguration mit der \textit{Unter 28 kB} vergleichen, nimmt die Gesamterkennungsgenauigkeit nur um 4,3\% ab bei einer Reduktion der Programmgröße von 72,9\%. Im Vergleich zur Helligkeitsverteilung
+gewinnt die Motion History mehr Gesamterkennungsgenauigkeit mit einer zunehmenden Waldgröße (siehe Abbildung \ref{fig:motion_history_per_forest_size}). Wenn der Suchraum nicht auf eine Waldgröße von 16 begrenzt wäre,
+würde die beste Konfiguration vermutlich besser sein. Allerdings würde sich die Programmgröße signifikant erhöhen.
 \newline
 \newline
-In Abbildung \ref{fig:motion_history_per_forest_size} ist ein Anstieg der Erkennungsgenauigkeit mit zunehmender Waldgröße für die Testmenge von Klisch und die Nullgestentestmenge von Dymel zu erkennen. Auffällig ist
-die Erkennungsgenauigkeit der Gestentestmenge von Dymel, die zunehmend abnimmt. Die Abbildung zeigt pro Waldgröße immer die beste Konfiguration im Hinblick auf die summierte Erkennungsgenauigkeit der
-Testmenge von Klisch und der Nullgestentestmenge von Dymel an. Dementsprechend nimmt sie für die ExtraTrees Methode ab, nicht aber für RandomForest und Boosting.
-
+Die Motion History kann mit auschschließlich 8-Bit Integer implementiert werden und hat damit den geringsten WCET und Programmgröße pro Baum, weswegen die beste Konfiguration mit einer Waldgröße von 16 nicht deutlich
+größer ist als die der Helligkeitsverteilung mit einer Waldgröße von 10.
