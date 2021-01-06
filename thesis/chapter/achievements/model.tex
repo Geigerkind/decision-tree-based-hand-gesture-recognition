@@ -34,11 +34,6 @@ unterliegenen Zufallszahlengenerators setzt.
 \newline
 Dementsprechend kann man die Konstruktion als Monte Carlo Methode betrachten, d. h. wiederholte Ausführungen erhöhen die Wahrscheinlichkeit, dass das beste Ergebnis dieser Konfiguration gefunden wurde.
 Jede Konfiguration wird aus diesem Grund mit 140 verschiedenen \texttt{random\_state} ausgeführt.
-\newline
-\newline
-Zum Trainieren wird eine Kombination aus der Trainingsmenge von Fey und Kubik verwendet, sowie 25\% der Gestenmenge und 12,5\% der Nullgestenmenge (siehe Sektion \ref{sec:DymelData}). Insgesamt 7629
-Ausführungen der Handgesten. Davon werden 50\% zufällig zum Trainieren genutzt und die überbleibenden 50\% werden genutzt, um den besten Entscheidungswald aus den 140 verschiedenen \texttt{random\_state}
-zu ermitteln.
 
 \subsection{C-Code Generierung eines Entscheidungsbaumes}
 \label{sec:cCodeTree}
