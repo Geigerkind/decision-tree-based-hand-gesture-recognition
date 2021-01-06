@@ -26,11 +26,9 @@ Die Featuremenge der Helligkeitsverteilung beinhaltet insgesamt 12 Features. Jew
 geometrisch zusammengefasst.
 \newline
 \newline
-Die beste Konfiguration wurde mit der ExtraTrees Ensemble-Methode gefunden (siehe Tabelle \ref{tab:helligkeitsverteilung}). Sie erzielt eine Erkennungsgenauigkeit von $82,3\%$ auf der Testmenge von Klisch
-und ist damit nur $17,7\%$ schlechter als das neuronale Netzwerk von Giese \cite{gieseThesis}. Außerdem klassifiziert diese Konfiguration $61\%$ aller Nullgesten aus der Testmenge von Dymel korrekt und ist
-damit in Summe deutlich besser als die anderen Ensemble-Methoden. Allerdings ist die Erkennungsgenauigkeit auf der Gestentestmenge von Dymel nur bei $39,2\%$, wobei RandomForest deutlich besser ist mit
-einer Erkennungsgenauigkeit von $55,4\%$. Insgesamt hat RandomForest damit ein besseres balanciertes Ergebnis, da die Erkennungsgenauigkeit auf dei Nulltestmenge und Testmenge von Klisch nur leicht
-schlechter sind als die der Extra-Tress Methode. Mit einer Programmgröße von 4560 Bytes und 25844 Bytes passen beide Konfigurationen, ohne Optimierungen vorzunehmen, auf das Arduino Board.
+Die beste Konfiguration wurde mit der Ensemble-Methode \textit{ExtraTrees} gefunden (siehe Tabelle \ref{tab:helligkeitsverteilung}). Sie erzielt eine Erkennungsgenauigkeit von 74\% auf der Testmenge von Klisch
+und ist damit 26\% schlechter als das neuronale Netzwerk von Giese \cite{gieseThesis}. Außerdem wird 74\% der Gestentestmenge und 69\% der Nullgestentestmenge korrekt klassifiziert.
 \newline
 \newline
-Abbildung \ref{fig:helligkeitsverteilung_per_forest_size} zeigt keinen nennenswerten Anstieg der Erkennungsgenauigkeit durch eine größere Waldgröße.
+Wenn man die beste Konfiguration mit der \textit{Unter 28 kB} mit einerander vergleicht, nimmt die Gesamterkennungsgenauigkeit nur um 1,94\% ab bei einer Reduktion der Programmgröße von 87,8\%.
+Ein ähnliches Verhalten ist auch in Abbildung \ref{fig:helligkeitsverteilung_per_forest_size} zu erkennen, indem die Gesamterkennungsgenauigkeit nur leicht mit der zunehmenden Waldgröße steigt.

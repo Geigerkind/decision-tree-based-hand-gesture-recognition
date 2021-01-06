@@ -1,15 +1,17 @@
 \section{Erkennungsgenauigkeit}
-Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Aus denen werden 4 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden 22528
+Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Daraus wurden 4 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden 22528
 verschiedene Konfigurationen trainiert und getestet (siehe Sektion \ref{sec:Training}).
 \newline
 \newline
-Betrachtet wird die beste Konfiguration, die innerhalb der Restriktion des Programmspeichers, nach möglichen Optimierungen (siehe Sektion \ref{sec:eval_size}), die Summe der Erkennungsgenauigkeiten
-der Testmenge von Klisch, der Gestentestmenge und der Nullgestentestmenge maximiert.
+Betrachtet werden die besten Konfiguration, die innerhalb der Restriktion des Programmspeichers, nach möglichen Optimierungen (siehe Sektion \ref{sec:eval_size}), und die Beste Konfiguration, die die Summe der
+Erkennungsgenauigkeiten der Testmenge von Klisch, der Gestentestmenge und der Nullgestentestmenge maximiert. Als Programmspeichergröße wird 64 kB und 32 kB betrachtet. Über 32 kB verfügt der ATmega328P. Dabei wird
+immer 4 kB für andere Funktionen der Firmware alloziiert und der Rest für den Klassifizierer.
 \newline
 \newline
-Die verschiedenen Featuremengen werden im Hinblick auf die Erkennungsgenauigkeit auf der Testmenge von Klisch, der Nullgestentestmenge, der neuerstellten Gestentestmenge und den synthetischen
-Helligkeitstestmengen untereinander verglichen und mit den Ergebnissen von Giese. Außerdem wird die Auswirkung von verschiedenen Waldgrößen untersucht. Anzumerken ist, dass lediglich die
-Testmenge von Klisch vergleichbar ist mit den vorherigen Arbeiten. Die Gestentestmenge, Nullgestentestmenge und Helligkeitstestmengen sind erst im Laufe dieser Arbeit entstanden.
+Die verschiedenen Featuremengen werden im Hinblick auf die Erkennungsgenauigkeit auf der Testmenge von Klisch, der Gestentestmenge, der Nullgestentestmenge und den synthetischen
+Helligkeitstestmengen untereinander verglichen und mit den Ergebnissen von Giese verglichen. Es wird ausschließlich mit Giese verglichen, da seine Ergebnisse die beste Erkennungsgenauigkeit, geringste Ausführungszeit und
+geringsten Resourcenverbrauch erzielte. Außerdem wird die Auswirkung von verschiedenen Waldgrößen auf die Erkennungsgenauigkeit untersucht. Anzumerken ist, dass lediglich die Testmenge von Klisch vergleichbar ist mit
+den Ergebnissen von Giese ist, da die Gestentestmenge, Nullgestentestmenge und Helligkeitstestmengen erst im Laufe dieser Arbeit entstanden sind.
 
 \input{chapter/evaluation/eval_performance/brightness_distribution}
 \input{chapter/evaluation/eval_performance/motion_history}
