@@ -11,22 +11,26 @@
         Genauigkeit Gestentestmenge & 99,0\% & 98,3\% & 96,9\% \\\hline
         Genauigkeit Nullgestentestmenge & 95,8\% & 92,3\% & 92,5\% \\\hline
     \end{tabular}
-    \caption{Beste Konfigurationen der kombinierten Schwerpunktverteilung.}
+    \caption{Die besten Konfigurationen der kombinierten Schwerpunktverteilung.}
     \label{tab:schwerpunktverteilung_int_and_float}
 \end{table}
-Sektion \ref{sec:brightness_eval} zeigt, dass die Schwerpunktverteilung mit Gleitkommazahlen invariant zu Skalierten Helligkeiten ist und die Schwerpunktverteilung mit Integer invariant
-gegenüber einen Offset in der Helligkeit. Aus diesem Grund erscheint ein kombinierter Klassifizierer sinnvoll. Es wird angenommen, dass die jeweiligen Ansätze in den Lichtverhältnissen, in denen ihre
-Stärken liegen, einen besonderen Fokus auf eine Klasse haben und andernfalls keinen besonderen Fokus.
+Die kombinierte Schwerpunktverteilung vereint die Schwerpunktverteilung mit Ganzzahlen und Gleitkommazahlen. Das erscheint sinnvoll, da der Ansatz mit Ganzzahlen invariant zu einem Offset in der
+Helligkeit ist und der Ansatz mit Gleitkommazahlen invariant zur Skalierung der Helligkeit.
 \newline
 \newline
-Die jeweiligen Klassifizierer werden ebenfalls mit einem Wahlklassifizierer kombiniert, indem die Wahrscheinlichkeiten addiert werden zu gleichen Anteilen. Zu erwarten ist, dass sich die
-Erkennungswahrscheinlichkeit auf den Testmengen von Klisch und Dymel auf den Durchschnitt der beiden Ansätze angleicht.
-Außerdem wird dieser Klassifizierer nicht invariant gegenüber Skalierung und Offset sein. Trotzdem ist davon auszugehen, dass dieser Ansatz robuster gegenüber Lichtverhältnisse ist.
+Es wird davon ausgegangen, dass der jeweilige Klassifizierer entweder ein Ergebnis mit einer deutlichen Mehrheit zurückgibt oder ein Ergebnis mit einer knappen Mehrheit. Für jedes Lichtverhältniss hat mindestens ein
+Klassifizierer eine deutliche Mehrheit. Damit erzielt die Kombination eine Mehrheit bei der korrekten Klasse. Die besten Konfigurationen der beiden Ansätze werden mit einem Wahlklassifizierer vereint.
+Das heißt, die Wahrscheinlichkeitsverteilungen der Wahlklassifizierer der jeweiligen Ansätze werden zu gleichen Anteilen addiert.
 \newline
 \newline
-Die naive Implementierung, d. h. die besten Konfigurationen des Gleitkommazahl und Integer Ansatzes zu vereinen, ist zu groß für das Arduino Board. Sie erzielt jedoch $96,9\%$ auf der Testmenge
-von Klisch, $99,4\%$ auf der Gestentestmenge von Dymel und $95,2\%$ auf der Nullgestentestmenge von Dymel. Eine klein genügende Lösung wird zwar eine geringer Erkennungsgenauigkeit haben, aber dafür
-durch die Kombination keine Regression zu den Ausgangsklassifizierern erfahren.
+Die Kombination der besten Konfigurationen beider Ansätze erzielt eine Klassifizierungsgenauigkeit von 94,8\% auf der Testmenge von Klisch. Dies entspricht der Klassifizierungsgenauigkeit der Schwerpunktverteilung mit
+Gleitkommazahlen. 99\% der Gestentestmenge wird korrekt klassifiziert. Das ist besser als beide Ansätze. Die Nullgestestmenge wurde zu 95,8\% korrekt klassifiziert. Dies entspricht der Klassifizierungsgenauigkeit der
+Schwerpunktverteilung mit Ganzzahlen. Bei der Kategorie \textit{Unter 44 kB} und \textit{Unter 28 kB} wurde der kombinierte Klassifizierer nie schlechter als der schlechteste Ansatz auf dem die kombinierte
+Schwerpuntkverteilung basiert.
 \newline
 \newline
-Der Nachteil dieses Ansatzes ist, dass sowhl die Featuremenge mit Gleitkommazahlen, als auch für Integer berechnet werden muss.
+Der Nachteil dieses Ansatzes ist, dass sowhl die Featuremenge mit Gleitkommazahlen, als auch für Ganzzahlen benötigt wird. Zum einen müssen immer beide Features berechnet werden und zum anderen kann jeder Klassifizierer
+nur halb soviel Speicher nutzen. Dadurch ist die Klassifizierungsgenauigkeit jedes Klassifizierers potentiell geringer, als wenn es den vollständigen Speicher zur Verfügung hätte. Bei der Schwerpunktverteilungen ist aber
+bereits ab einer geringen Waldgörße kein signifikanter Zuwachs der Klassifizierungsgenauigkeit zu verzeichnen. Deswegen eigenet sich die Schwerpunktverteilung besonders gut. Der Vorteil ist, dass der kombinierte
+Klassifizierer potentiell robuster ist.
+
