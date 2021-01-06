@@ -1,30 +1,30 @@
 \subsection{Featureauswahl}
-Insgesamt wurden 28 Varianten von Feature untersucht und davon 3 Feature verstärkt aus denen 20 Varianten entstanden sind. Die Features, die von Song et al. genutzt wurden
+Insgesamt wurden 28 Varianten an Features untersucht und davon 3 Features verstärkt aus denen 20 Varianten entstanden sind. Die Features, die von Song et al. genutzt wurden
 (siehe Tabelle \ref{tab:songFeatures}) eignen sich ohne Änderungen nicht, da sie mindestens eine Anforderung nicht erfüllen.
 \newline
 \newline
-Mit dem \textit{Mean absolute value} ermöglicht es die einzelnen Handgesten zu unterscheiden, wenn das Feature in verschiedene Zeitfenster aufgeteil wird. Zusätzlich kann die Helligkeit normalisiert werden.
-Um die Featuremenge zu verringern, können Spalten und Zeilen zusammengefasst werden. Allerdings generalisierte der Ansatz nicht gut, da die Varianz sehr groß ist durch die fehlende Invarianz zur Geschwindigkeit.
+Das \textit{Mean absolute value} Feature ermöglicht die einzelnen Handgesten zu unterscheiden, wenn das Feature in verschiedene Zeitfenster aufgeteilt wird. Zusätzlich kann die Helligkeit normalisiert werden.
+Um die Featuremenge zu verringern, können Spalten und Zeilen zusammengefasst werden. Allerdings generalisierte der Ansatz nicht gut, da die Varianz sehr groß bei Handgesten mit verschwieder Geschwindigkeit.
 \newline
 \newline
 \textit{Average amplitude change} eignet sich gut um horizontale und vertikale Bewegungen zu unterscheiden. Allerdings ist es nicht möglich symethrische Bewegungen zu unterscheiden. Nicht untersucht wurden
 Änderungen, die beim \textit{Mean absolute value} durchgeführt wurden.
 \newline
 \newline
-Feature 2, 5, 7 bis 9 wurden nicht weiter untersucht weil sie zu komplexe Berechnungen bedürfen für das Arduino Board.
+Feature 2, 5 und 7 bis 9 wurden nicht weiter untersucht, weil sie zu komplexe Berechnungen bedürfen für ein kleines eingebette System ohne Modul zur Gleitkommazahlberechnung.
 
 \subsubsection{Motion History}
-Die Motion History zeigt eine Bewegunghistorie, indem kürzlich stattgefundene Bewegung heller ist als länger zurückliegende. Es ist invariant gegenüber Lichtverhältnisse, hat jedoch 2 große Schwachpunkte.
+Die Motion History zeigt eine Bewegungshistorie, indem eine kürzlich stattgefundene Bewegung heller ist als länger zurückliegende. Es ist invariant gegenüber Lichtverhältnisse, hat jedoch 2 große Schwachpunkte.
 Einerseits kann es überlappende Bewegungen nicht richtig anzeigen, da eine kürzlich detektierte Bewegungung den Wert auf den Maximalwert $\tau$ setzt. Dies stellt in diesem Anwendungsfall kein
 Problem dar, da die definierten Handgesten keine Überlappung erzeugen.
 \newline
 \newline
-Andereseits ist das Feature bei konstantem $\tau$ und $\delta$ nicht Invariant gegenüber Geschwindigkeit. Als Lösung wurde $\delta$ abhängig von der Gestenlänge gemacht,
+Andereseits ist das Feature bei konstantem $\tau$ und $\delta$ nicht invariant gegenüber der Geschwindigkeit. Als Lösung wurde $\delta$ abhängig von der Gestenlänge gemacht,
 d. h. $\delta = \frac{\tau}{\#Bilder}$. Mit dieser Konfiguration ist die Bewegung nicht unvollständig, wenn sie langsam ausgeführt wird. Allerdings geht dieser Ansatz von einer konstanten
 Ausführungsgeschwindigkeit der Handgeste aus.
 \newline
 \newline
-Eine Bewegung in einem Pixel $q$ wird duch die Funktion \ref{formular:motion_history_phi} signalisiert, d. h. die Bewegung in $q$ findet statt, wenn eine Veränderung oberhalb des Durchschnitts detektiert wird.
+Eine Bewegung in einem Pixel $q$ wird durch die Funktion \ref{formular:motion_history_phi} signalisiert, d. h. die Bewegung in $q$ findet statt, wenn eine Veränderung oberhalb des Durchschnitts detektiert wird.
 \begin{align}
     \phi(q,t) = \begin{cases}
                     1 & if \Delta_{q,t} \geq \frac{1}{N} \sum_{n=1}^N \Delta_{q,n} \\
@@ -81,7 +81,6 @@ nach bestimmten Zeitfenstern zugeordnet. Bei 5 Zeitfenstern wird der erste Über
 \newline
 \newline
 Die Schwerpunktverteilung ist durch die Dividierung mit $P$ invariant gegenüber Skalierung der Helligkeit, jedoch nicht gegenüber einen Offset. Alternativ kann $P$ weggelassen werden, damit ausschließlich
-mit Integer gearbeitet wird. Dadurch können größere Bäume generiert werden (siehe Sektion \ref{sec:eval_size}) und die Feature-Extrahierung ist schneller (siehe Sektion \ref{sec:eval_speed}).
-\newline
-\newline
-TODO: Erkläre Invarianz gegenüber Offset aber nicht Skalierung
+mit Integer gearbeitet wird. Dadurch können größere Bäume generiert werden (siehe Sektion \ref{sec:eval_size}) und die Feature-Extrahierung ist schneller (siehe Sektion \ref{sec:eval_speed}). Die Schwerpunktverteilung
+mit Integer ist durch das weglassen von $P$ invariant gegenüber einen Offset $O$, da $\sum_{i=0}^{2}(q_{i,2} + O) - \sum_{i=0}^{2}(q_{i,0} + O)\ =\ \sum_{i=0}^{2} q_{i,2} - \sum_{i=0}^{2} q_{i,0} = X_Q$ ist und analog
+für $Y_Q$.
