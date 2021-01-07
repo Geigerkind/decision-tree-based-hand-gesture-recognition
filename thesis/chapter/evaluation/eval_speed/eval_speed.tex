@@ -2,10 +2,7 @@
 \label{sec:eval_speed}
 Die Ausführungszeit der Feature-Extrahierung und Klassifizierung ist ausschlaggebend für die mögliche FPS. Diese ermöglicht die Wahrnehmung von schnellen Handgesten. Ist die FPS bereits ausreichend
 können leistungschwächere Module verwendet werden, wodurch die Batterielaufzeit verlängert wird oder die Kosten reduziert werden.
-\newline
-\newline
 In dieser Arbeit wird das Arduino Board ATmega328P genutzt. Dieses Board verfügt über eine 8-Bit APU, 2 kB RAM, 32 kB Flash-Speicher und operiert unter 16 MHz \cite{atmega328p}.
-Es verfügt nicht über ein Modul zur Verarbeitung von Gleitkommazahlen. Aus diesem Grund sind Operationen mit Gleitkommazahlen besonders teuer und zu vermeiden.
 \newline
 \newline
 Es wird ausschließlich die \textit{Worst-Case-Execution-Time} (WCET) betrachtet. Ausschlaggebend dafür ist der \textit{Worst-Case-Execution-Path} (WCEP) im Kontrollflussgraph \cite{wcc_intro}. Der WCEP
@@ -16,6 +13,7 @@ Die Auswertung bezieht sich auf die Instruktionen des Programms, die bei der Üb
 ATmega328P \cite{atmega328p} können für jede Instruktion die maximale Anzahl der Zyklen entnommen werden, die im schlimmsten Fall benötigt werden. Die Gesamtausführungszeit berechnet sich aus der Anzahl der Zyklen
 multipliziert mit der Zeit pro Zyklus, d. h. bei 16 MHz bedarf ein Zyklus 0,0625 $\mu s$.
 
+\input{chapter/evaluation/eval_speed/float_functions}
 \input{chapter/evaluation/eval_speed/feature_extraction}
 \input{chapter/evaluation/eval_speed/tree_evaluation}
 \input{chapter/evaluation/eval_speed/forest_evaluation}
