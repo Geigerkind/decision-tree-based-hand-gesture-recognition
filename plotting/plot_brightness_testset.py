@@ -1,7 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 
-data = pd.read_csv("./light_eval.csv").query("scaling == 0")
+data = pd.read_csv("./light_eval2.csv").query("offset == 0")
 
 df = pd.DataFrame(columns=["ansatz", "offset", "scaling", "accuracy"])
 for item in data.iterrows():
@@ -34,17 +34,17 @@ plt.rcParams.update({'font.size': 30})
 
 plt.figure(figsize=(60, 45))
 figur, ax1 = plt.subplots()
-fig = df2.plot(ax=ax1, x="offset", y=["Helligkeitsverteilung", "Motion History",
+fig = df2.plot(ax=ax1, x="scaling", y=["Helligkeitsverteilung", "Motion History",
                                        "Schwerpunktverteilung mit Gleitkommazahlen",
                                        "Schwerpunktverteilung mit Integer", "Kombinierte Schwerpunktverteilung"])
-ax1.set_xlabel("Offset")
-ax1.set_ylabel("Erkennungsgenauigkeit")
+ax1.set_xlabel("Skalierung")
+ax1.set_ylabel("Klassifizierungsgenauigkeit")
 ax1.set_ylim([0, ax1.get_ylim()[1]])
-ax1.set_xlim([0, 800])
+ax1.set_xlim([0.05, 1])
 
 ax1.legend(loc="lower left", bbox_to_anchor=(0, 0))
 
 figur.set_size_inches(20, 15)
-plt.savefig('./plotting/brightness_offset.png', format='png', dpi=100, pad_inches=0.2,
+plt.savefig('./plotting/brightness2_scaling.png', format='png', dpi=100, pad_inches=0.2,
             bbox_inches="tight")
 plt.close('all')
