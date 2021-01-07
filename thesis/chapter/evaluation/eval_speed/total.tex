@@ -1,0 +1,20 @@
+\subsection{Gesamtausführungszeit und Optimierung}
+Der beste Klassifizierer der Schwerpunktverteilung mit Gleitkommazahlen mit einer Programmgröße unterhalb von 28 kB hat eine Maximalhöhe von 10 und eine Waldgröße von 4 Bäumen. Die WCET dieses Entscheidungswaldes
+beläuft sich damit auf 4224,5 $\mu s\ \approx\ $4,2 ms. Das ist 2,2 ms, bzw. 34,4\% schneller als das schnellste neuronale Netz von Giese \cite{gieseThesis}. Die Ausführungszeit könnte deutlich reduziert werden, indem
+Festkommaarithmetik mit 16-Bit Festkommazahlen verwendet werden würde.
+\newline
+\newline
+Der beste Klassifizierer der Schwerpunktverteilung mit Ganzzahlen mit einer Programmgröße unterhalb von 28 kB hat eine Maximalhöhe von 12 und eine Waldgröße von 8 Bäumen. Die WCET dieses Entscheidungswaldes
+beläuft sich damit auf 669,9375 $\mu s\ \approx\ $0,7 ms. Das ist 5,7 ms, bzw. 89,1\% schneller als das schnellste neuronale Netz von Giese. Es ist anzumerken, dass in der Praxis die Puffergröße
+bei diesem Ansatz größer sein kann, da nur 4 Bytes pro Schwerpunkt benötigt werden. Dadurch erhöht sich die WCET.
+\newline
+\newline
+Der beste Klassifizierer der kombinierten Schwerpunktverteilung mit einer Programmgröße unterhalb von 28 kB vereint die Klassifizierer der Kategorie \textit{Unter 14 kB}. Der Entscheidungswald der Schwerpunktverteilung
+mit Gleitkommazahlen hat eine Maximalhöhe von 7 und eine Waldgröße von 3 Bäumen. Der Entscheidungswald der Schwerpunktverteilung mit Ganzzahlen hat eine Maximalhöhe von 12 und eine Waldgröße von 3 Bäumen. Bei der
+Berechnung für die WCET muss insgesamt 3 mal der Wahlklassifizierer angewendet werden, wobei nur der letzte den Overhead von 4 $\mu s$ hat, um die Klasse mit der höchsten Wahrscheinlichkeit zu identifizieren. Damit
+beläuft sich die WCET auf 4684,6875 $\mu s\ \approx\ $ 4,7 ms. Das ist 1,7 ms, bzw. 26,6\% schneller als das schnellste neuronale Netz von Giese. Es ist anzumerken, dass in der Praxis die Puffergröße
+bei diesem Ansatz geringer ist, da 12 Bytes pro Schwerpunkt benötigt werden. Dadurch reduziert sich die WCET.
+\newline
+\newline
+Der größte Anteil der WCET ist die Feature-Extrahierung. Dementsprechend können Entscheidungswälder beliebig groß skaliert werden, solange es der Programmspeicher zulässt. Der Klassifizierer mit der Schwerpunktverteilung
+mit Ganzzahlen ist 85,1\% schneller als der Klassifizierer mit der Schwerpunktverteilung mit Gleitkommazahlen. Dadurch ist der kombinierte Klassifizierer nur insignifikant langsamer als der Ansatz mit Gleitkommazahlen.

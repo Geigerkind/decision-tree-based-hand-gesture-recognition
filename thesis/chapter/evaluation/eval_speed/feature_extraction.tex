@@ -19,7 +19,7 @@ schwerpunkt_puffer_x[anzahl_bilder_im_puffer] = (float)(bild_puffer[0] + bild_pu
 schwerpunkt_puffer_y[anzahl_bilder_im_puffer] = (float)(bild_puffer[0] + bild_puffer[1] + bild_puffer[2] - bild_puffer[6] - bild_puffer[7] - bild_puffer[8]) / ((float)helligkeits_summe);
 \end{lstlisting}
 Wenn ein Handgestenkandidat detektiert wurde, wird für jedes Zeitfenster der Durchschnitt der darin enthaltenden Schwerpunkte berechnet. Die daraus berechnetten Schwerpunkte werden als Schwerpunktverteilung bezeichnet.
-Listing \ref{cocdAlgo} zeigt den Algorithmus, um die Schwerpunktverteilung aus den Schwerpunkten im Puffer zu berechnen. Zunächst wird bei der Initialisierungsphase das \texttt{zusammenfass\_muster} berechnet
+Listing \ref{lst:cocdAlgo} zeigt den Algorithmus, um die Schwerpunktverteilung aus den Schwerpunkten im Puffer zu berechnen. Zunächst wird bei der Initialisierungsphase das \texttt{zusammenfass\_muster} berechnet
 (Kap \ref{sec:schwerpunktverteilung}). Dafür werden im schlimmsten Fall 123 Zyklen für die einzelnen Instruktionen benötigt (7,6875 $\mu s$) und 20 $\mu s$ für die Ganzzahldividierung \textit{\_\_divmodhi4}. Insgesamt
 27,6875 $\mu s$. Dieser Teil wird genau 1 mal für alle Richtungen durchgeführt und Schwerpunktverteilungen durchgeführt. Die innere Schleife wird im schlimmsten Fall für die Gesamtgröße des Schwerpunktpuffers durchlaufen.
 Jeder Durchlauf benötigt im schlimmsten Fall 27 Zyklen für die einzelnen Instruktionen (1,6875 $\mu s$) und führt \textit{\_\_addsf3} einmal aus. Der WCET für einen Durchlauf beläuft sich damit auf 13,6875 $\mu s$.
