@@ -1,12 +1,13 @@
 \section{Erkennungsgenauigkeit}
 Es werden 3 Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Daraus wurden 4 Featuremengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden 22528
 verschiedene Konfigurationen trainiert und getestet, die in Kapitel \ref{sec:Training} beschrieben wurden. Jede Konfiguration nutzt zum Trainieren eine Kombination aus der Trainingsmenge von Feng und Kubik,
-sowie die Gestentestmenge und die Nullgestenmenge (siehe Sektion \ref{sec:DymelData}). Die Trainingmenge beinhaltet insgesamt 7629 Handgesten. Davon wird 50\% zum Trainieren und 50\% zum Validieren und optimieren
-auf Basis der Monte Carlo Methode benutzt.
+sowie die Gestentestmenge und die Nullgestenmenge, die in Kapitel \ref{sec:DymelData} beschrieben wurden. Die Trainingmenge beinhaltet insgesamt 7629 Handgesten. Davon wird 50\% zum Trainieren und 50\% zum
+Validieren und optimieren auf Basis der Monte Carlo Methode benutzt.
 \newline
 \newline
 Unter jeder Featuremenge werden jeweils 3 Kategorien analysiert. Die erste Kategorie zeigt die beste Konfiguration, die ohne Restriktion des Programmspeichers, gefunden wurde. Die zweite Kategorie hat eine Restriktion
-von 48 kB und die dritte Kategorie hat eine Restriktion von 32 kB. Dabei werden immer 4 kB abgezogen, da diese für andere Systemrelevante Funktionen reserviert sind. Die beste Konfiguration einer Kategorie maximiert die Summe
+von 48 kB und die dritte Kategorie hat eine Restriktion von 32 kB. Diese beziehen sich auf den Programmspeicher des ATmega4809 und ATmega328P, die im Rahmen der Fallstudie verwendet werden \cite{venzkeArticle}.
+Dabei werden immer 4 kB abgezogen, da diese für andere Systemrelevante Funktionen reserviert sind. Die beste Konfiguration einer Kategorie maximiert die Summe
 der Klassifizierungsgenauigkeiten der Testmenge von Klisch, der Gestentestmenge und der Nullgestentestmenge. Dabei wird stets die optimierte Programmgröße der Konfiguration betrachtet, nachdem alle Optimierungen aus Kapitel
 \ref{sec:eval_size} angewendet wurden.
 \newline

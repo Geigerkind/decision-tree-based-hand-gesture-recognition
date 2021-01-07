@@ -1,20 +1,20 @@
 \section{Ausführungszeit}
 \label{sec:eval_speed}
 Die Ausführungszeit der Feature-Extrahierung und Klassifizierung ist ausschlaggebend für die mögliche FPS. Diese ermöglicht die Wahrnehmung von schnellen Handgesten. Ist die FPS bereits ausreichend
-können leistungschwächere Module verwendet werden, wodurch die Batterielaufzeit verlängert wird oder die Kosten verringert werden.
+können leistungschwächere Module verwendet werden, wodurch die Batterielaufzeit verlängert wird oder die Kosten reduziert werden.
 \newline
 \newline
-Das in dieser Arbeit verwendete Arduino Board ATmega328P verfügt nicht über ein Modul zur verarbeitung von Gleitkommazahlen. Aus diesem Grund sind Operationen mit Gleitkommazahlen besonders teuer
-und zu vermeiden. Der ATmega328P verfügt über eine 8-Bit APU, 2 kB RAM, 32 kB Flash-Speicher und operiert unter 16 MHz \cite{atmega328p}.
+In dieser Arbeit wird das Arduino Board ATmega328P genutzt. Dieses Board verfügt über eine 8-Bit APU, 2 kB RAM, 32 kB Flash-Speicher und operiert unter 16 MHz \cite{atmega328p}.
+Es verfügt nicht über ein Modul zur Verarbeitung von Gleitkommazahlen. Aus diesem Grund sind Operationen mit Gleitkommazahlen besonders teuer und zu vermeiden.
 \newline
 \newline
 Es wird ausschließlich die \textit{Worst-Case-Execution-Time} (WCET) betrachtet. Ausschlaggebend dafür ist der \textit{Worst-Case-Execution-Path} (WCEP) im Kontrollflussgraph \cite{wcc_intro}. Der WCEP
-setzt sich zusammen aus dem lesen des aktuellen Bildes, der Extrahierung der Features und der Evaluation des Entscheidungswaldes.
+setzt sich zusammen aus dem Vorgang das aktuelle Bild auszulesen, der Extrahierung der Features und der Ausführung des Klassifizierers.
 \newline
 \newline
-Ausgewertet werden die Instruktionen des Programms das durch den \textit{AVR GCC} mit der Optimierungsstufe \texttt{O2} kompeliert wurde. Aus dem ATmega328P Handbuch \cite{atmega328p} können
-für jede Instruktion die Anzahl der Zyklen, die im schlimmsten Fall benötigt werden, entnommen werden. Die Gesamtausführungszeit berechnet sich aus der Anzahl der Zyklen multipliziert mit der Zeit
-pro Zyklus, d. h. bei 16 MHz, $0,0625 \mu s$.
+Die Auswertung bezieht sich auf die Instruktionen des Programms, die bei der Übersetzung der Firmware durch den \textit{AVR GCC} mit der Optimierungsstufe \texttt{Os} entstehen. Aus dem Handbuch des
+ATmega328P \cite{atmega328p} können für jede Instruktion die maximale Anzahl der Zyklen entnommen werden, die im schlimmsten Fall benötigt werden. Die Gesamtausführungszeit berechnet sich aus der Anzahl der Zyklen
+multipliziert mit der Zeit pro Zyklus, d. h. bei 16 MHz bedarf ein Zyklus 0,0625 $\mu s$.
 
 \input{chapter/evaluation/eval_speed/feature_extraction}
 \input{chapter/evaluation/eval_speed/tree_evaluation}
