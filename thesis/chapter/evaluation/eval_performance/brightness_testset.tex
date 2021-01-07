@@ -6,15 +6,15 @@
     \caption{Ergebnisse des Offset der Helligkeitstestmenge 1 je Ansatz.}
     \label{fig:brightness_offset}
 \end{figure}
-In Sektion \ref{sec:DymelData} wurde die Helligkeitstestmenge 1 vorgestellt. Diese Testmenge modifiziert einen bestehenden Datensatz aus der Gestentestmenge indem Offset hinzugefügt
-oder die Helligkeiten skaliert werden. Bei dem Offset verändert sich der Kontrast nicht, aber die Gesamthelligkeit steigt. Bei der Skalierung steigt die Gesamthelligkeit und der Kontrast wird stärker. Mit
-dieser Testmenge sollen die Invarianzen der einzelnen Ansätze bewertet werden. Für die Helligkeitsverteilung und Motion History wurden die Konfigurationen gewählt, die insgesamt am besten waren, da die
-Helligkeitstestmenge 1 auf der Gestentestmenge basiert.
+Dieses Kapitel validiert die Invarianzen der einzelnen Feature, die in Kapitel \ref{sec:feature_selection} diskutiert wurden. Mit Hilfe der Helligkeitstestmengen werden die Features validiert. Diese synthetischen Testmengen
+verändern die Helligkeit und den Kontrast einer bestehenden Testmenge durch Skalierung und Offsets.
 \newline
 \newline
-Abbildung \ref{fig:brightness_offset} zeigt, dass die Helligkeitsverteilung, Motion History und die Schwerpunktverteilung
-mit Integer invariant gegenüber einen offset sind, wohingegen die Schwerpunktverteilung mit Gleitkommazahlen starke Defiziete aufweist.
-Die kombinerte Schwerpunktverteilung ist nicht invariant und hat mit zunehmenden Offset eine schlechtere Erkennungsgenauigkeit.
+Abbildung \ref{fig:brightness_offset} zeigt, wie sich ein zunehmender Offset zwischen 0 und 800 auf die Featuremengen auswirkt. Dabei erhöht sich die Gesamthelligkeit, aber der Kontrast bleibt gleich.
+Die Helligkeitsverteilung, Motion History und Schwerpunktverteilung mit Ganzzahlen bleiben
+konstant. Daher wird geschlossen, dass diese invariant gegenüber Offset sind. Die kombinierte Schwerpunktverteilung ist sehr robust gegenüber einen Offset aber nicht invariant. Bei einem Offset zwischen 300 und 500 ist
+der stärkste Einbruch der Klassifizierungsgenauigkeit zu beobachten. Das ist auf die Schwerpunktverteilung mit Gleitkommazahlen zurückzuführen, die massive Einbrüche der Klassifizierungsgenauigkeit mit zunehmenden
+Offset erfährt. Zwischen 300 und 500 ist der Einbruch am größten. Die Schwerpunktverteilung mit Gleitkommazahlen ist sehr anfällig gegenüber einen Offset.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/brightness_scaling.png}
@@ -23,10 +23,12 @@ Die kombinerte Schwerpunktverteilung ist nicht invariant und hat mit zunehmenden
 \end{figure}
 \newline
 \newline
-Abbildung \ref{fig:brightness_scaling} zeigt, dass die Schwerpunktverteilung mit Gleitkommazahlen invariant gegenüber Skalierung ist. Die Helligkeitsverteilung und Motion History weisen weitesgehend
-keine Defiziete auf. Die Helligkeitsverteilung schwankt zwischen 6.5 und 7, allerdings findet ab dieser Skalierung der resultierende Wert bereits so groß, dass er teilweise auf den Maximalwert 1023
-gesetzt wird. Die Schwerpunktverteilung mit Integer ist nicht invariant. Die kombinierte Schwerpunktverteilung weist keine Invarianz auf. Die Erkennungsgenauigkeit sinkt mit zunehmender Skalierung.
-Insgesamt verhalten sich alle Ansätze wie erwartet.
+Abbildung \ref{fig:brightness_scaling} zeigt, wie sich ein zunehmender Skalierungsfaktor auf die Featuremengen auswirkt. Dabei erhöht sich sowhl die Gesamthelligkeit, als auch der Kontrast. Die Schwerpunktverteilung mit
+Gleitkommazahlen, die Helligkeitsverteilung und die Motion History zeigen eine Invarianz gegenüber Skalierung. Ab einem Faktor von 6,5 und 7 sind Einbrüche zu erkennen. Die Trainingsmenge enthält aber auch Einträge mit
+einer Helligkeiten oberhalb 160, sodass eine Skalierung mit 6,5 Clipping-Effekte erzeugt, d. h. Pixel mit einer Helligkeit über 1023 werden auf 1023 gesetzt. Die Schwerpunktvertilung mit Ganzzahlen erfährt starke Einbrüche
+der Klassifizierungsgenauigkeit, ähnlich wie Schwerpunktverteilung mit Gleitkommazahlen im Vergleich zum Offset, allerdings ist der maximale Einbruch der Klassifizierungsgenauigkeit geringer. Sie ist aber trotzdem sehr
+anfällig gegenüber der Skalierung. Die kombinierte Schwerpunktverteilung ist sehr robust gegenüber der Skalierung aber nicht invariant. Sie weist ebenfalls Einbrüche der Klassifizierungsgenauigkeit zwischen 6,5 und 7 auf
+aber auch zwischen 1,5 und 3,5. Dies ist auf die Schwerpunktverteilung mit Ganzzahlen zurückzuführen.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/brightness2_scaling.png}
@@ -35,14 +37,14 @@ Insgesamt verhalten sich alle Ansätze wie erwartet.
 \end{figure}
 \newline
 \newline
-Die Helligkeitstestmege 2 ist eine Mischung zwischen Skalierung und Offset. Die Gesamthelligkeit bleibt erhalten und der Kontrast zwischen dunklen
-und hellen Pixeln verringert sich. Diese Situation ist vergleichbar mit einer zunehmenden Distanz zur Kamera, da dort der Kontrast durch Streulicht auch geringer wird.
+Abbildung \ref{fig:brightness2_scaling} zeigt, wie sich sich ein abnehmender Kontrast bei gleichbleibender Helligkeit auf die Featuremengen auswirkt. Diese Situation ist vergleichbar mit einer zunehemden Distanz
+zur Kamera, da dort der Kontrast durch Streulicht ebenfalls geringer wird. Keiner der Featuremengen weist eine Invarianz dem gegenüber auf. Die Helligkeitsverteilung ist bis zu einem Faktor von 0,3 sehr stabil. Ab 0,3
+nimmt die Klassifizierungsgenauigkeit leicht ab. Bei einem initialen Kontrastunterschied von 100\% ist ab 0,3 der Kontrast nurnoch 18\% des ursprünglichen Kontrasts. Dementsprechend ist die Helligkeitsverteilung extrem
+robust gegenüber die Lichtverhältnisse. Im Vergleich sind die anderen Featuremengen sehr sensibel gegenüber der abnehmenden Skalierung. Die Schwerpunktverteilungen verhalten sich vom Trend her gleich, aber die
+kombinierte Schwerpunktverteilung erzielt wie Erwarten, fast durchweg, die beste Klassifizierungsgenauigkeit. Da keiner der Schwerpunktverteilungen invariant gegenüber einem Ofsset und der Skalerierung waren, war auch
+nicht zu erwarten, dass sie eine Invarianz in diesem Test zeigen. Trotzdem erzielen sie die beste Klassifizierungsgenauigkeit bis zu einem Faktor von 0,3. Von der Motion History war ein ähnliches Verhalten wie die
+Helligkeitsverteilung zu erwarten. Vermutet wird, dass die unterliegende Funktion um eine Bewegung zu detektieren zu restriktiv wird, wenn der Kontrast sinkt.
 \newline
 \newline
-Abbildung \ref{fig:brightness2_scaling} zeigt, dass ausschließlich die Helligkeitsverteilung eine Invarianz aufweist. Sie zeigt zwar auch auch Defiziete zwischen $0.05$ und $0,3$ auf, aber in diesem
-Intervall ist der Kontrast bereits sehr gering. Die Schwerpunktverteilungen verhalten sich der Erwartung gemäß, da keine invariant gegenüber Offset und Skalierung ist. Entgegen der Erwartung verhält
-sich die Motion History.
-\newline
-\newline
-Abschließend ist die Helligkeitsverteilung am robustesten gegenüber die Lichtverhältnisse. Trotzdem erweisen sich die Schwerpunktverteilungen am besten, da die Erkennungsgenauigkeit deutlich höher ist
-in den meisten Fällen.
+Kubik hat beobachtet, dass bei zunehmender Distanz der Kontrast geringer wird. Seine KNN haben mit abnehemenden Kontrast geringere Klassifizierungsgenauigkeiten erzielt \cite{kubikThesis}. Dieses Verhalten wird durch die
+Helligkeitstestmenge 2 bestätigt. Erstaunlich robust erweist sich die Helligkeitsverteilung. Sie erzielt sie aber trotzdem eine geringer Klassifizierungsgenauigkeit als die Schwerpunktverteilungen.
