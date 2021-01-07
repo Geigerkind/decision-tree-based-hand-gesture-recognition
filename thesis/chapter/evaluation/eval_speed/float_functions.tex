@@ -7,13 +7,13 @@ Die Operationen arbeiten mit dem Datentyp \texttt{Float}. Dieser benötigt 32 Bi
 liegende Register aufgeteilt. Das hat zur Folge, dass jede Operation mit Gleitkommazahlen 4 mal soviele Instruktionen als ein 8-Bit Datentyp benötigt um die Float Operatoren in Register zu laden und Float zu speichern.
 \newline
 \newline
-Für jede Operation sind Algorithmen in Form von Funktionen hinterlegt. Diese werden von dem Kompiler automatisch bei der Übersetzung mit verlinkt. In Tabelle \ref{float_operations} ist der experimentell erprobte WCET der
+Für jede Operation sind Algorithmen in Form von Funktionen hinterlegt. Diese werden von dem Kompiler automatisch bei der Übersetzung mit verlinkt. In Tabelle \ref{tab:float_operations} ist der experimentell erprobte WCET der
 Funktionen zu sehen, die bei der Extrahierung der Features und Ausführung des Klassifizierers verwendet werden. Zum Beispiel, die Addition von 8-Bit Integer benötigt nur 1 Zyklus. Im Vergleich benötigt die Addition
 von Gleitkommazahlen im schlimmsten Fall \textit{\_\_addsf3} 192 Zyklen. Zudem kommt noch ein Overhead von bis zu 4 Zyklen hinzu um die Funktion aufzurufen. Dementsprechend sind die Gleitkommaoperationen besonders
 teuer im Vergleich zu Hardwareunterstützten Operationen, weswegen sie vermieden werden sollten auf Systemen ohne Hardwareunterstützung.
 \begin{table}[h!]
     \centering
-    \begin{tabular}{ | c | c | c | c |}
+    \begin{tabular}{ | c | l | c | c |}
         \hline
         Operation & Funktion & WCET & WCET in Zyklen \\\hline
         \_\_lesf2 & Kleiner oder gleich Vergleich & 4 $\mu s$ & 64 \\\hline
