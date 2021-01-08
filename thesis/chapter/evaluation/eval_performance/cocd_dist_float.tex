@@ -7,7 +7,7 @@
         Ensemble-Methode & Boosting & Random Forest & Random Forest & Bagging  \\\hline
         Maximalhöhe & 20 & 12 & 10 & 7 \\\hline
         Waldgröße & 10 & 7 & 4 & 3 \\\hline
-        min\_samples\_leaf & 8 & 1 & 2 & 8 \\\hline
+        Blattgröße (min\_samples\_leaf) & 8 & 1 & 2 & 8 \\\hline
         Programmgröße in Bytes & 83304 & 43668 & 20188 & 6656 \\\hline
         Genauigkeit Testmenge von Klisch & 94,8\% & 89,6\% & 89,6\% & 87,5\% \\\hline
         Genauigkeit Gestentestmenge & 97,0\% & 96,5\% & 95,6\% & 94,1\% \\\hline
@@ -36,4 +36,4 @@ Im Vergleich zu der Helligkeitsverteilung und Motion History ist die Klassifizie
 Wird die Kategorie \textit{Beste} mit der Kategorie \textit{Unter 14 kB} verglichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 4,17\% ab. Dabei wird die Programmgröße um 92\% reduziert.
 Dies verspricht, dass mit zunehmender Waldgröße die Klassifizierungsgenauigkeit steigt. Abbildung \ref{fig:cocd_float_per_forest_size} zeigt, dass dies zwar der Fall ist, aber schon ab einer Waldgröße von 6
 Bäumen verzeichnet die durchschnittliche Klassifizierungsgenauigkeit keinen signifikanten Zuwachs mehr. Dementsprechend ist der Unterschied der Gesamtklassifizierungsgenauigkeit der Kategorie \textit{Beste}
-und der Kategorie \textit{Unter 44 kB} mit 1,8\% nicht groß. Damit eignet sich dieses Feature gut für kleine eingebette Systeme, da nur wenige Bäume benötigt werden.
+und der Kategorie \textit{Unter 44 kB} mit 1,8\% nicht groß. Damit eignet sich diese Featuremenge gut für kleine eingebette Systeme, da nur wenige Bäume benötigt werden.

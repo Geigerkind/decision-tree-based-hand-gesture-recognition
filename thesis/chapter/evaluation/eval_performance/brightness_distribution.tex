@@ -7,7 +7,7 @@
         Ensemble-Methode & ExtraTrees & ExtraTrees & ExtraTrees \\\hline
         Maximalhöhe & 14 & 10 & 15 \\\hline
         Waldgröße & 10 & 6 & 1 \\\hline
-        min\_samples\_leaf & 4 & 4 & 4 \\\hline
+        Blattgröße (min\_samples\_leaf) & 4 & 4 & 4 \\\hline
         Programmgröße in Bytes & 76628 & 33284 & 9364 \\\hline
         Genauigkeit Testmenge von Klisch & 74,0\% & 63,5\% & 67,7\% \\\hline
         Genauigkeit Gestentestmenge & 74,1\% & 79,2\% & 76,6\% \\\hline
@@ -27,10 +27,10 @@ geometrisch zusammengefasst.
 \newline
 \newline
 Aus der Tabelle \ref{tab:helligkeitsverteilung} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode \textit{ExtraTrees} gefunden.
-Sie erzielt eine Erkennungsgenauigkeit von 74\% auf der Testmenge von Klisch und ist damit 25,2\% schlechter als das neuronale Netzwerk von Giese \cite{gieseThesis}. Außerdem wird 74\% der Gestentestmenge
+Sie erzielt eine Klassifizierungsgenauigkeit von 74\% auf der Testmenge von Klisch und ist damit 25,2\% schlechter als das neuronale Netzwerk von Giese \cite{gieseThesis}. Außerdem wird 74\% der Gestentestmenge
 und 69\% der Nullgestentestmenge korrekt klassifiziert.
 \newline
 \newline
-Wird die Kategorie \textit{Beste} und die Kategorie \textit{Unter 28 kB} vergleichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 1,94\% ab. Dabei einer reduziert sich die Programmgröße um 87,8\%.
-Ein ähnliches Verhalten ist auch in Abbildung \ref{fig:helligkeitsverteilung_per_forest_size} zu erkennen. Dort ist nur eine geringer Zuwachs der Gesamtklassifizierungsgenauigkeit mit der zunehmenden
+Wird die Kategorie \textit{Beste} und die Kategorie \textit{Unter 28 kB} vergleichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 1,94\% ab. Dabei reduziert sich die Programmgröße um 87,8\%.
+Ein ähnliches Verhalten ist auch in Abbildung \ref{fig:helligkeitsverteilung_per_forest_size} zu erkennen. Dort ist nur ein geringer Zuwachs der Gesamtklassifizierungsgenauigkeit mit der zunehmenden
 Waldgröße zu beobachten.

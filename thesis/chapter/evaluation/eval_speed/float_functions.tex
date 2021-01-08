@@ -1,16 +1,17 @@
 \subsection{Operationen mit Gleitkommazahlen}
-Der ATmega328P verfügt über keine Hardwareunterstützung um Gleitkommazahlen zu verarbeiten. Dementsprechend muss der Kompiler Gleitkommazahlunterstützung durch Software ersetzen. Dies hat zu folge, dass Operationen
-auf Gleitkommazahlen sehr viele Zyklen benötigen im Vergleich zu Operationen auf Ganzzahlen. Operationen sind zum Beispiel Addition, Dividierung, Vergleiche oder Typkonvertierung.
+Der ATmega328P verfügt über keine Hardwareunterstützung um Gleitkommazahlen zu verarbeiten. Dementsprechend muss der Compiler Gleitkommazahlunterstützung durch Software ersetzen. Dies hat zu folge, dass Operationen
+auf Gleitkommazahlen sehr viele Zyklen benötigen im Vergleich zu Operationen auf Ganzzahlen. Operationen sind zum Beispiel Addition, Dividieren, Vergleiche oder Typkonvertierung.
 \newline
 \newline
 Die Operationen arbeiten mit dem Datentyp \texttt{Float}. Dieser benötigt 32 Bit, damit er dargestellt werden kann. Der ATmega328P verfügt aber nur über 8-Bit Register. Zur Darstellung wird der Float in 4 hintereinander
-liegende Register aufgeteilt. Das hat zur Folge, dass jede Operation mit Gleitkommazahlen 4 mal soviele Instruktionen als ein 8-Bit Datentyp benötigt um die Float Operatoren in Register zu laden und Float zu speichern.
+liegende Register aufgeteilt. Das hat zur Folge, dass jede Operation mit Gleitkommazahlen 4-mal so viele Instruktionen wie ein 8-Bit Datentyp benötigt um die Float Operatoren in Register zu laden oder den
+Float zu speichern.
 \newline
 \newline
-Für jede Operation sind Algorithmen in Form von Funktionen hinterlegt. Diese werden von dem Kompiler automatisch bei der Übersetzung mit verlinkt. In Tabelle \ref{tab:float_operations} ist der experimentell erprobte WCET der
-Funktionen zu sehen, die bei der Extrahierung der Features und Ausführung des Klassifizierers verwendet werden. Zum Beispiel, die Addition von 8-Bit Integer benötigt nur 1 Zyklus. Im Vergleich benötigt die Addition
-von Gleitkommazahlen im schlimmsten Fall \textit{\_\_addsf3} 192 Zyklen. Zudem kommt noch ein Overhead von bis zu 4 Zyklen hinzu um die Funktion aufzurufen. Dementsprechend sind die Gleitkommaoperationen besonders
-teuer im Vergleich zu Hardwareunterstützten Operationen, weswegen sie vermieden werden sollten auf Systemen ohne Hardwareunterstützung.
+Für jede Operation sind Algorithmen in Form von Funktionen hinterlegt. Diese werden von dem Compiler automatisch bei der Übersetzung mit verlinkt. In Tabelle \ref{tab:float_operations} ist die experimentell erprobte WCET
+der Funktionen zu sehen, die bei der Extrahierung der Features und Ausführung des Klassifizierers verwendet werden. Zum Beispiel, die Addition von 8-Bit Integer benötigt nur 1 Zyklus. Im Vergleich benötigt die Addition
+von Gleitkommazahlen mit \textit{\_\_addsf3} im schlimmsten Fall 192 Zyklen. Zudem kommt noch ein Overhead von bis zu 4 Zyklen hinzu, um die Funktion aufzurufen. Dementsprechend sind die Gleitkommaoperationen besonders
+teuer im Vergleich zu hardwareunterstützten Operationen, weswegen sie vermieden werden sollten auf Systemen ohne Hardwareunterstützung.
 \begin{table}[h!]
     \centering
     \begin{tabular}{ | c | l | c | c |}

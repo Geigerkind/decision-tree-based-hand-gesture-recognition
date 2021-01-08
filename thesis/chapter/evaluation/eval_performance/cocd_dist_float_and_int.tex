@@ -5,7 +5,7 @@
         \hline
         Konfiguration & Beste & Unter 44 kB & Unter 28 kB \\\hline
         Schwerpunktverteilung Gleitkommazahl & Beste & Unter 14 kB & Unter 14 kB \\\hline
-        Schwerpunktverteilung Integer & Beste &  Unter 28 kB & Unter 14 kB \\\hline
+        Schwerpunktverteilung Ganzzahlen & Beste &  Unter 28 kB & Unter 14 kB \\\hline
         Programmgröße in Bytes & - & 35952 & 20252 \\\hline
         Genauigkeit Testmenge von Klisch & 94,8\% & 88,5\% & 87,5\% \\\hline
         Genauigkeit Gestentestmenge & 99,0\% & 98,3\% & 96,9\% \\\hline
@@ -18,7 +18,7 @@ Die kombinierte Schwerpunktverteilung vereint die Schwerpunktverteilung mit Ganz
 Helligkeit ist und der Ansatz mit Gleitkommazahlen invariant zur Skalierung der Helligkeit.
 \newline
 \newline
-Es wird davon ausgegangen, dass der jeweilige Klassifizierer entweder ein Ergebnis mit einer deutlichen Mehrheit zurückgibt oder ein Ergebnis mit einer knappen Mehrheit. Für jedes Lichtverhältniss hat mindestens ein
+Es wird davon ausgegangen, dass der jeweilige Klassifizierer entweder ein Ergebnis mit einer deutlichen Mehrheit zurückgibt oder ein Ergebnis mit einer knappen Mehrheit. Für jedes Lichtverhältniss, hat mindestens ein
 Klassifizierer eine deutliche Mehrheit. Damit erzielt die Kombination eine Mehrheit bei der korrekten Klasse. Die besten Konfigurationen der beiden Ansätze werden mit einem Wahlklassifizierer vereint.
 Das heißt, die Wahrscheinlichkeitsverteilungen der Wahlklassifizierer der jeweiligen Ansätze werden zu gleichen Anteilen addiert.
 \newline
@@ -26,11 +26,11 @@ Das heißt, die Wahrscheinlichkeitsverteilungen der Wahlklassifizierer der jewei
 Die Kombination der besten Konfigurationen beider Ansätze erzielt eine Klassifizierungsgenauigkeit von 94,8\% auf der Testmenge von Klisch. Dies entspricht der Klassifizierungsgenauigkeit der Schwerpunktverteilung mit
 Gleitkommazahlen. 99\% der Gestentestmenge wird korrekt klassifiziert. Das ist besser als beide Ansätze. Die Nullgestestmenge wurde zu 95,8\% korrekt klassifiziert. Dies entspricht der Klassifizierungsgenauigkeit der
 Schwerpunktverteilung mit Ganzzahlen. Bei der Kategorie \textit{Unter 44 kB} und \textit{Unter 28 kB} wurde der kombinierte Klassifizierer nie schlechter als der schlechteste Ansatz auf dem die kombinierte
-Schwerpuntkverteilung basiert.
+Schwerpunktverteilung basiert.
 \newline
 \newline
-Der Nachteil dieses Ansatzes ist, dass sowhl die Featuremenge mit Gleitkommazahlen, als auch für Ganzzahlen benötigt wird. Zum einen müssen immer beide Features berechnet werden und zum anderen kann jeder Klassifizierer
-nur halb soviel Speicher nutzen. Dadurch ist die Klassifizierungsgenauigkeit jedes Klassifizierers potentiell geringer, als wenn es den vollständigen Speicher zur Verfügung hätte. Bei der Schwerpunktverteilungen ist aber
-bereits ab einer geringen Waldgörße kein signifikanter Zuwachs der Klassifizierungsgenauigkeit zu verzeichnen. Deswegen eigenet sich die Schwerpunktverteilung besonders gut. Der Vorteil ist, dass der kombinierte
-Klassifizierer potentiell robuster ist.
+Der Nachteil dieses Ansatzes ist, dass sowohl die Featuremenge mit Gleitkommazahlen, als auch für Ganzzahlen benötigt wird. Zum einen müssen immer beide Features berechnet werden und zum anderen kann jeder Klassifizierer
+nur halb so viel Speicher nutzen. Dadurch ist die Klassifizierungsgenauigkeit jedes Klassifizierers potenziell geringer, als wenn es den vollständigen Speicher zur Verfügung hätte. Bei der Schwerpunktverteilungen ist aber
+bereits ab einer geringen Waldgröße kein signifikanter Zuwachs der Klassifizierungsgenauigkeit zu verzeichnen. Deswegen eignet sich die Schwerpunktverteilung besonders gut. Der Vorteil ist, dass der kombinierte
+Klassifizierer potenziell robuster ist gegenüber unterschiedliche Lichtverhältnisse.
 

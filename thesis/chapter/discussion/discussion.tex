@@ -1,10 +1,10 @@
 \chapter{Diskussion}
-Der Fokus der Arbeit lag sehr früh auf der Evaluierung von verschiedenen Ensemble-Methoden und Hyperparametern. Dieser Ansatz ist aber nicht optimal, da die Ensemble-Methoden ihr potential nicht vollständig
+Der Fokus der Arbeit lag sehr früh auf der Evaluierung von verschiedenen Ensemble-Methoden und Hyperparametern. Dieser Ansatz ist aber nicht optimal, da die Ensemble-Methoden ihr Potenzial nicht vollständig
 ausnutzen konnten. Der Grund dafür ist die Wahl der Featuremengen. Im engeren Sinne sind die Featuremengen keine Featuremengen, sondern Features die aus mehreren Werten bestehen. Dementsprechend können
-Ensemble-Methoden, wie Random Forests oder ExtraTrees keinen Vorteil daraus ziehen, dass sie nur Teilmengen der Featuremenge nutzen. Diese Ansätze funktionieren besser mit eigenständigen Feature.
+Ensemble-Methoden, wie Random Forests oder ExtraTrees keinen Vorteil daraus ziehen, dass sie nur Teilmengen der Featuremenge nutzen. Diese Ansätze funktionieren besser mit eigenständigen Features.
 \newline
 \newline
-Ein besserer Ansatz wäre vermutlich Stacking gewesen. Dieser Ansatz baut iterativ einen Entscheidungsbaum nach dem Anderen, auf Basis der Ergebnisse der vorherigen Entscheidungsbäume und
+Ein besserer Ansatz wäre vermutlich Stacking gewesen. Dieser Ansatz baut iterativ einen Entscheidungsbaum nach dem anderen, auf Basis der Ergebnisse der vorherigen Entscheidungsbäume und
 unterschiedlichen Featuremengen. Der Vorteil ist, dass die einzelnen Featuremengen nicht so viele Anforderungen erfüllen müssen, solange alle unterschiedlichen Featuremengen zusammen alle
 Anforderungen erfüllen. Dies erleichtert die Suche nach Features signifikant. Mit jedem Entscheidungsbaum können einfache Attribute inferiert werden, wie z. B. dass es eine horizontale Bewegung ist.
 Im folgenden Entscheidungsbaum müsste dann lediglich die Richtung unterschieden werden. Es wird vermutet, dass der resultierende Ansatz simpler ist und kleinere Entscheidungswälder generiert.

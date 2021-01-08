@@ -7,7 +7,7 @@
         Ensemble-Methode & ExtraTrees & Random Forest & Random Forest \\\hline
         Maximalhöhe & 21 & 13 & 12 \\\hline
         Waldgröße & 11 & 7 & 3 \\\hline
-        min\_samples\_leaf & 2 & 4 & 1 \\\hline
+        Blattgröße (min\_samples\_leaf) & 2 & 4 & 1 \\\hline
         Programmgröße in Bytes & 76200 & 21532 & 11012 \\\hline
         Genauigkeit Testmenge von Klisch & 95,8\% & 91,7\% & 86,5\% \\\hline
         Genauigkeit Gestentestmenge & 98,8\% & 97,1\% & 95,5\% \\\hline
@@ -33,8 +33,8 @@ Außerdem werden 98,8\% der Gestentestmenge und 95,6\% der Nullgestentestmenge k
 Konfiguration in der Kategorie \textit{Unter 28 kB}.
 \newline
 \newline
-Der Ansatz mit Ganzzahlen erzielte eine 2,1\% höhere Gesamtklassifizierungsgenauigkeit als der Ansatz mit Gleitkommazahlen. Der 16-Bit Integer Datentyp erlaubt der Schwerpuntktverteilung mit Ganzzahlen unter jeder
+Der Ansatz mit Ganzzahlen erzielte eine 2,1\% höhere Gesamtklassifizierungsgenauigkeit als der Ansatz mit Gleitkommazahlen. Der 16-Bit Integer Datentyp erlaubt der Schwerpunktverteilung mit Ganzzahlen unter jeder
 Restriktion größere Entscheidungswälder zu bilden, als die Schwerpunktverteilung mit Gleitkommazahlen. Abbildung \ref{fig:cocd_int_per_forest_size} zeigt einen Zuwachs der durchschnittlichen Klassifizierungsgenauigkeit
-mit zunehmender Waldgröße. Es ist auszugehen, dass eine noch bessere Konfiguration gefunden werden könnte, wenn der Suchraum auf eine größere Waldgröße erweitert wird. Ähnlich wie Schwerpunktverteilung mit
+mit zunehmender Waldgröße. Es ist auszugehen, dass eine noch bessere Konfiguration gefunden werden könnte, wenn der Suchraum auf eine größere Waldgröße erweitert wird. Ähnlich wie die Schwerpunktverteilung mit
 Gleitkommazahlen ist der Zuwachs der durchschnittlichen Klassifizierungsgenauigkeit ab einer Waldgröße von 7 Bäumen gering. Somit kann bereits bei einer geringen Programmgröße eine hohe Klassifizierungsgenauigkeit
 erzielt werden. Damit eignet sich die Schwerpunktverteilung mit Ganzzahlen ebenfalls für kleine eingebettete Systeme.

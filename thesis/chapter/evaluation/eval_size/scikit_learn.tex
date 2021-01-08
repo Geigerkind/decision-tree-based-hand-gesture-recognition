@@ -1,13 +1,13 @@
-\subsection{Maximierung des Zuwachses der Erkennungsgenauigkeit}
-Scikit-Learn bietet viele Parameter an, um den Teilungsprozess bei der Konstruktion zu steuern. Einer dieser Parameter ist \texttt{min\_samples\_leaf}, d. h. die minimale Anzahl an Einträge in einem Blatt.
-Dieser steuert die minimale Anzahl an Einträgen in ein Kindknoten haben muss, nachdem ein Knoten geteilt wurde. Standardmäßig ist der Wert 1. Dadurch entsteht ein sehr granularer Entscheidungsbaum,
-der viele Blätter mit nur einem Eintrag hat. Das heißt, es wurden Teilungen durchgeführt, die nur 2 Einträge unterteilt haben. Der Zuwachs der Klassifizierungsgenauigkeit ist durch diese Teilungen sehr gering.
-Eine Erhöhung in der Blattgröße verspricht, dass Entscheidungsbäume gefunden werden können, die zwar tiefer sind, aber dafür eine bessere Klassifizierungsgenauigkeit pro Vergleich erzielen.
+\subsection{Maximierung des Zuwachses der Klassifizierungsgenauigkeit}
+Scikit-Learn bietet viele Parameter an, um den Teilungsprozess bei der Konstruktion zu steuern. Einer dieser Parameter ist \texttt{min\_samples\_leaf}, d. h. die minimale Anzahl an Einträgen der Trainingsmenge
+in einem Blatt. Dieser steuert die minimale Anzahl an Einträgen die in ein Kindknoten enthalten sein müssen, nachdem ein Knoten geteilt wurde. Standardmäßig ist der Wert 1. Dadurch entsteht ein sehr granularer
+Entscheidungsbaum, der viele Blätter mit nur einem Eintrag hat. Das heißt, es wurden Teilungen durchgeführt, die nur 2 Einträge unterteilt haben. Der Zuwachs der Klassifizierungsgenauigkeit ist durch diese
+Teilungen sehr gering. Eine Erhöhung in der Blattgröße verspricht, dass Entscheidungsbäume gefunden werden können, die zwar tiefer sind, aber dafür eine bessere Klassifizierungsgenauigkeit pro Vergleich erzielen.
 \newline
 \newline
 Abbildung \ref{fig:msl} zeigt, wie sich der Parameter auf verschieden große Trainingsmengen auswirkt. Betrachtet wird eine Maximalhöhe von 16. Besonders bei großen Trainingsmengen (Abbildung \ref{subfig:msl_big})
-kann die Programmgröße mit ein Blattgröße von 8 signifkant sinken, ohne die maximale Baumhöhe zu beeinflussen. Bei kleinen Trainingsmengen (Abbilung\ref{subfig:msl_small}) reduziert sich die Programmgröße
-ebenfalls signifikant bereits bei kleinen Blattgrößen, allerdings wird die maximale Baumhöhe beeinflusst. Das heißt besonders bei großen Trainingsmengen wirkt sich der Parameter stärker auf die Programmgröße aus.
+kann die Programmgröße mit einer Blattgröße von 8 signifkant sinken, ohne die maximale Baumhöhe zu beeinflussen. Bei kleinen Trainingsmengen (Abbildung \ref{subfig:msl_small}) reduziert bereits bei kleinen Blattgrößen
+sich die Programmgröße ebenfalls signifikant. Allerdings wird die maximale Baumhöhe beeinflusst. Besonders bei großen Trainingsmengen wirkt sich der Parameter stärker auf die Programmgröße aus.
 Vermutlich, da die Anzahl der Blätter sich signifikant erhöht, je tiefer der Baum ist.
 \subfigbox{
 \subfigure[Trainingsmengengröße: 1023]{\label{subfig:msl_small}\includegraphics[width=0.48\linewidth]{images/min_samples_leaf_small.png}}\hfill%
@@ -15,7 +15,7 @@ Vermutlich, da die Anzahl der Blätter sich signifikant erhöht, je tiefer der B
 }{Auswirkung der minimalen Blattgröße auf die Programmgröße und Baumhöhe.}{fig:msl}
 \newline
 \newline
-Es kann nicht argumentiert werden, dass ein Wert für die Blattgröße besser ist als eine Andere, da die Klassifizierungsgenauigkeit auf der Trainingsmenge keine Aussage über die Klassifizierungsgenauigkeit auf
+Es kann nicht argumentiert werden, dass ein Wert für die Blattgröße besser ist als ein Anderer, da die Klassifizierungsgenauigkeit auf der Trainingsmenge keine Aussage über die Klassifizierungsgenauigkeit auf
 der Testmenge treffen kann. Eine hohe Klassifizierungsgenauigkeit auf Trainingsmenge muss nicht umbedingt eine hohe Klassifizierungsgenauigkeit auf der Testmenge implizieren. Allerdings können so vermeintlich
 höhere Entscheidungsbäume ausgewählt werden, da diese weniger Programmspeicher benötigen im Vergleich zu gleich hohen Entscheidungsbäumen mit einer geringeren Blattgröße. Dieser Parameter vergrößert folglich
-den Suchraum. Bei kleinen Trainingsmengen ist eine Blattgröße über 1 nur sinnvoll, wenn der größte Entscheidungsbaum der generiert werden kann nicht innerhalb der Restriktionen des Programmspeichers liegt.
+den Suchraum. Bei kleinen Trainingsmengen ist eine Blattgröße über 1 nur sinnvoll, wenn der größte Entscheidungsbaum, der generiert werden kann, nicht innerhalb der Restriktionen des Programmspeichers liegt.

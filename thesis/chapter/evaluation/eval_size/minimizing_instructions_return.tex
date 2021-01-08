@@ -1,14 +1,14 @@
 \subsection{Minimierung der Instruktionen einer Rückgabe}
 Die Rückgabe der Klassifizierung in einem Entscheidungsbaum kann auf zwei Arten stattfinden. Einerseits kann lediglich die Klasse mit der höchsten Wahrscheinlichkeit zurückgegeben werden. Andererseits kann die
-Wahrscheinlichkeitsverteilung zurückgegeben werden, sodass die nächste Ebene die Entscheidung trifft. In Kapitel \ref{sec:cCodeTree} wurde letzteres vorgestellt, da in der nächste Ebene der Wahlklassifizierer
+Wahrscheinlichkeitsverteilung zurückgegeben werden, sodass die nächste Ebene die Entscheidung trifft. In Kapitel \ref{sec:cCodeTree} wurde letzteres vorgestellt, da in der nächsten Ebene der Wahlklassifizierer
 die Entscheidungsbäume im Ensemble mit Hilfe ihrer Wahrscheinlichkeitsverteilungen zusammenfasst.
 \newline
 \newline
-Listing \ref{lst:assemblyBlattReturn} zeigt die Instruktionen die für die Zuweisung von 4 Klassen 1.0, 0.0, 0.0 und 0.0 generiert werden. Für jede Klasse wird die Konstante Wahrscheinlichekeit in Register geladen
+Listing \ref{lst:assemblyBlattReturn} zeigt die Instruktionen die für die Zuweisung zu 4 Klassen von 1.0, 0.0, 0.0 und 0.0 generiert werden. Für jede Klasse wird die Konstante Wahrscheinlichkeit in Register geladen
 und anschließend in den Rückgabeparameter gespeichert. In diesem Fall muss nur für die 1. Klasse eine Konstante geladen werden, da jede andere Klasse 0 ist. Das heißt, dass im schlimmsten Fall 33
-Instruktionen benötigt werden, anstatt 21. Der Kompiler führt hier bereits eine Optimierung aus, indem für jedes Ergebnis ein eigener \textit{Basic block} erzeugt wird. Zusätzlich könnte kein C-Code
-für die Zuweisungen generiert werden indem das Ergebnis 0 ist. Dies erfordert aber, dass der Rückgabeparameter mit 0 vorinitialisiert ist.
-\begin{lstlisting}[label=lst:assemblyBlattReturn,caption={Beispiel der Instruktionen einer Rückgabe der Wahrscheinlichkeitsverteilung eines Entscheidungsbaumes.}]
+Instruktionen benötigt werden, anstatt 21. Der Compiler führt hier bereits eine Optimierung aus, indem für jedes Ergebnis ein eigener \textit{Basic block} erzeugt wird. Zusätzlich könnte kein C-Code generiert werden
+für eine Zuweisungen mit 0. Dies erfordert aber, dass der Rückgabeparameter mit 0 vorinitialisiert ist.
+\begin{lstlisting}[label=lst:assemblyBlattReturn,caption={Beispiel der Instruktionen einer Rückgabe der Wahrscheinlichkeitsverteilung eines Entscheidungsbaumes mit 4 Klassen.}]
 01: ldi r24,0
 02: ldi r25,0
 03: ldi r26,lo8(-128)
@@ -31,16 +31,17 @@ für die Zuweisungen generiert werden indem das Ergebnis 0 ist. Dies erfordert a
 20: std Z+15,__zero_reg__
 21: ret
 \end{lstlisting}
-Eine weitere Optimierung ist den Wahlklassifizierer diskret zu modelieren. Dabei wird für jede Rückgabe des Entscheidungsbaumes ein einstimmiges Ergebnis angenommen, sodass lediglich die erkannten Klassen
+Eine weitere Optimierung ist den Wahlklassifizierer diskret zu modellieren. Dabei wird für jede Rückgabe des Entscheidungsbaumes ein einstimmiges Ergebnis angenommen, sodass lediglich die erkannten Klassen
 gezählt werden, anstatt die Wahrscheinlichkeitsverteilungen zu addieren. Listing \ref{lst:assemblyBlattReturnDiskret} zeigt, dass sich die Anzahl der Instruktionen für eine Rückgabe auf genau 2 Instruktionen
-reduzieren. Zusätzlich kann der Kompiler diese Rückgabe in Basic blocks extrahieren, wodurch lediglich 1 Sprunginstruktion benötigt wird. Diese Optimierung ist bei dem diskreten Wahlklassifizierer noch
-effektiver, da es genau $N$ verschiedene Rückgabewerte gibt, für $N$ mögliche Klassen. Im schlimmsten Fall reduzieren sich die Anzahl der Instruktionen pro Rückgabe um 95,2\% und im besten Fall um 97,2\%.
+reduzieren. Zusätzlich kann der Compiler diese Rückgabe in Basic blocks extrahieren, wodurch lediglich eine Sprunginstruktion benötigt wird. Diese Optimierung ist bei dem diskreten Wahlklassifizierer noch
+effektiver, da es genau $N$ verschiedene Rückgabewerte gibt, für $N$ mögliche Klassen. Im schlimmsten Fall reduzieren sich die Anzahl der Instruktionen pro Rückgabe um $\frac{100}{1 + 4N}$\%
+und im besten Fall um $\frac{100}{1 + 8N}$\%.
 \begin{lstlisting}[label=lst:assemblyBlattReturnDiskret,caption={Beispiel des Assemblycodes der Rückgabe eines diskreten Wahlklassifizierers.}]
 01: ldi r24,lo8(1)
 02: ret
 \end{lstlisting}
-Der Nachteil dieses Ansatzes ist, dass die Ergebnisse instabil werden können, wenn viele Rückgaben nur über eine knappe Mehrheit verfügen. Das ist insbesonders der Fall in Kombination mit einem hohen Wert
-für die Blattgröße, da dieser die Anzahl der Blattknoten mit Einträgen aus verschiedenen Klassen potentiell erhöht. Diese Optimierung kann auf eine gefundene Lösung angewendet werden, die zu groß für den
+Der Nachteil dieses Ansatzes ist, dass die Ergebnisse instabil werden können, wenn viele Rückgaben nur über eine knappe Mehrheit verfügen. Das ist insbesondere der Fall in Kombination mit einem hohen Wert
+für die Blattgröße, da dieser die Anzahl der Blattknoten mit Einträgen aus verschiedenen Klassen potenziell erhöht. Diese Optimierung kann auf eine gefundene Lösung angewendet werden, die zu groß für den
 Programmspeicher ist. Anschließend sollte die Klassifizierungsgenauigkeit revalidiert werden. Tests haben ergeben, dass die Klassifizierungsgenauigkeit geringfügig schwankt. Folglich kann sich die
 Klassifizierungsgenauigkeit auf der Testmenge auch erhöhen.
 \newline

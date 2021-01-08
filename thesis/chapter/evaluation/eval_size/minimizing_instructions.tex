@@ -1,10 +1,10 @@
 \subsection{Minimierung der Instruktionen eines Vergleichs}
-Ein Vergleich in einem Entscheidungsbaum wurde in Kapitel \ref{sec:cCodeTree} als Abzweigungsexpression mit einem Test definiert. Der Kompiler erzeugt für den gleichen Programmcode verschieden viele Instruktionen
+Ein Vergleich in einem Entscheidungsbaum wurde in Kapitel \ref{sec:cCodeTree} als Abzweigungsexpression mit einem Test definiert. Der Compiler erzeugt für den gleichen Programmcode verschieden viele Instruktionen
 je nach Wahl des Datentyps.
 \newline
 \newline
-Listing \ref{lst:assemblyVergleich} zeigt die Komplexität eines einzigen Vergleiches in Instruktionen eines Gleitkommazahlvergleichs. Zeile 1 bis 4 lädt die konstante Gleitkommazahl in 4 hintereinander liegende
-8-Bit Register. Zeile 5 bis 7 lädt den Zeiger auf die Featuremenge und inkrementiert sie um 36 um auf das 9. Feature zuzugreifen. In Zeile 8 bis 11 wird das Feature in die Register geladen. Zeile 12 bis 15 führen die
+Listing \ref{lst:assemblyVergleich} zeigt die Komplexität eines einzigen Vergleichs in Instruktionen eines Gleitkommazahlvergleichs. Zeile 1 bis 4 lädt die konstante Gleitkommazahl in 4 hintereinander liegende
+8-Bit Register. Zeile 5 bis 7 lädt den Zeiger, der auf die Featuremenge zeigt, und inkrementiert ihn um 36, um auf das 9. Feature zuzugreifen. In Zeile 8 bis 11 wird das Feature in die Register geladen. Zeile 12 bis 15 führen die
 Vergleichsfunktion aus. Damit benötigt ein Vergleich insgesamt 15 Instruktionen.
 \begin{lstlisting}[label=lst:assemblyVergleich,caption={Vergleich von Feature als Gleitkommazahl mit konstanter Gleitkommazahl.}]
 01: ldi r18,lo8(33)
@@ -23,19 +23,19 @@ Vergleichsfunktion aus. Damit benötigt ein Vergleich insgesamt 15 Instruktionen
 14: cp __zero_reg__,r24
 15: brge .+2
 \end{lstlisting}
-Zu Vermeiden sind Zeile 5 bis 11, indem alle Features nur einmal in Register geladen werden. Dies ist allerdings nur möglich, wenn die Größe Featuremenge der Featuremenge nicht 32 Bytes übersteigt bei dem
+Zu vermeiden sind Zeile 5 bis 11, indem alle Features nur einmal in Register geladen werden. Dies ist allerdings nur möglich, wenn die Größe der Featuremenge nicht 32 Bytes übersteigt bei dem
 ATmega328P. Zusätzlich müssten noch Bytes verfügbar sein, um die Konstanten zu laden. Die Featuremenge der Schwerpunktverteilung beinhaltet 10 Einträge. Der Ansatz mit Gleitkommazahlen ist mit 40 Bytes zu groß.
-Der Ansatz mit Ganzzahlen kann diese Optimierung mit 20 Bytes ausnutzen. Der Kompiler führt diese Optimierung bereits automatisch aus. Wenn die Featuremenge zu groß ist, werden aus diesem Grund regelmäßig
+Der Ansatz mit Ganzzahlen kann diese Optimierung mit 20 Bytes ausnutzen. Der Compiler führt diese Optimierung bereits automatisch aus. Wenn die Featuremenge zu groß ist, werden aus diesem Grund regelmäßig
 Register verdrängt, wodurch zusätzlich Instruktionen entstehen. Die Anzahl der Instruktionen können reduziert werden, indem die Größe der Featuremenge reduziert wird, sodass die Featuremenge und eine
 zusätzliche Konstante des gleichen Datentyps den Registerspeicher nicht übersteigen.
 \newline
 \newline
 Der Datentyp \texttt{Float} ist sehr teuer für einen 8-Bit Prozessor, da immer 4 Register benötigt werden und gegebenenfalls zusätzliche Funktionen, die die fehlende Hardwareunterstüzung ergänzen.
 Idealerweise sollte für die Featuremenge und die Vergleiche ein 8-Bit Datentyp gewählt werden. Damit werden einerseits weniger Register benötigt, wodurch wiederrum die Featuremenge größer sein kann,
-und andererseits können hardwareunterstützte Vergleichsinstruktionen benutzt werden. Dies verringert die Anzahl der Instruktionen signifikant. Folglich vermindert eine kleinerer Datentyp die Anzahl der
-Instruktionen signifikant. Listing \ref{lst:assemblyVergleich8Bit} zeigt einen Vergleich von einem 8-Bit Datentyp. Im Vergleich zum Vergleich mit Gleitkommazahlen, werden 66,6\% weniger Instruktionen
+und andererseits können hardwareunterstützte Vergleichsinstruktionen benutzt werden. Dies verringert die Anzahl der Instruktionen signifikant. Folglich vermindert ein kleinerer Datentyp die Anzahl der
+Instruktionen signifikant. Listing \ref{lst:assemblyVergleich8Bit} zeigt einen Vergleich von einem 8-Bit Datentyp. Im Kontrast zum Vergleich mit Gleitkommazahlen, werden 66,6\% weniger Instruktionen
 benötigt.
-\begin{lstlisting}[label=lst:assemblyVergleich8Bit,caption={Vergleich von 8-Bit-Feature mit konstanter 8-Bit Zahl.}]
+\begin{lstlisting}[label=lst:assemblyVergleich8Bit,caption={Vergleich von 8-Bit Feature mit konstanter 8-Bit Zahl.}]
 01: adiw r26,4
 02: ld r24,X
 03: sbiw r26,4
