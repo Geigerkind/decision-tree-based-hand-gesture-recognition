@@ -1,9 +1,13 @@
 \chapter{Diskussion}
-Es wurde früh angefangen verschiedene Konfigurationen zu erproben und der Fokus lag schnell auf die Evaluierung verschiedener Ensemble-Methoden. Im Verlauf der Arbeit wurde aber klar, dass der Ansatz
-nicht optimal ist. Die Featuremengen, die generiert werden sind an sich keine Featuremengen, sondern eigene Features. Aus diesem Grund können einige Ensemble-Methoden, die die Featureauswahl varrieren,
-z. B. ExtraTrees, nicht ihr volles Potential ausschöpfen. Außerdem, wuchsen damit die Anforderungen an ein einzelnes Feature, was die Suche erheblich erschwerte. Vermutlich wäre ein besserer Ansatz Stacking
-gewesen mit Klassifizierern auf verschiedenen Featuremengen. Dieser Ansatz kombiniert verschiedene Klassifizierer, dessen Ergebnisse in jeweils nächsten mit einbezogen werden. Es wird vermutet, dass
-das Resultat deutlich simpler wäre bei trotzdem hoher Erkennungsgenauigkeit.
+Der Fokus der Arbeit lag sehr früh auf der Evaluierung von verschiedenen Ensemble-Methoden und Hyperparametern. Dieser Ansatz ist aber nicht optimal, da die Ensemble-Methoden ihr potential nicht vollständig
+ausnutzen konnten. Der Grund dafür ist die Wahl der Featuremengen. Im engeren Sinne sind die Featuremengen keine Featuremengen, sondern Features die aus mehreren Werten bestehen. Dementsprechend können
+Ensemble-Methoden, wie Random Forests oder ExtraTrees keinen Vorteil daraus ziehen, dass sie nur Subsets der Featuremenge nutzen. Diese Ansätze funktionieren besser mit eigenständigen Feature.
+\newline
+\newline
+Ein besserer Ansatz wäre vermutlich Stacking gewesen. Dieser Ansatz baut iterativ einen Entscheidungsbaum nach dem Anderen auf Basis der Ergebnisse der vorherigen Entscheidungsbäume und
+unterschiedlichen Featuremengen. Der Vorteil ist, dass die einzelnen Featuremengen nicht so viele Anforderungen erfüllen müssen, solange alle unterschiedlichen Featuremengen zusammen alle
+Anforderungen erfüllen. Dies erleichtert die Suche nach Features signifikant. Mit jedem Entscheidungsbaum können einfache Attribute inferiert werden, wie z. B. dass es eine horizontale Bewegung ist.
+Im folgenden Entscheidungsbaum müsste dann lediglich die Richtung unterschieden werden. Es wird vermutet, dass der resultierende Ansatz simpler ist und kleinere Entscheidungswälder generiert.
 \newline
 \newline
 Die momentanen Trainingsdaten wurden weitesgehend unter den gleichen Lichtverhältnissen aufgenommen. Damit sind aber nicht alle möglichen Lichtverhältnisse gut repräsentiert. Womöglich könnte ein
