@@ -400,9 +400,9 @@ def extra_trees():
 
 def stackedish_cocd():
     # clf1 => Integer
-    max_depth1 = 21
-    num_trees1 = 11
-    min_samples_leaf1 = 2
+    max_depth1 = 13
+    num_trees1 = 7
+    min_samples_leaf1 = 4
     """
     clf1 = cherry_picking(
         lambda id: RandomForestClassifier(max_depth=15, criterion='entropy', n_estimators=num_trees1,
@@ -421,12 +421,12 @@ def stackedish_cocd():
     """
 
     clf1 = cherry_picking(
-        lambda id: ExtraTreesClassifier(n_estimators=num_trees1, random_state=id, n_jobs=1, max_depth=max_depth1,
-                                        max_features=max_features,
-                                        ccp_alpha=0.0, min_samples_leaf=min_samples_leaf1), X_train, y_train, X_test_and_opt)
+        lambda id: RandomForestClassifier(max_depth=15, criterion='entropy', n_estimators=num_trees1,
+                                          random_state=id, n_jobs=1,
+                                          ccp_alpha=0.0, min_samples_leaf=1), X_train, y_train, X_test_and_opt)
     # clf2 => Float
-    max_depth2 = 20
-    num_trees2 = 10
+    max_depth2 = 7
+    num_trees2 = 3
     min_samples_leaf2 = 8
 
     """
@@ -451,10 +451,10 @@ def stackedish_cocd():
         n_estimators=num_trees2, random_state=id, learning_rate=0.2), X2_train, y_train, X2_test_and_opt)
     """
 
-    clf2 = cherry_picking(lambda id: AdaBoostClassifier(
-        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth2, criterion="entropy",
-                                                   ccp_alpha=0.0, min_samples_leaf=min_samples_leaf2),
-        n_estimators=num_trees2, random_state=id, learning_rate=0.2), X2_train, y_train, X2_test_and_opt)
+    clf2 = cherry_picking(lambda id: BaggingClassifier(
+        base_estimator=tree.DecisionTreeClassifier(max_depth=max_depth2, criterion="entropy", ccp_alpha=0.0,
+                                                   min_samples_leaf=min_samples_leaf2),
+        n_estimators=num_trees2, random_state=id), X2_train, y_train, X2_test_and_opt)
 
     predicted1 = clf1.predict_proba(X_test_and_opt)
     predicted2 = clf2.predict_proba(X2_test_and_opt)

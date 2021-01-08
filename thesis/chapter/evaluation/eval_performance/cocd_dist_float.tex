@@ -1,17 +1,17 @@
 \subsection{Schwerpunktverteilung mit Gleitkommazahlen}
 \begin{table}[h!]
-    \hspace{-0.5cm}
+    \hspace{-0.75cm}
     \begin{tabular}{ | l | c | c | c | c |}
         \hline
-        Konfiguration & Beste & Unter 60 kB & Unter 28 kB & Unter 14 kB \\\hline
-        Ensemble-Methode & Boosting & Boosting & RandomForest & Bagging  \\\hline
-        Maximalhöhe & 20 & 19 & 10 & 7 \\\hline
-        Waldgröße & 10 & 6 & 4 & 3 \\\hline
-        min\_samples\_leaf & 8 & 8 & 2 & 8 \\\hline
-        Programmgröße in Bytes & 83304 & 43678 & 20188 & 6656 \\\hline
-        Genauigkeit Testmenge von Klisch & 94,8\% & 94.8\% & 89,6\% & 87,5\% \\\hline
-        Genauigkeit Gestentestmenge & 97,0\% & 96,1\% & 95,6\% & 94,1\% \\\hline
-        Genauigkeit Nullgestentestmenge & 92,2\% & 91,1\% & 88,8\% & 89,9\% \\\hline
+        Konfiguration & Beste & Unter 44 kB & Unter 28 kB & Unter 14 kB \\\hline
+        Ensemble-Methode & Boosting & Random Forest & Random Forest & Bagging  \\\hline
+        Maximalhöhe & 20 & 12 & 10 & 7 \\\hline
+        Waldgröße & 10 & 7 & 4 & 3 \\\hline
+        min\_samples\_leaf & 8 & 1 & 2 & 8 \\\hline
+        Programmgröße in Bytes & 83304 & 43668 & 20188 & 6656 \\\hline
+        Genauigkeit Testmenge von Klisch & 94,8\% & 89,6\% & 89,6\% & 87,5\% \\\hline
+        Genauigkeit Gestentestmenge & 97,0\% & 96,5\% & 95,6\% & 94,1\% \\\hline
+        Genauigkeit Nullgestentestmenge & 92,2\% & 92,4\% & 88,8\% & 89,9\% \\\hline
     \end{tabular}
     \caption{Die besten Konfigurationen der Schwerpunktverteilung mit Gleitkommazahlen.}
     \label{tab:schwerpunktverteilung_float}
@@ -36,4 +36,4 @@ Im Vergleich zu der Helligkeitsverteilung und Motion History ist die Klassifizie
 Wird die Kategorie \textit{Beste} mit der Kategorie \textit{Unter 14 kB} verglichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 4,17\% ab. Dabei wird die Programmgröße um 92\% reduziert.
 Dies verspricht, dass mit zunehmender Waldgröße die Klassifizierungsgenauigkeit steigt. Abbildung \ref{fig:cocd_float_per_forest_size} zeigt, dass dies zwar der Fall ist, aber schon ab einer Waldgröße von 6
 Bäumen verzeichnet die durchschnittliche Klassifizierungsgenauigkeit keinen signifikanten Zuwachs mehr. Dementsprechend ist der Unterschied der Gesamtklassifizierungsgenauigkeit der Kategorie \textit{Beste}
-und der Kategorie \textit{Unter 44 kB} mit 0,7\% nicht groß. Damit eignet sich dieses Feature gut für kleine eingebette Systeme, da nur wenige Bäume benötigt werden.
+und der Kategorie \textit{Unter 44 kB} mit 1,8\% nicht groß. Damit eignet sich dieses Feature gut für kleine eingebette Systeme, da nur wenige Bäume benötigt werden.

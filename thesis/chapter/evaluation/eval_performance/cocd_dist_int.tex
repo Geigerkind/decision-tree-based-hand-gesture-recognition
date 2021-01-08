@@ -1,17 +1,17 @@
 \subsection{Schwerpunktverteilung mit Ganzzahlen}
 \begin{table}[h!]
-    \hspace{-0.9cm}
-    \begin{tabular}{ | l | c | c | c | c |}
+    \hspace{-0.5cm}
+    \begin{tabular}{ | l | c | c | c |}
         \hline
-        Konfiguration & Beste & Unter 60 kB & Unter 28 kB & Unter 14 kB \\\hline
-        Ensemble-Methode & ExtraTrees & RandomForest & RandomForest & RandomForest \\\hline
-        Maximalhöhe & 21 & 13 & 12 & 12 \\\hline
-        Waldgröße & 11 & 15 & 8 & 3 \\\hline
-        min\_samples\_leaf & 2 & 4 & 8 & 1 \\\hline
-        Programmgröße in Bytes & 76200 & 51156 & 20476 & 11012 \\\hline
-        Genauigkeit Testmenge von Klisch & 95,8\% & 96,9\% & 91,7\% & 86,5\% \\\hline
-        Genauigkeit Gestentestmenge & 98,8\% & 97,9\% & 97,8\% & 95,5\% \\\hline
-        Genauigkeit Nullgestentestmenge & 95,6\% & 93,9\% & 91,5\% & 88,9\% \\\hline
+        Konfiguration & Beste & Unter 44 kB \& 28 kB & Unter 14 kB \\\hline
+        Ensemble-Methode & ExtraTrees & Random Forest & Random Forest \\\hline
+        Maximalhöhe & 21 & 13 & 12 \\\hline
+        Waldgröße & 11 & 7 & 3 \\\hline
+        min\_samples\_leaf & 2 & 4 & 1 \\\hline
+        Programmgröße in Bytes & 76200 & 21532 & 11012 \\\hline
+        Genauigkeit Testmenge von Klisch & 95,8\% & 91,7\% & 86,5\% \\\hline
+        Genauigkeit Gestentestmenge & 98,8\% & 97,1\% & 95,5\% \\\hline
+        Genauigkeit Nullgestentestmenge & 95,6\% & 94,5\% & 88,9\% \\\hline
     \end{tabular}
     \caption{Die besten Konfigurationen der Schwerpunktverteilung mit Ganzzahlen.}
     \label{tab:schwerpunktverteilung_int}
@@ -29,7 +29,8 @@ Koordinate des Schwerpunktes. Damit spiegeln 10 Einträge insgesamt 5 Zeitfenste
 Aus der Tabelle \ref{tab:schwerpunktverteilung_int} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode ExtraTrees gefunden.
 Mit einer Klassifizierungsgenauigkeit von 95,8\% auf der Testmenge von Klisch ist dieser Ansatz nur 3,2\% schlechter als das neuronale Netz von Giese \cite{gieseThesis}. Es wurde aber auch eine Konfiguration
 gefunden, die 96,9\% der Testmenge von Klisch korrekt klassifiziert und damit nur 2,1\% schlechter ist. Diese maximiert aber in keiner Kategorie die Gesamtklassifizierungsgenauigkeit.
-Außerdem werden 98,8\% der Gestentestmenge und 95,6\% der Nullgestentestmenge korrekt klassifiziert.
+Außerdem werden 98,8\% der Gestentestmenge und 95,6\% der Nullgestentestmenge korrekt klassifiziert. Es wurde kein Entscheidungswald gefunden, der weniger als 44 kB Programmspeicher benötigt und besser ist als die
+Konfiguration in der Kategorie \textit{Unter 28 kB}.
 \newline
 \newline
 Der Ansatz mit Ganzzahlen erzielte eine 2,1\% höhere Gesamtklassifizierungsgenauigkeit als der Ansatz mit Gleitkommazahlen. Der 16-Bit Integer Datentyp erlaubt der Schwerpuntktverteilung mit Ganzzahlen unter jeder
