@@ -1,7 +1,7 @@
 \section{Scikit-Learn}
-In dieser Arbeit wird die Python ML-Bibliothek \textit{Scikit-Learn} verwendet. Scikit-Learn bietet verschiedene ML Algorithmen mit einem High-Level Interface an. Unteranderem implementiert Scikit-Learn
-Entscheidungsbäume mit dem Algorithmus von CART \cite{ScikitLearnCART}. Sie bietet \texttt{DecisionTreeClassifier} und \texttt{DecisionTreeRegressor} an. Der \texttt{Decision TreeClassifier} wird zum Klassifizieren
-verwendet und der \texttt{DecisionTreeRegressor} wird zum Vorhersagen von Werten verwendet.
+In dieser Arbeit wird die Python ML-Bibliothek \textit{Scikit-Learn} verwendet. Scikit-Learn bietet verschiedene ML Algorithmen mit einem High-Level Interface an \cite{scikit-learn}. Unteranderem implementiert Scikit-Learn
+Entscheidungsbäume mit dem Algorithmus von CART \cite{ScikitLearnCART}. Sie bietet \texttt{DecisionTreeClassifier} und \texttt{DecisionTreeRegressor} an. Der \texttt{DecisionTreeClassifier} wird zum Klassifizieren
+verwendet und der \texttt{Decision TreeRegressor} wird zum Vorhersagen von Werten verwendet.
 \newline
 \newline
 Relevant für diese Arbeit ist nur der \texttt{DecisionTreeClassifier}. Dieser bietet eine Reihe an Hyperparametern an, um die Konstruktion des Entscheidungsbaumes zu steuern. Verwendet werden \texttt{max\_depth}
@@ -13,4 +13,4 @@ verbraucht er. Das heißt, wenn der Speicher begrenzt ist, kann man weniger Ents
 Zusätzlich implementiert Scikit-Learn viele Ensemble-Methoden, die in Kombination mit dem Klassifizierer mit Entscheidungsbäumen genutzt werden können. Verwendet werden \texttt{AdaBoostClassifier}
 für \textit{Boosting}, \texttt{BaggingClassifier} für \textit{Bagging}, \texttt{ExtraTrees Classifier} für \textit{ExtraTrees} und \texttt{RandomForestClassifier} für \textit{Random Forests}, die in
 Kapitel \ref{sec:Ensemble} vorgestellt werden. Ihr Interface ist sehr ähnlich. Alle bieten \texttt{n\_estimators} an, welches die Größe des Ensembles bestimmt, bzw. die Waldgröße. Denn ein Ensemble von
-Entscheidungsbäumen bilden einen Entscheidungswald.
+Entscheidungsbäumen bildet einen Entscheidungswald \cite{ScikitLearnEnsemble}.
