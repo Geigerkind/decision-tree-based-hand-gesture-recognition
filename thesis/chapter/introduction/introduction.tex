@@ -18,7 +18,7 @@ In dieser Arbeit wird untersucht, wie Handgesten mit Entscheidungsbäumen auf kl
 trotzdem eine akzeptable Klassifizierungsgenauigkeit erzielen. Maßgeblich ist die Leistung im Hinblick auf Klassifizierungsgenauigkeit, Ausführungszeit und Resourcenverbrauch.
 Dafür ist ein Konzept zur Übersetzung von Entscheidungsbäumen in Programmcode auf dem Mikrocontroller nötig.
 Zudem muss analysiert werden, welche Methode am besten geeignet zur Konstruktion eines Klassifizierers mit Entscheidungsbäumen ist. Außerdem müssen Features gefunden werden, die die einzelnen
-Handgesten unterscheidbar machen. Ein Feature ist ein Attribut der Rohdaten, oder wird berechnet.
+Handgesten unterscheidbar machen. Ein Feature ist ein Attribut der Rohdaten, oder wird aus Rohdaten berechnet.
 \newline
 \newline
 Insgesamt wurden 22528 verschiedene Konfigurationen analysiert. Eine Konfiguration ist eine Vorlage, um das ML Modell mit Entscheidungsbäumen zu trainineren. Sie bestehen aus verschiedenen Featuremengen,
@@ -26,7 +26,7 @@ Hyperparametern und Ensemble-Methoden. Die Featuremengen sind eine Auswahl aus e
 hin analysiert. Von jeder Featuremenge wurden die Konfigurationen mit der höchsten Klassifizierungsgenauigkeit ausgewertet, die innerhalb der Speicherrestriktionen des Mikrocontrollers waren. Die beste
 Konfiguration wurde auf ihre Worst-Case-Execution-Time (WCET) auf dem Mikrocontroller untersucht. Dabei wurden verschiedene Optimierungen diskutiert, um den Ressourcenverbrauch und die WCET zu minimieren.
 Bei diesen Arbeiten ist ein komplexe Infrastruktur entstanden, die in Rust und Python implementiert wurde. Diese stellt Code-Bibliotheken und Werkzeuge bereit, um die Rohdaten der Handgesten zu verarbeiten und
-ML Modelle auf Mikrocontrollern zu trainieren. Es wurde ein Codegenerator implementiert, der C-Code für ein ML Modell mit Entscheidungsbäumen generiert. Außerdem wurden 14410 Handgesten aufgenommen,
+ML Modelle zu trainieren und validieren. Es wurde ein Codegenerator implementiert, der C-Code für ein ML Modell mit Entscheidungsbäumen generiert. Außerdem wurden 14410 Handgesten aufgenommen,
 2 neue Trainingsmengen und 5 neue Testmengen erzeugt.
 \newline
 \newline
