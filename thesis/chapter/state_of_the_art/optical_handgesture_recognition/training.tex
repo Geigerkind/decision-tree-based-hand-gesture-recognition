@@ -1,6 +1,13 @@
 \section{Trainings- und Testdaten}
 \label{sec:synthetischeDaten}
 \label{sec:testdaten}
+Die Modelle werden auf Basis von aufgenommenen Daten trainiert und getestet. Die Aufnahmen beinhalten die 5 Handgestentypen, die mit unterschiedlichen Lichtverhältnissen aufgenommen wurden. Die Lichtverhältnisse
+sind durch verschiedene Lichtquellen und Ausführungsdistanzen der Handgeste zur Kamera entstanden. Die Handgesten wurden mit der flachen Hand oder mit dem Finger in verschiedenen Geschwindigkeiten ausgeführt.
+Die Datenmenge umfasst insgesamt 4792 Handgesten.
+\newline
+\newline
+Listing \ref{lst:sampleGesture} zeigt ein Beispiel einer gespeicherten Handgeste von Links nach Rechts. Abbildung \ref{fig:sample_gesture} illustriert die Handgeste als Graustufenbild.
+Jedes Bild wird durch einen Komma separierten Vektor von Zahlen dargestellt. Die letzte Zahl ist die Beschriftung der Handgeste.
 \begin{lstlisting}[label=lst:sampleGesture,caption={Beispiel einer gespeicherten Handgeste von Links nach Rechts.}]
     ...
     665,683,669,690,627,670,672,611,557,1
@@ -15,25 +22,20 @@
     566,646,654,592,580,654,634,618,602,1
     ...
 \end{lstlisting}
-\begin{figure}
+Um die Datenmenge zu vergrößern, können synthetische Daten erzeugt werden. Dabei werden aus einer aufgenommenen Handgeste Variationen durch Rotation und Rauschen generiert. Außerdem können Helligkeiten,
+Kontraste und Gamma verändert werden \cite{venzkeArticle}.
+\newline
+\newline
+Als Testdaten wird ein Teil der Datenmenge bezeichnet, der nicht zum Trainieren verwendet wurde. Kubik hat Testdaten unter verschiedenen Lichtverhältnissen und Entfernungen zur Kamera aufgenommen. Klisch hat
+daraus eine Testmenge erstellt, die von Klisch und Giese zur Verifikation verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die Klassifizierungsgenauigkeit gemäß \ref{klisch_metric}. Die
+Klassifizierungsgenauigkeit ist das Verhältnis zwischen der Anzahl an korrekt klassifizierten Handgesten und der Anzahl der Einträge in der Testmenge.
+\begin{align}
+    accuracy = \frac{\#true\ positives}{\#total\ gestures}
+    \label{klisch_metric}
+\end{align}
+\begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/sample_gesture_total.jpg}
     \caption{Illustration der Handgeste von Links nach Rechts aus Listing \ref{lst:sampleGesture}.}
     \label{fig:sample_gesture}
 \end{figure}
-Die Modelle werden auf Basis von aufgenommenen Daten trainiert und getestet. Jedes aufgenommene Bild wird durch einen Komma separierten Vektor von Zahlen dargestellt, gefolgt von einer Annotation für den Gestentyp.
-Eine Geste ist eine Folge von Bildern, die die gleiche Annotation teilen (siehe Listing \ref{lst:sampleGesture}). Insgesamt gibt es 4792 Aufnahmen von validen Handgesten, die unter verschiedenen Lichtverhältnissen
-und Distanzen zur Kamera aufgenommen wurden. Dabei wurde die Gesten mit der Hand und dem Finger in verschiedenen Geschwindigkeiten ausgeführt.
-\newline
-\newline
-Synthetische Daten können erzeugt werden, um die Datenmenge zu vergößern. Dabei werden aus einer aufgenommenen Geste Variationen durch Rotation und Rauschen generiert. Außerdem können Helligkeiten,
-Kontraste und Gamma verändert werden \cite{venzkeArticle}.
-\newline
-\newline
-Als Testdaten wird ein Teil der Datenmenge bezeichnet, die nicht zum trainieren verwendet wurde. Kubik hat Testdaten unter verschiedenen Lichtverhältnissen und Entfernungen zur Kamera aufgenommen. Klisch hat
-daraus eine Testmenge erstellt, die von Klisch und Giese zur Verifikation verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die Erkennungsgenauigkeit als Verhältnis zwischen der Anzahl an korrekt
-erkannten Gesten und der Gesamtanzahl (siehe Formel \ref{klisch_metric}) \cite{klischThesis}.
-\begin{align}
-    accuracy = \frac{\#true\ positives}{\#total\ gestures}
-    \label{klisch_metric}
-\end{align}
