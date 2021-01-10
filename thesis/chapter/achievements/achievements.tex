@@ -1,7 +1,11 @@
 \chapter{Handgestenerkennung mit Entscheidungsbäumen}
-Entscheidungsbäume sind sehr schnell im Vergleich zu neuronalen Netzen. Allerdings eignen sich neuronale Netze oft besser für komplexe ML Probleme, da sie leicht zu konstruieren sind
-und bereits auf Rohdaten gut generalisieren. Das untersuchte Problem weißt aber nur eine geringe Komplexität. Aus diesem Grund wird untersucht, ob Entscheidungsbaum basierte Klassifizierer
-eine ausreichende Erkennungsgenauigkeit erzielen.
+Mit \textit{Scikit-Learn} werden verschiedene ML Modelle mit Entscheidungsbäumen trainiert, die Handgesten klassifizieren. Die Modelle unterscheiden sich in der Ensemble-Methode, Hyperparametern und
+der Featuremenge mit denen sie konstruiert wurden. Jede ausgewählte Featuremenge erfüllt eine Reihe an Anforderungen, die nötig sind, damit das ML Modell die Handgesten unterscheiden kann.
+\newline
+\newline
+Das Modell wird innerhalb einer komplexen Infrastruktur generiert. Diese stellt Werkzeuge und Code-Bibliotheken bereit, um die Rohdaten der Handgeste zu Featuremengen vorzuverarbeiten und auf vordefinierten
+Testmengen zu validieren. Für diese Arbeit wurden 14410 Handgesten aufgenommen, um einerseits die Trainingsdaten mit Nullgesten zu ergänzen und andererseits, um Testmengen zur Validierung von Nullgesten
+und Lichtverhältnissen zu generieren.
 
 \input{chapter/achievements/model}
 \input{chapter/achievements/features/features}

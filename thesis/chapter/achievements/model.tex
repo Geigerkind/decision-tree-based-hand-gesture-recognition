@@ -1,106 +1,119 @@
 \section{Modell}
-Insgesamt werden 22528 verschiedene Konfigurationen getestet. Sie unterscheiden sich in der Baumgröße, Waldgröße, Featureauswahl, Ensemble-Methode und Blattgröße.
+Als Modell wird ein Klassifizierer bezeichnet, das mit ML konstruiert wurde. In diesem Fall besteht der Klassifizierer aus Entscheidungsbäumen. Jede Konfiguration eines Modells besteht aus einer
+Ensemble-Methode, einer Featuremenge und Hyperparametern. Die Hyperparameter bestimmen die maximale Baumhöhe, die Waldgröße und die Blattgröße. Im Folgenden ist \glqq Konfiguration\grqq\ und \glqq Modell\grqq\
+als austauschbar zu betrachten.
 \newline
+\newline
+Jede Konfiguration wird mit dem in Abbildung \ref{fig:model_workflow} illustrierten Arbeitsablauf verarbeitet. Zunächst werden die Rohdaten vorverarbeitet, wobei eine beschriftete Trainingsmenge mit der definierten
+Featuremenge extrahiert wird. Dann wird das Modell trainiert und als C-Code exportiert. Der C-Code wird mit \textit{GCC} kompiliert, wodurch das Modell zu einem ausführbaren Programm konvertiert wird. Das Programm
+wird anschließend mit dem Werkzeug \texttt{Simulator} auf den definierten Trainingsmengen validiert.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{images/model_workflow.jpg}
-    \caption{Arbeitsablauf um ein Model zu trainieren und zu validieren.}
+    \caption{Arbeitsablauf um ein Modell zu trainieren und zu validieren.}
     \label{fig:model_workflow}
 \end{figure}
-\newline
-Jeder Entscheidungswald wird mit dem Python-Modul \texttt{Scikit-Learn} trainiert. Scikit-Learn implementiert den Konstruktionsalgorithmus CART (siehe Sektion \ref{sec:construction}) für den Entscheidungsbaum und bietet
-zusätzlich zahlreiche Ensemble-Methoden an. Jede Konfiguration folgt dem in Abbildung \ref{fig:model_workflow} illustrierten Arbeitsablauf.
-\newline
-\newline
-Zunächst wird die Trainingsmenge vorverarbeitet. Dabei werden die verschiedenen
-Features extrahiert, die während der Konstruktion eines Entscheidungsbaumes benötigt werden. Dann wird das Model mit Scikit-Learn und den gegebenen Konfigurationsparametern generiert. Anschließend wird aus dem Model
-ausführbarer C-Code generiert und kompeliert. Zuletzt wird die Erkennungsgenauigkeit des ausführbaren Models auf der Testmenge von Klisch, der Gestentestmenge und Nullgestentestmenge ermittelt.
 
 \subsection{Training}
 \label{sec:Training}
-Mit Scikit-Learn werden Wahl basierte Entscheidungswaldklassifizierer mit den in Sektion \ref{sec:Ensemble} genannten Ensemble-Methoden trainiert. Insgesamt werden Waldgrößen zwischen 1 und 16 betrachtet und
-Maximalhöhen von den einzelnen Entscheidungsbäumen zwischen 1 und 22. Außerdem werden die Blattgrößen, d. h. die minimale Anzahl von Trainingsdateneinträgen pro Blatt, \textit{1, 2, 4 und 8} untersucht.
+Das Modell wird mit \textit{Scikit-Learn} trainiert. Die Konstruktion eines Entscheidungswaldes ist aber nicht deterministisch, da es bei der Konstruktion mit CART Teilungen geben kann, die gleich gut sind
+sind (Kapitel \ref{sec:construction}). In diesem Fall wählt Scikit-Learn zufällig eine Teilung aus. Dies beeinflusst die folgenden Teilungen und somit die Klassifizierungsgenauigkeit auf der
+Trainings- und Testmenge. Der Zufall kann gesteuert werden, indem der Startwert des Zufallgenerators auf einen vordefinierten Wert gesetzt wird. Mit einem konstanten Startwert ist Scikit-Learn deterministisch.
 \newline
 \newline
-Der letzte Parameter verringert potentiell die Erkenneungsgenauigkeit von den einzelnen Entscheidungsbäumen, verringert aber auch die Größe des Baumes signifikant.
-Dadurch können Entscheidungswälder gefunden werden, die zuvor nicht in den Programmspeicher eines Arduino Boards gepasst haben (siehe Sektion \ref{sec:eval_size}).
+Daraus folgt, dass einige Startwerte bessere Modelle erzeugen als andere, obwohl die Konfiguration identisch ist. Folglich wurde festgestellt, dass die Konstruktion mit Scikit-Learn als Monte Carlo Methode verstanden
+werden kann. Durch wiederholtes Trainieren mit unterschiedlichen Startwerten, erhöht sich die Wahrscheinlichkeit, dass das optimale Modell dieser Konfiguration gefunden wurde. Aus diesem Grund wird das
+Modell mit 140 verschiedenen Startwerten für den Zufallsgenerator trainiert. Beim manuellen testen wurden im schlimmsten Fall nach 138 verschiedenen Startwerten keine Verbesserungen im Modell mehr festgestellt,
+weswegen sich für etwas mehr, d. h. 140, entschieden wurde.
 \newline
 \newline
-Die Konstruktion der Entscheidungswälder ist nicht deterministisch. Zuallererst muss die Konstruktion eines einzelnen Entscheidungsbaumes nicht deterministisch sein, da selbst wenn immer die beste Teilung
-ausgewählt wird, können mehrere Teilungen auch gleich gut sein. Aus den gleich guten Teilungen müsste zufällig eine ausgewählt werden. Folglich ist jede Ensemble-Methode zufällig. Außerdem wählt die RandomForest-Methode
-zufällig eine Featureauswahl, und die Bagging-Methode partitioniert die Trainingmenge zufällig. Aus diesem Grund kann in Scikit-Learn ein \texttt{random\_state} zugewiesen werden, der den \textit{Seed} des
-unterliegenen Zufallszahlengenerators setzt.
+Um die 140 Modelle der gleichen Konfiguration miteinander zu vergleichen, wurde die Trainingsmenge zufällig in zwei Mengen unterteilt. Die eine Hälfte wurde zum Trainieren des Modells verwendet und die andere
+Hälfte wurde zum Validieren des Modells verwendet. Folglich wurde aus den 140 trainierten Modellen, das Modell mit der höchsten Klassifizierungsgenauigkeit auf der Valididationsmenge ausgewählt.
 \newline
 \newline
-Dementsprechend kann man die Konstruktion als Monte Carlo Methode betrachten, d. h. wiederholte Ausführungen erhöhen die Wahrscheinlichkeit, dass das beste Ergebnis dieser Konfiguration gefunden wurde.
-Jede Konfiguration wird aus diesem Grund mit 140 verschiedenen \texttt{random\_state} ausgeführt.
+Es wurde jede Ensemble-Methode getestet, die in Kapitel \ref{sec:Ensemble} genannt wurde und mit dem Wahlklassifizier zusammengefasst. Die Waldgrößen sind zwischen 1 und 16, die maximalen Baumhöhen zwischen
+1 und 22 und die Blattgrößen \textit{1, 2, 4 oder 8}.
 
 \subsection{C-Code Generierung eines Entscheidungsbaumes}
 \label{sec:cCodeTree}
-Das Model soll auf kleinen eingebetteten Systemen ausgeführt werden. Diese haben eine Toolchain um die Firmware zu generieren, die meistens auf der Programmiersprache \texttt{C} basiert. Dies trifft auch auf das in
-dieser Arbeit benutzten Arduino Board zu.
-\begin{lstlisting}[label=lst:sklearnTreeStructure,caption={Skizze der rekursiven Datenstruktur für Entscheidungsbäume die von Scikit-Learn genutzt wird.}]
+Zur Ausführung eines Entscheidungsbaumes wird C-Code erzeugt. Dies ist erforderlich, weil der Entscheidungsbaum auf einem kleinen eingebetteten System ausgeführt werden soll. Die Toolchain, um die Firmware
+dafür zu generieren, bedarf meistens, dass der Quellcode in der Programmiersprache \texttt{C} implementiert ist. Dies trifft auch auf das Arduino Board ATmega328P zu.
+\newline
+\newline
+Für jeden Entscheidungsbaum wird eine Funktion erstellt. Listing \ref{lst:sklearnCCodeTreeFunction} zeigt den Funktionskopf eines Entscheidungsbaumes. Als Eingabe wird ein Zeiger auf die Featuremenge
+\texttt{features} übergeben und ein Zeiger auf das Rückgabe-Array \texttt{result}, dass die Wahrscheinlichkeitsverteilung des Entscheidungsbaumes als Ergebnis speichert.
+\begin{lstlisting}[label=lst:sklearnCCodeTreeFunction,caption={C-Code Funktionskopf eines Baumes $i$.}]
+void tree_i(float* features, float* result);
+\end{lstlisting}
+Das Modell, dass von Scikit-Learn generiert wird, hat eine interne Datenstruktur, um den Entscheidungsbaum darzustellen. Aus dieser Datenstruktur, wird der der C-Code generiert. Listing
+\ref{lst:sklearnTreeStructure} skizziert eine vereinfachte Darstellung dieser Datenstruktur, wobei \texttt{T} der Datentyp der Featuremenge ist. Jeder Knoten ist entweder ein Blattknoten oder
+ein innerer Knoten. Jeder Blattknoten beinhaltet die Wahrscheinlichkeitsverteilung mit der jede Klasse in diesem Knoten anzutreffen ist. Jeder innerer Knoten verfügt über einen Schwellenwert und
+dem Index zum Feature, dass er nutzt, um im Test den Schwellenwert mit dem Feature zu vergleichen. Außerdem enthält er seine Kindknoten. Scikit-Learn konstruiert binäre Entscheidungsbäume,
+weswegen es genau 2 Kindknoten gibt.
+\begin{lstlisting}[label=lst:sklearnTreeStructure,caption={Vereinfachte Skizze der Datenstruktur die von Scikit-Learn für Entscheidungsbäume genutzt wird.}]
 enum Knoten<T> {
-    Blatt(Vec<usize>),
-    Elternknoten {
-        test: (features: Vec<T>) -> bool,
+    Blattknoten {
+        klassen_wahrscheinlichkeiten: Vec<f64>
+    },
+    InnererKnoten {
+        feature_index: usize,
+        schwellenwert: T,
         knoten_links: Knoten<T>,
         knoten_rechts: Knoten<T>
     }
 }
 \end{lstlisting}
-Das Model wird mit dem Python-Modul Scikit-Learn generiert. Dementsprechend muss aus der internen Repräsentierung von Scikit-Learn das Model extrahiert werden. Scikit-Learn definiert eine rekursive Datenstruktur in
-der jedes Blatt für jede Klassifizierungsklasse die Anzahl der Trainingsdateneinträge enthält, die nach dem traversieren aller Test in diesem Blatt eingeordnet werden. Jeder Elternknoten besteht aus einem Test der
-ein Feature mit einem Schwellenwert vergleicht und einen Knoten für jedes Ergebnis dieses Tests (siehe Listing \ref{lst:sklearnTreeStructure}). Im Falle von Scikit-Learn ist der der Test immer
-ein $\leq$ Vergleich, weswegen es genau zwei Kindknoten gibt.
-\begin{lstlisting}[label=lst:sklearnCCodeParent,caption={C-Code eines Elternknotens.}]
-if (features[k] <= X) {
-    Traversiere linkes Kind...
+Listing \ref{lst:sklearnCCodeParent} zeigt den C-Code, der für einen inneren Knoten generiert wird. Von der Wurzel aus, wird bis zu einem Blattknoten traversiert. Dabei wird rekursiv für jeden inneren
+Knoten ein \texttt{if (Test) \{ \ldots\ \} else \{ \ldots\ \}} Ausdruck generiert. Der \textit{Test} ist ein Vergleich des ausgewählten Features und einem Schwellenwert. Aus der Featuremenge \texttt{features}
+wird das Feature an der Stelle \texttt{feature\_index} mit dem \texttt{schwellenwert} verglichen. Im Fall wo der Ausdruck wahr ist, wird der linke Kindknoten traversiert, ansonsten dar rechte Kindknoten.
+Die Ausdrücke \texttt{feature\_index} und \texttt{schwellenwert} werden im generierten C-Code durch die in der Datenstruktur eines inneren Knotens vorzufindenden Konstanten ersetzt.
+\begin{lstlisting}[label=lst:sklearnCCodeParent,caption={C-Code eines inneren Knotens.}]
+if (features[feature_index] <= schwellenwert) {
+    Traversiere Kindknoten links...
 } else {
-    Traversiere rechtes Kind...
+    Traversiere Kindknoten rechts...
 }
 \end{lstlisting}
-Ein Elternknoten wird dementsprechend als ein \texttt{if (test) \{ \ldots\ \} else \{ \ldots\ \}} Ausdruck modeliert (siehe Listing \ref{lst:sklearnCCodeParent}). Dabei ist der \texttt{test} ein $\leq$ Vergleich eines
-Features mit einem Schwellenwert und der Inhalt der einzelnen Blöcke ist abhängig von den Kindesknoten.
-\begin{lstlisting}[label=lst:sklearnCCodeLeaf,caption={C-Code eines Blattes.}]
-result[0] = (Anzahl Klasse 1) / (Gesamtanzahl im Blatt);
+Für einen Blattknoten muss der C-Code für die Rückgabe generiert werden. Listing \ref{lst:sklearnCCodeLeaf} zeigt, dass im Rückgabeparameter \texttt{result} für alle $M$ Klassen die Wahrscheinlichkeit
+jeder Klasse gespeichert wird. Diese Rückgabe ist notwendig, da der Wahlklassifizierer, der diese Funktion ausführt, eine Wahrscheinlichkeitsverteilung erwartet.
+Die Ausdrücke \texttt{klassen\_wahrscheinlichkeiten[i]} werden durch die Konstanten ersetzt, die in dieser Variable in der Datenstruktur eines Blattknotens gespeichert sind.
+\begin{lstlisting}[label=lst:sklearnCCodeLeaf,caption={C-Code eines Blattknotens.}]
+result[0] = klassen_wahrscheinlichkeiten[0];
 ...
-result[N] = (Anzahl Klasse N) / (Gesamtanzahl im Blatt);
+result[M - 1] = klassen_wahrscheinlichkeiten[M-1];
 return;
 \end{lstlisting}
-Der C-Code im Blatt ist abhängig von dem Wahlklassifizierer. Es können entweder die Klasse ausgewählt werden, die von den meisten Bäumen klassifiziert wurde, oder die
-Erkennungswahrscheinlichkeiten jedes Baumes im Ensamble wird summiert und davon wird die Klasse mit der größten Summe ausgewählt (siehe Sektion \ref{sec:wahlklassifizierer}).
-In dieser Arbeit wurde sich für letzteres entschieden. Im C-Code wird das modeliert durch die Zuweisung der Wahrscheinlichkeiten der einzelnen Klassen im Blatt zu dem Ergebnisparameter
-\texttt{result} (siehe Listing \ref{lst:sklearnCCodeLeaf}).
 
 \subsection{C-Code Generierung eines Entscheidungswaldes}
-Ein Entscheidungswald besteht aus einem Ensemble von Entscheidungsbäumen. Bei der Evaluierung eines Entscheidungswaldes wird jeder Entscheidungsbaum evaluiert und die Ergebnisse zusammengefasst, z. B.
-durch einen Wahlklassifizierer.
-\begin{lstlisting}[label=lst:sklearnCCodeTreeFunction,caption={C-Code Funktionskopf eines Baumes $i$.}]
-function tree_i(float* features, float* result);
+Ein Entscheidungswald besteht aus einem Ensemble von Entscheidungsbäumen. Bei der Ausführung eines Entscheidungswaldes wird jeder enthaltende Entscheidungsbaum ausgeführt. Die Ergebnisse jedes
+Entscheidungsbaumes werden mit dem Wahlklassifizierer (Kapitel \ref{sec:wahlklassifizierer}) zusammengefasst. Das heißt, die Wahrscheinlichkeiten jeder Klasse werden addiert und die Klasse mit
+der größten Summe wird ausgewählt.
+\newline
+\newline
+Listing \ref{lst:sklearnCCodeTreeVoting} zeigt den C-Code der zum zusammenfassen eines Entscheidungswaldes mit einem Wahlklassifizierer generiert wird. Zunächst wird ein
+Array \texttt{total\_res} erstellt, dass die Summe der Ergebnisse der einzelnen Entscheidungsbäume speichert. Die Anzahl der Ergebnisse pro Entscheidungsbaum, d. h. die Anzahl an Rückgabeklassen, ist $M$.
+Als Speicher für die Ergebnisse eines Entscheidungsbaumes wird \texttt{tree\_res} erstellt. In Zeile 6-9 wird ein Entscheidungsbaum $i$ ausgeführt und sein Rückgabe wert auf \texttt{total\_res} addiert.
+Dieser Codeblock wird für alle $N$ Entscheidungsbäume wiederholt, die im Entscheidungswald enthalten sind. In Zeile 11-18 wird die Klasse ermittelt, die die höchste summierte Wahrscheinlichkeit hat.
+In Zeile 19 wird die Klasse an die aufrufende Funktion zurückgegeben.
+\begin{lstlisting}[label=lst:sklearnCCodeTreeVoting,caption={C-Code des Wahlklassifizierers mit $M$ Klassen und $N$ Bäumen.}]
+01: unsigned char execute_decision_forest(float* features) {
+02:     float total_res[M] = { 0.0, ..., 0.0 };
+03:     float tree_res[M] = { 0.0, ..., 0.0 };
+04:
+05:     // Die folgenden 4 Zeilen werden für alle N Bäume wiederholt.
+06:     tree_i(features, tree_res);
+07:     total_res[0] += tree_res[0];
+08:     ...
+09:     total_res[M-1] += tree_res[M-1];
+10:
+11:     unsigned char max_index = 0;
+12:     float max_value = 0;
+13:     for (unsigned char i = 0; i < M; ++i) {
+14:         if (max_value < total_res[i]) {
+15:             max_value = total_res[i];
+16:             max_index = i;
+17:         }
+18:     }
+19:     return max_index;
+20: }
 \end{lstlisting}
-Zunächst wird jeder Entscheidungsbaum als Funktion isoliert (siehe Listing \ref{lst:sklearnCCodeTreeFunction}). Als Eingabeparameter dienen die extrahierten Features und ein \texttt{float}-Array \texttt{result}, dass das
-Ergebnis speichert.
-\begin{lstlisting}[label=lst:sklearnCCodeTreeVoting,caption={C-Code des Wahlklassifizierers mit $N$ Klassen und $K$ Bäumen.}]
-float tree_res[N] = { 0.0, ..., 0.0 };
-float total_res[N] = { 0.0, ..., 0.0 };
-unsigned char result_map[N] = { ... };
-
-// Wiederhole dies für K Bäume
-tree_i(features, tree_res);
-total_res[0] += tree_res[0];
-...
-total_res[N-1] += tree_res[N-1];
-
-unsigned char max_index = 0;
-float max_value = 0;
-for (unsigned char i = 0; i < N; ++i) {
-    if (max_value < total_res[i]) {
-        max_value = total_res[i];
-        max_index = i;
-    }
-}
-return result_map[max_index];
-\end{lstlisting}
-Listing \ref{lst:sklearnCCodeTreeVoting} zeigt wie ein Ensemble bestehend aus $K$ Entscheidungsbäumen, die jeweils $N$ mögliche Klassifizierungsergebnisse zurückgeben. Diese werden mit einem Wahlklassifizierer
-zusammengefasst. Zunächst wird jeder Baum evaluiert und die Ergebnisse summiert. Anschließend wird die Klasse mit dem maximalen Wert zurückgegeben.
