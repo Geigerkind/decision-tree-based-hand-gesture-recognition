@@ -2,7 +2,7 @@
 \label{sec:sota_misc}
 Song et al. \cite{song2019design} haben die Handgestenerkennung mit Gradient Boosting Entscheidungsbäumen untersucht. Sie wählten einen nicht-optischen Ansatz, der mit Hilfe eines tragbaren sEMG Recorders
 die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den Entscheidungsbaum wählten sie 9 Features, die in die Kategorie von zeitabhängigen Features einzuordnen sind
-(siehe Tabelle \ref{tab:songFeatures}). Damit erzielten sie eine Erkennungsgenauigkeit von 91\% unter 12 verschiedenen Handgesten.
+(siehe Tabelle \ref{tab:songFeatures}). Damit erzielten sie eine Klassifizierungsgenauigkeit von 91\% unter 12 verschiedenen Handgesten.
 \begin{table}[h!]
     \centering
     \begin{tabular}{ c | c | c }
@@ -25,11 +25,11 @@ die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den En
 \end{table}
 \newline
 \newline
-Ahad et al. \cite{ahad2012motion} diskutieren den Motion History Image (MHI) Ansatz. MHI ist ein optischer Ansatz, der eine Sequenz von Bildern in ein einziges komprimiert. Dabei werden dominante Bewegungen die
+Ahad et al. \cite{ahad2012motion} diskutieren den Motion History Image (MHI) Ansatz. MHI ist ein optischer Ansatz, der eine Sequenz von Bildern in ein einziges Bild komprimiert. Dabei werden dominante Bewegungen, die
 kürzlich verarbeitet wurden heller angezeigt als nicht dominante Bewegungen oder Bewegungen die schon länger zurück liegen.
 \newline
 \newline
-Formel \ref{formular:mhi} beschreibt die rekursive Berechnung des MHI. Das MHI kann aber auch sequentiell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine dominante Bewegung in einem Pixel $(x,y)$
+Formel \ref{formular:mhi} beschreibt die rekursive Berechnung des MHI. Das MHI kann aber auch sequenziell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine dominante Bewegung in einem Pixel $(x,y)$
 zu einem Zeitpunkt $t$ signalisiert, dann wird der Pixel zum Maximalwert $\tau$ gesetzt. Mit jedem Bild, indem keine dominante Bewegung im Pixel $(x,y)$ stattgefunden hat, wird der Wert um den
 Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0.
 \begin{align}
@@ -39,5 +39,5 @@ Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0.
     \end{cases}
     \label{formular:mhi}
 \end{align}
-MHI ist leicht zu berechnen und Invariant zu Lichtverhältnissen. Allerdings ist die Leistung stark abhängig von $\psi$, $\tau$ und $\delta$. MHI ist besonders anfällig für Bildfolgen mit verschiedener Länge.
-Je nach dem, wie $\tau$ und $\delta$ gewählt sind, ist die Bewegungshistorie nicht sichtbar oder der Einfluss der ersten Bilder geht verloren.
+MHI ist leicht zu berechnen und invariant zu Lichtverhältnissen. Allerdings ist die Leistung stark abhängig von $\psi$, $\tau$ und $\delta$. MHI ist besonders anfällig für Bildfolgen mit verschiedener Länge.
+Je nachdem, wie $\tau$ und $\delta$ gewählt sind, ist die Bewegungshistorie nicht sichtbar oder der Einfluss der ersten Bilder geht verloren.

@@ -4,7 +4,7 @@ Die Lichtsensorenmatrix liefert einen kontinuierlichen Strom an Bildern. Als Ges
 ein Ereignis einschließt. In diesem Fall wird das Ereignis durch die Veränderung im gleitenden Mittelwert der Helligkeit definiert. Sobald der gleitende Mittelwert unterschritten wird, wird ein Gestenkandidat
 angefangen aufgenommen zu werden. Sobald die Lichtverhältnisse zu dem Wert zurückkehren, wird die Aufnahme beendet. Der gleitende Mittelwert wird immer angepasst, wenn kein Gestenkandidat aufgenommen wird, um
 sich den verändernden Lichtverhältnissen anzupassen. Da leichte Veränderungen natürlich sind, muss eine Toleranzgrenze von 10\% unter- und überschritten werden, damit die Aufnahme gestartet, bzw. beendet wird.
-Die Folge ist, dass der Anfang und das Ende nicht vollständig sind. Aus diesem Grund schlug Kubik zusätzlich vor am Anfang und Ende weitere Bilder anzufügen \cite{kubikThesis}.
+Die Folge ist, dass der Anfang und das Ende nicht vollständig ist. Aus diesem Grund schlug Kubik zusätzlich vor am Anfang und Ende weitere Bilder anzufügen \cite{kubikThesis}.
 \begin{figure}
     \usetikzlibrary{arrows,automata,positioning}
     \centering
@@ -39,9 +39,9 @@ Die Folge ist, dass der Anfang und das Ende nicht vollständig sind. Aus diesem 
 \newline
 \newline
 Abbildung \ref{fig:venzkeAlgoImpl} zeigt die konkrete Implementierung dieses Algorithmus mit einem Zustandsautomaten, der von Dr. Marcus Venzke entwickelt wurde. In jedem Zustand wird das aktuelle Bild dem Puffer angefügt.
-Der Automat verbleibt im Zustand \texttt{READ-INITIAL-FRAMES} bis der Puffer 3 Bilder enthält. Dabei wird stets der gleitenden Mittelwert der Helligkeit angepasst. Anschließend geht der Automat in den Zustand
+Der Automat verbleibt im Zustand \texttt{READ-INITIAL-FRAMES} bis der Puffer 3 Bilder enthält. Dabei wird stets der gleitende Mittelwert der Helligkeit angepasst. Anschließend geht der Automat in den Zustand
 \texttt{SEARCH-DARKER-FRAMES} über, indem immer das erste Bild aus dem Puffer entfernt wird, da lediglich 3 Bilder jeweils vor dem Aufnehmen und nach dem Aufnehmen des
-Gestenkandidates angefügt werden sollen. Außerdem wird weiterhin der gleitende Mittelwert angepasst. Sobald die Durchschnittshelligkeit 90\% des gleitenden Mittelwerts unterschreitet wird die Aufnahme begonnen.
+Gestenkandidaten angefügt werden sollen. Außerdem wird weiterhin der gleitende Mittelwert angepasst. Sobald die Durchschnittshelligkeit 90\% des gleitenden Mittelwerts unterschreitet wird die Aufnahme begonnen.
 Der Automat geht in den Zustand \texttt{RECORD-CANDIDATE-FRAMES} über. Dort verbleibt der Automat solange bis die Durchschnittshelligkeit 90\% des gleitenden Mittelwerts überschritten wird, woraufhin der Automat
 in den Zustand \texttt{RECORD-ENDING-FRAMES} über geht. Dort werden die letzten 3 Bilder dem Puffer angehängt. Sobald 3 Bilder angehängt wurden, wird der Puffer dem Klassifizierer übergeben und anschließend
 der Zustandsautomat zurückgesetzt. Daraufhin geht der Automat in den initialen Zustand wieder über.
