@@ -1,39 +1,39 @@
 \section{Gestenerkennung mit künstliche neuronalen Netzen}
-Insgesamt gingen dieser Arbeit 4 Arbeiten voraus, die sich mit künstlichen neuronalen Netzen im Zusammenhang dieser Fallstudie beschäftigt hatten.
+Insgesamt gingen dieser Arbeit 4 Arbeiten voraus, die sich im Zusammenhang mit dieser Fallstudie mit künstlichen neuronalen Netzen beschäftigt hatten.
 \newline
 \newline
-Engelhardt führte die in \ref{sec:fallstudie} definierten Handgesten mit der Hand, einem Finger und 2 Fingern unter verschiedenen Helligkeiten aus. Damit hat Engelhardt seine Modelle trainiert und validiert. Er
+Engelhardt führte die in \ref{sec:fallstudie} definierten Handgesten mit der Hand, einem Finger und 2 Fingern unter verschiedenen Helligkeiten aus. Damit hat Engelhardt seine ML Modelle trainiert und validiert. Er
 argumentiert, dass rekurrente neuronale Netze (RNN), Feedforward neuronale Netze (FFNN) und Long-Short-Term Memory neuronale Netze (LSTMNN) für temporale Probleme am besten geeignet seien. Convolutional neuronale
-Netze (CNN) verwarf Engelhardt aufgrund der geringen Auflösung der Gesten und da die Faltung extrem rechenaufwendig sei. Desweiteren verwarf er LSTMNN, da diese zu viel Rechenleistung und Speicherplatz
-benötigen. Als Eingabewerte zu seinen RNNs und FFNNs diente eine Sequenz von 20 Bilder die zu 180 Werten konkatiniert und auf Werte zwischen 0 und 1 normalisiert wurden. Als bestes Model stellte sich eines
-seiner FFNNs heraus, das auf seinen Testdaten bis zu 99\% Erkennungsgenauigkeit erzielte. Außerdem erwies es sich als robust gegenüber Rauschen und Helligkeitsveränderungen im Vergleich zum RNN. Die Ausführungszeit
-des FFNN belief sich auf 11,54 ms mit einem Verbrauch von 11 kB Flash-Speicher und 573 bytes RAM \cite{engelhardtThesis}.
+Netze (CNN) verwarf Engelhardt aufgrund der geringen Auflösung der Handgesten und da die Faltung extrem rechenaufwendig sei. Desweiteren verwarf er LSTMNN, da diese zu viel Rechenleistung und Speicherplatz
+benötigen. Als Eingabewerte zu seinen RNNs und FFNNs diente eine Sequenz von 20 Bilder, die zu 180 Werten konkatiniert und auf Werte zwischen 0 und 1 normalisiert wurden. Als bestes ML Modell stellte sich eines
+seiner FFNNs heraus, das auf seinen Testdaten bis zu 99\% Klassifizierungsgenauigkeit erzielte. Außerdem erwies es sich als robust gegenüber Rauschen und Helligkeitsveränderungen im Vergleich zum RNN. Die Ausführungszeit
+des FFNN belief sich auf 11,54 ms, einer Programmgröße von 11 kB und 573 Bytes RAM \cite{engelhardtThesis}.
 \newline
 \newline
-Kubik hat in seiner Arbeit den FFNN Ansatz von Engelhardt aufgegriffen. Er untersuchte Gesten, die mit der Hand in verschiedenen Distanzen zur Kamera, unter guten, und schlechten Lichtverhältnissen ausgeführt werden.
-Neben der Facettenkamera, die Engelhardt ebenfalls genutzt hatte, untersuchte Kubik ebenfalls eine Lochkamera. Er stellte fest, dass diese aber wesentlich auszuleuchten schwerer ist, was sich auf die
-Erkennungsgenauigkeit auswirkte. Als Eingabe nutze Kubik ebenfalls 180 Werte, die 20 Bilder repräsentieren. Um mit der variablen Länge von Gesten umzugehen schlug Kubik vor, die Bildsequenzen auf 20 Bilder zu
-skalieren (siehe Sektion \ref{sec:scaling}). Um die Skalierung durchzuführen, musste aber der Anfang und das Ende der Geste bekannt sein. Aus diesem Grund war es nötig Gestenkandidaten erkennen zu können (siehe
-Sektion \ref{sec:gesture_extraction}). Er stellte fest, dass dies die Gesamtlänge der Geste limitierte in Anbetracht des RAMs von dem Microcontroller. Um die Erkennungsgenauigkeit zu erhöhen verwendete Kubik synthetische
-Trainingsdaten, die er aus bestehenden Daten durch Rotation generierte (siehe Sektion \ref{sec:synthetischeDaten}). Dies erhöhte die Erkennungsgenauigkeit erheblich. Kubik erstellte Testdaten (siehe
-Sektion \ref{sec:testdaten}) und evaluierte sein Model darauf. Im Allgemeinen stellte er fest, dass mit zunehmender Distanz zur Kamera die Erkennungsgenauigkeit sich verschlechtert. Dies erwies sich besonders als ein
-Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mit der Facettenkamera bis 30 cm eine Erkennungsgenauigkeit von 97,2\% erreichen. Bei schlechten Lichtverhältnissen war die Erkennungsgenauigkeit
+Kubik hat in seiner Arbeit den FFNN Ansatz von Engelhardt aufgegriffen. Er untersuchte Handgesten, die mit der Hand in verschiedenen Distanzen zur Kamera, unter guten, und schlechten Lichtverhältnissen ausgeführt werden.
+Neben der Facettenkamera, untersuchte Kubik ebenfalls eine Lochkamera. Er stellte fest, dass diese aber wesentlich schwerer auszuleuchten ist, was sich auf die
+Klassifizierungsgenauigkeit auswirkte. Als Eingabe nutze Kubik ebenfalls 180 Werte, die 20 Bilder repräsentieren. Um mit der variablen Länge von Handgesten umzugehen schlug Kubik vor, die Bildsequenzen auf 20 Bilder zu
+skalieren (Kapitel \ref{sec:scaling}). Um die Skalierung durchzuführen, musste aber der Anfang und das Ende der Handgeste bekannt sein. Aus diesem Grund war es nötig Gestenkandidaten erkennen zu können (Kapitel
+\ref{sec:gesture_extraction}). Er stellte fest, dass dies die Gesamtlänge der Handgeste limitierte in Anbetracht des RAMs des Mikrocontrollers. Um die Klassifizierungsgenauigkeit zu erhöhen, verwendete Kubik zusätzlich
+synthetische Trainingsdaten, die er aus der bestehenden Trainingsmenge durch Rotation generierte (Kapitel \ref{sec:synthetischeDaten}). Dies erhöhte die Klassifizierungsgenauigkeit erheblich. Kubik erstellte eine Testmenge
+(Kapitel \ref{sec:testdaten}) und evaluierte sein Modell damit. Im Allgemeinen stellte er fest, dass mit zunehmender Distanz zur Kamera sich die Klassifizierungsgenauigkeit verschlechtert. Dies erwies sich besonders als ein
+Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mit der Facettenkamera bis 30 cm eine Klassifizierungsgenauigkeit von 97,2\% erreichen. Bei schlechten Lichtverhältnissen war die Klassifizierungsgenauigkeit
 bereits ab 20 cm nur noch bei 83\%. Zusätzlich zu den 4 Grundgesten, untersuchte Kubik Nullgesten. Er stellte fest, dass ruckartige Veränderungen der Lichtverhältnisse mit 92\% erkannt wurden und Handbewegungen die wieder
-zurück gezogen wurden mit 96\%. Schwierigkeiten hat die Erkennung von diagonalen Bewegungen als Nullgeste bereitet, da diese eine hohe Ähnlichkeit zu der benachbarten horizontalen und vertikalen Geste hat. Kubiks Ansatz
-hat insgesamt 36 ms benötigt um das Model auszuwerten und 11 ms für die Skalierung \cite{kubikThesis}.
+zurück gezogen wurden mit 96\%. Schwierigkeiten hat die Erkennung von diagonalen Bewegungen als Nullgeste bereitet, da diese eine hohe Ähnlichkeit zu der benachbarten horizontalen und vertikalen Handgeste aufweisen. Kubiks Ansatz
+hat insgesamt 36 ms benötigt um das Modell auszuführen und 11 ms für die Skalierung \cite{kubikThesis}.
 \newline
 \newline
 Klisch hat einen Ansatz von Venzke untersucht. Von Engelhardt motiviert schlug Venzke vor, dass man ein RNN als mehrere FFNNs trainieren könnte. Engelhardt stellte fest, dass RNNs schlechtere
-Erkennungsgenauigkeiten erzielten als FFNNs, da sie schwerer zu trainieren sind \cite{engelhardtThesis}. Aus diesem Grund hat Klisch verschiedene Konfigurationen getestet und stellte fest,
-dass ein RNN als einzelnes Netzwerk zu trainieren bessere Ergebnisse liefert als ein RNN als mehrere FFNNs zu trainieren. Mit seinem RNN erzielte Klisch unter guten und verhältnismäßig
-schlechten Lichtverhältnissen eine Erkennungsgenauigkeit von 71\%, welches eine Verbesserung zu dem Ergebnis von Engelhardt ist.
-Klisch stellte fest, dass sein Model schnell genug ist, um 50 Hz zu unterstützen \cite{klischThesis}.
+Klassifizierungsgenauigkeiten erzielten als FFNNs, da sie schwerer zu trainieren sind \cite{engelhardtThesis}. Aus diesem Grund hat Klisch verschiedene Konfigurationen getestet und stellte fest,
+dass ein RNN als einzelnes Netzwerk zu trainieren bessere Ergebnisse erzielt als ein RNN aus mehreren FFNNs zu trainieren. Mit seinem RNN erzielte Klisch unter guten und verhältnismäßig
+schlechten Lichtverhältnissen eine Klassifizierungsgenauigkeit von 71\%. Das ist eine Verbesserung zu dem Ergebnis von Engelhardt mit RNNs erzielte.
+Klisch stellte fest, dass sein Modell schnell genug ist, um 50 Hz zu unterstützen \cite{klischThesis}.
 \newline
 \newline
-Der Fokus von Gieses Arbeit lag auf Kompression und Optimierung. Er trainierte ein FFNN und erzielte eine Erkennungsgenauigkeit von 98,96\%. Dies ist signifikant besser als das FFNN von Kubik, welches lediglich 83\% erzielte.
-Giese geht davon aus, dass sein FFNN besere Ergebnisse lieferte, da ca. 19x mehr Trainingsdaten zur Verfügung hatte als Kubik. Er untersuchte die Auswirkungen von Pruning, Quantitisierung, Sparse Matrix Format, SeeDot und
-den Optimierungsparametern von GCC. Mit Pruning und Retraining konnte Giese 72\% aller Verbindungen entfernen ohne signifikanten Verlust in Erkennungsgenauigkeit. Das wiederholte Ausführen von Quantitisierung und
-Retrainieren erhöhte die Erkennungsgenauigkeit auf 100\%. Die beste Ausführungszeit wurde mit dem CSC-MA-Bit Format erzielt, dass unnötige Multiplikationen vermied und den kleinste Programmgröße wurde mit dem
-CSC-Centroid Format erzielt. SeeDot hat im Vergleich zum Ausgangsmodel sowohl Ausführungszeit, als auch Programmgröße verringert, hat aber die Erkennungsgenauigkeit signifikant gesenkt. Der Vorteil von SeeDot
-ist die geringe Zeit, die diese Optimierung benötigt. Der Optimierungsparameter O2 hat den besten Kompromiss zwischen Programmgröße und Ausführungszeit erzielt. Insgesamt hat die beste Lösung 35,7\% weniger Speicher
+Der Fokus von Gieses Arbeit lag auf Kompression und Optimierung. Er trainierte ein FFNN und erzielte eine Klassifizierungsgenauigkeit von 98,96\%. Dies ist signifikant besser als das FFNN von Kubik, welches lediglich 83\% erzielte.
+Giese geht davon aus, dass sein FFNN besere Ergebnisse erzielte, da er ca. 19x mehr Trainingsdaten zur Verfügung hatte als Kubik. Er untersuchte die Auswirkungen von Pruning, Quantitisierung, Sparse Matrix Format, SeeDot und
+den Optimierungsparametern von GCC. Mit Pruning und ernuetem Trainieren konnte Giese 72\% aller Verbindungen entfernen ohne signifikanten Verlust in der Klassifizierungsgenauigkeit. Das wiederholte Ausführen von Quantitisierung und
+erneutes Trainieren erhöhte die Klassifizierungsgenauigkeit. Die beste Ausführungszeit wurde mit dem CSC-MA-Bit Format erzielt, dass unnötige Multiplikationen vermied. Die kleinste Programmgröße wurde mit dem
+CSC-Centroid Format erzielt. SeeDot hat im Vergleich zum Ausgangsmodell sowohl Ausführungszeit, als auch Programmgröße verringert. Hat aber die Klassifizierungsgenauigkeit signifikant gesenkt. Der Vorteil von SeeDot
+ist die geringe Zeit, die diese Optimierung benötigt. Der Optimierungsparameter O2 hat den besten Kompromiss zwischen Programmgröße und Ausführungszeit erzielt. Insgesamt hat die beste Lösung 35,7\% weniger Programmspeicher
 benötigt und die Ausführungszeit wurde von 26,1 ms auf 6,8 ms reduziert \cite{gieseThesis}.
