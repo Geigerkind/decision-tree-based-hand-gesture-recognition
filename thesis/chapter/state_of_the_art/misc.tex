@@ -27,6 +27,11 @@ die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den En
 \newline
 Ahad et al. \cite{ahad2012motion} diskutieren den Motion History Image (MHI) Ansatz. MHI ist ein optischer Ansatz, der eine Sequenz von Bildern in ein einziges komprimiert. Dabei werden dominante Bewegungen die
 kürzlich verarbeitet wurden heller angezeigt als nicht dominante Bewegungen oder Bewegungen die schon länger zurück liegen.
+\newline
+\newline
+Formel \ref{formulat:mhi} beschreibt die rekursive Berechnung des MHI. Das MHI kann aber auch sequentiell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine dominante Bewegung in einem Pixel $(x,y)$
+zu einem Zeitpunkt $t$ signalisiert, dann wird der Pixel zum Maximalwert $\tau$ gesetzt. Mit jedem Bild, indem keine dominante Bewegung im Pixel $(x,y)$ stattgefunden hat, wird der Wert um den
+Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0.
 \begin{align}
     H_{\tau}(x,y,t) = \begin{cases}
                           \tau & if \psi(x,y,t) = 1 \\
@@ -34,9 +39,5 @@ kürzlich verarbeitet wurden heller angezeigt als nicht dominante Bewegungen ode
     \end{cases}
     \label{formular:mhi}
 \end{align}
-Das MHI kann sequentiell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine dominante Bewegung in einem Pixel $(x,y)$ zu einem Zeitpunkt $t$ signalisiert, dann wird der Pixel zum Maximalwert $\tau$
-gesetzt. Mit jedem Bild in dem keine dominante Bewegung im Pixel $(x,y)$ stattgefunden hat, wird der Wert um den Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0 (siehe Formel \ref{formular:mhi}).
-\newline
-\newline
 MHI ist leicht zu berechnen und Invariant zu Lichtverhältnissen. Allerdings ist die Leistung stark abhängig von $\psi$, $\tau$ und $\delta$. MHI ist besonders anfällig für Bildfolgen mit verschiedener Länge.
-Je nach dem, wie $\tau$ und $\delta$ gewählt sind, ist die Bewegungshistorie nicht sichtbar oder verloren gegangen.
+Je nach dem, wie $\tau$ und $\delta$ gewählt sind, ist die Bewegungshistorie nicht sichtbar oder der Einfluss der ersten Bilder geht verloren.
