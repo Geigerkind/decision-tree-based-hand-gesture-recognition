@@ -1,13 +1,13 @@
 \section{Skalieren des Gestenkandidaten}
 \label{sec:scaling}
 Ein Gestenkandidat besteht aus einer variablen Anzahl an Bildern. Durch die künstlich angefügten Bilder am Anfang und Ende sind es mindestens 8 Bilder. Kubik erkannte, dass ein neuronales Netz eine feste Anzahl an
-Eingaben hat und diskutierte verschiedene Ansätze.
+Eingaben hat und diskutierte verschiedene Ansätze. Er verwarf die Idee den Puffer mit irrelevanten Bildern oder Nullen auszufüllen, Bilder zu duplizieren oder Teile des Gestenkandidaten zu verwerfen, da er
+befürchtete, dass dadurch nicht die vollständige Handgeste auf die Eingangs-Ebene des NN abgebildet werden würde, oder dass die Handgeste womöglich verzerrt wäre \cite{kubikThesis}.
 \newline
 \newline
-Er verwarf die Idee den Puffer mit irrelevanten Bildern oder Nullen auszufüllen, Bilder zu duplizieren oder Teile des Gestenkandidaten zu verwerfen, da dadurch
-nicht die vollständige Geste auf die Eingangs-Ebene des NN abgebildet werden würde, oder dass die Geste womöglich verzerrt wäre.
+Kubik schlug vor, dass im Falle von weniger als 20 Bildern lineare Interpolation angewendet werden soll. Dabei werden die vorhanden Bilder gleichverteilt auf 20 Pseudoindexe, sodass das erste und letzte Bild auch
+jeweils den ersten und letzten Pseudoindex einnimmt. Die fehlenden Bilder werden interpoliert aus den Bildern, die jeweils davor und danach kommen.
 \newline
 \newline
-Aus diesem Grund hat Kubik sich für lineare Interpolation auf eine fixe Anzahl von 20 Bildern entschieden, wenn weniger als 20 Bilder vorhanden sind. Wenn mehr als 20 Bilder vorhanden sind,
-werden 20 Bilder gleichverteilt ausgewählt \cite{kubikThesis}. Dieser Ansatz wurde auch von Anton Giese aufgegriffen, der sich in diesem Zusammenhang ebenfalls mit künstlichen neuronalen Netzen
-beschäftigt hatte \cite{gieseThesis}.
+Im Falle von mehr als 20 Bildern sollen gleichverteilt 20 Bilder ausgewählt werden, die die Handgeste vollständig repräsentieren. Dieser Ansatz wurde auch von Anton Giese aufgegriffen, der sich in diesem Zusammenhang
+ebenfalls mit künstlichen neuronalen Netzen beschäftigt hatte \cite{gieseThesis}.
