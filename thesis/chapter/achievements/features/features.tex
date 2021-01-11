@@ -1,15 +1,11 @@
 \section{Features}
-Der Entscheidungsbaum nutzt Features um die einzelnen Klassen voneinander zu unterscheiden. Dies funktioniert aber nur, wenn die Klassen eindeutig trennbar sind. Ist eine Trennung nicht möglich, so ist
-auch keine gute Erkennungsgenauigkeit von dem Entscheidungsbaum zu erwarten.
+Features bilden die Eingabe für einen Entscheidungsbaum. Gute Features sind integral, damit der Entscheidungsbaum gut generalisiert. Wenn die Featuremenge keine eindeutige Trennung der Klassen in der
+Trainingsmenge zulässt, so ist auch keine gute Generalisierung zu erwarten.
 \newline
 \newline
-In dieser Arbeit muss die Richtung der Handbewegung erkannt werden. Die Bewegung kann mit verschiedenen Geschwindigkeiten durchgeführt werden. Aus diesem Grund sollte das Feature invariant
-gegenüber der Geschwindigkeit sein. Außerdem wird die Handbewegung aus verschiedenen Distanzen zur Kamera durchgeführt. Dadurch variiert der Kontrast und die Helligkeit.
-Dementsprechend sollte das Feature invariant zu den Lichtverhältnissen sein. Die Richtung der Bewegung ist eine Kombination aus der derzeiten Position der Hand und dem Zeitpunkt. Das Feature soll
-also Auskunft über die Entwicklung über die Zeit geben und die Position die die Hand zu diesen Zeitpunkten hatte.
-\newline
-\newline
-Erschwerend ist, dass die Bewegung nie exakt gleich ausgeführt wird. Die Bewegung kann eine Kreisform haben, etwas schräg sein oder einige Fotowiderstände nicht verdecken. Das Feature muss dem gegenüber
-robust sein.
+In dieser Arbeit muss die Richtung der Handgeste klassifiziert werden. Die Handgeste kann mit verschiedenen Geschwindigkeiten und unterschiedlichen Distanzen zur Kamera durchgeführt werden. Mit
+zunehmender Entfernung nimmt der Kontrast ab, da Streulicht einen größeren Einfluss hat. Für eine gute Generalisierung, sollten die Features Invarianzen zur Geschwindigkeit und den
+Lichtverhältnissen haben. Erschwerend ist, dass die Handgeste nie exakt gleich ausgeführt wird. Sie kann eine leichte Kreisbewegungen aufweisen oder schräg durchgeführt werden, sodass einige
+Fotowiderstände nicht verdeckt werden.
 \input{chapter/achievements/features/feature_enhancement}
 \input{chapter/achievements/features/selection}
