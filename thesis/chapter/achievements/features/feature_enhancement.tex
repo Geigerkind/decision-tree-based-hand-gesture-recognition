@@ -1,15 +1,15 @@
 \subsection{Feature Verbesserungen}
-Einige Anforderungen an ein Feature können durch Änderungen hinzugefügt werden. Relative Helligkeitsunterschiede können durch Normalisierung eleminiert werden, Positionen durch das Argument oder partielle Anwendung
-inferiert werden und die Entwicklung über Zeit durch die Duplizierung von Feature über Zeitfenster dargestellt werden.
+Einige Anforderungen, können durch spezielle Änderungen bei einem Feature ergänzt werden. Dazu gehören relative Helligkeitsunterschiede, Positionsinformationen und Entwicklung über Zeit.
 \newline
 \newline
-Normalisierung ersetzt die Aussage über die absolute gegen die lokale Gesamthelligkeit. Dies erzeugt eine Invarianz gegenüber Skalierung der Helligkeiten jedoch nicht über einen Offset. Die Skalierung passt den
-Kontrast zwischen hellen und dunklen Stellen mit an, der Offset jedoch nicht.
+Relative Helligkeitsunterschiede können durch Normalisierung über die lokale Gesamthelligkeit eleminiert werden. Dadurch ändert sich aber die Art der Aussage über die Helligkeit von einer absoluten Aussage
+zu einer lokalen. Dies erzeugt eine Invarianz gegenüber der Skalierung der Helligkeiten, jedoch nicht gegenüber einem Offset.
 \newline
 \newline
-Informationen über die Positionen können einerseits direkt aus dem Argument einer Funktion als Feature bereitgestellt werden, z. B. $\arg(\max X)$. Andererseits indirekt, indem das Feature dupliziert wird
-und auf Teilmengen der Definitionsmenge angewendet wird, z. B. die Berechnung eines Feature für einzelne Spalten oder Zeilen.
+Informationen über die Position können einerseits aus dem Argument des Features und andererseits durch partielle Anwendung inferiert werden. Beim Argument eines Features wird das Argument als Feature bereit
+gestellt, indem das Feature bestimmte Bedingungen erfüllt. Bei $\arg(\max X)$ zum Beispiel, wird der Index bereit gestellt, andem die Menge $X$ maximal ist. Bei der partiellen Anwendung, wird das Feature auf
+Teilmengen der Definitionsmenge angewendet und damit mehrfach zur Featuremenge hinzugefügt, z. B. bei dem Fotowiderstandmatrix könnten Zeilen und Spalten Teilmengen sein.
 \newline
 \newline
-Ähnlich zur Position kann auch die Entwicklung über Zeit durch das Dupizieren von Features dargestellt werden. Dabei wird die Geste in eine bestimmte Anzahl an gleich großen Zeitfenstern eingeteilt. Für jedes
-Zeitfenster wird das Feature berechnet.
+Die Entwicklung über Zeit kann ebenfalls über die Duplizierung des Features dargestellt werden. Anstatt ein einzelnen Frames zu unterteilen, wird die Handgeste in Zeitfenster aufgeteilt. Jedes Zeitfenster
+fasst die einzelnen Frames zu einem Frame zusammen. Für jedes Zeitfenster wird das Feature berechnet.
