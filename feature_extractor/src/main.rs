@@ -46,6 +46,12 @@ fn main() {
         //KLISCH_DATA.get(&ParsingMethod::ByAnnotation).unwrap(),
     ];
 
+    /*
+    for data_set_entry in DYMEL_VANISHING_CONTRAST_TEST.iter() {
+        data_set_entry.export("data/export/DYMEL_VANISHING_CONTRAST_TEST.csv");
+    }
+     */
+
     //println!("{}", data_sets.iter().any(|ds| ds.iter().any(|entry| entry.gestures().iter().any(|gest| gest.gesture_type == GestureType::NotGesture))));
 
     let mut gestures: Vec<Gesture> = Vec::new();

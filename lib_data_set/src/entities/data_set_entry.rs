@@ -1,8 +1,11 @@
+use std::fs::OpenOptions;
+use std::io::Write;
+use std::path::Path;
+
 use lib_gesture::entities::Gesture;
+use lib_gesture::tools::{parse_gestures_by_annotation, parse_gestures_by_threshold};
 
 use crate::value_objects::{AdditionalSpecification, BrightnessLevel, CameraDistance, CoveringObject, DataSetName, ParsingMethod};
-use std::path::Path;
-use lib_gesture::tools::{parse_gestures_by_annotation, parse_gestures_by_threshold};
 
 /// Defines a single entry in a data set, e.g. LRRL_Hand_10cm_highBrightness_fast.
 #[derive(Debug, Getters, Clone)]
@@ -17,10 +20,11 @@ pub struct DataSetEntry {
     file_path: String,
     parsing_method: ParsingMethod,
     scaling: Option<i32>,
-    offset: Option<i16>
+    offset: Option<i16>,
 }
 
 unsafe impl Sync for DataSetEntry {}
+
 unsafe impl Send for DataSetEntry {}
 
 impl DataSetEntry {
@@ -37,7 +41,7 @@ impl DataSetEntry {
             file_path,
             parsing_method,
             scaling: None,
-            offset: None
+            offset: None,
         };
         entry.parse();
         entry
@@ -45,7 +49,7 @@ impl DataSetEntry {
 
     /// Create a custom data set entry, e.g. for synthetic data
     pub fn custom(data_set_name: DataSetName, covering_object: CoveringObject, camera_distance: CameraDistance,
-               brightness_level: BrightnessLevel, additional_specification: Option<AdditionalSpecification>, gestures: Vec<Gesture>) -> Self {
+                  brightness_level: BrightnessLevel, additional_specification: Option<AdditionalSpecification>, gestures: Vec<Gesture>) -> Self {
         DataSetEntry {
             data_set_name,
             covering_object,
@@ -56,7 +60,7 @@ impl DataSetEntry {
             file_path: String::new(),
             parsing_method: ParsingMethod::ByAnnotation,
             scaling: None,
-            offset: None
+            offset: None,
         }
     }
 
@@ -104,5 +108,24 @@ impl DataSetEntry {
                 self.gestures = parse_gestures_by_threshold(&self.file_path).expect("File should have expected format!")
             }
         };
+    }
+
+    /// Exports dataset to a specified file. Gestures are split by a 1023,1023,1023,1023,1023,1023,1023,1023,1023,0 row
+    /// If the file exists its in append mode, else it will create the file.
+    pub fn export(&self, path: &str) {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .create(true)
+            .open(path)
+            .unwrap();
+
+        for gesture in self.gestures.iter() {
+            for frame in gesture.frames.iter() {
+                let _ = file.write_all(format!("{},{},{},{},{},{},{},{},{},{}\n", frame.pixel[0], frame.pixel[1], frame.pixel[2], frame.pixel[3], frame.pixel[4],
+                                               frame.pixel[5], frame.pixel[6], frame.pixel[7], frame.pixel[8], gesture.gesture_type as u8).as_bytes());
+            }
+            let _ = file.write_all(b"1023,1023,1023,1023,1023,1023,1023,1023,1023,0\n");
+        }
     }
 }
