@@ -1,5 +1,5 @@
 #define COCD_CURRENT_RETURN_TYPE float
-// #define COCD_CURRENT_RETURN_TYPE long
+// #define COCD_CURRENT_RETURN_TYPE short
 #define COCD_CURRENT_BUFFER_TYPE float
 // #define COCD_CURRENT_BUFFER_TYPE short
 

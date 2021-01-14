@@ -400,9 +400,9 @@ def extra_trees():
 
 def stackedish_cocd():
     # clf1 => Integer
-    max_depth1 = 13
-    num_trees1 = 7
-    min_samples_leaf1 = 4
+    max_depth1 = 12
+    num_trees1 = 3
+    min_samples_leaf1 = 1
     """
     clf1 = cherry_picking(
         lambda id: RandomForestClassifier(max_depth=15, criterion='entropy', n_estimators=num_trees1,

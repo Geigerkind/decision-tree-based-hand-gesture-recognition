@@ -39,3 +39,4 @@ light_test.csv
 light_test2.csv
 best_configs.csv
 eval_data.csv
+model_export
