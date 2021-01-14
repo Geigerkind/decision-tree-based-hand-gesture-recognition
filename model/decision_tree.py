@@ -421,9 +421,9 @@ def stackedish_cocd():
     """
 
     clf1 = cherry_picking(
-        lambda id: RandomForestClassifier(max_depth=15, criterion='entropy', n_estimators=num_trees1,
+        lambda id: RandomForestClassifier(max_depth=max_depth1, criterion='entropy', n_estimators=num_trees1,
                                           random_state=id, n_jobs=1,
-                                          ccp_alpha=0.0, min_samples_leaf=1), X_train, y_train, X_test_and_opt)
+                                          ccp_alpha=0.0, min_samples_leaf=min_samples_leaf1), X_train, y_train, X_test_and_opt)
     # clf2 => Float
     max_depth2 = 7
     num_trees2 = 3
@@ -489,6 +489,11 @@ def stackedish_cocd():
     file = open("decision_forest.c", "w")
     create_stacked_forest_native_main(file, clf1.estimators_, clf2.estimators_, num_trees1, num_trees2, 2, 1, enable_floating_point)
     file.close()
+
+    file = open("ino_tree4/decision_forest.cpp", "w")
+    create_stacked_forest_ino(file, clf1.estimators_, clf2.estimators_, num_trees1, num_trees2, 2, 1, enable_floating_point)
+    file.close()
+
     return max(x.tree_.max_depth for x in clf1.estimators_ + clf2.estimators_)
 
 """

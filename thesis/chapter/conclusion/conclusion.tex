@@ -11,8 +11,8 @@ sich auf 5819 $\mu s\ \approx\ $ 5,8 ms. Der Großteil, ca. 4,5 ms, wird davon f
 Nach Anwendung aller Optimierungen und unter Annahme, dass Festkommazahlen keine Auswirkung auf die Klassifizierungsgenauigkeit haben, ist der Klassifizierer trotzdem zu groß für den ATmega328P.
 \newline
 \newline
-Mit einer Beschränkung von 48 kB kann der Klassifizierer der kombinierten Schwerpunktverteilung 88,5\% auf der Testmenge von Klisch erzielen, 98,3\% auf
-der Gestentestmenge und 92,5\% auf der Nullgestentestmenge bei einer Programmgröße von 35952 Byte und einer WCET von 4741,125 $\mu s\ \approx\ $ 4,7 ms. Mit der Beschränkung von 32\ kB, kann 87,5\% auf der
+Mit einer Beschränkung von 48 kB kann der Klassifizierer der kombinierten Schwerpunktverteilung 87,5\% auf der Testmenge von Klisch erzielen, 97,7\% auf
+der Gestentestmenge und 92,9\% auf der Nullgestentestmenge bei einer Programmgröße von 33276 Byte und einer WCET von 4741,125 $\mu s\ \approx\ $ 4,7 ms. Mit der Beschränkung von 32\ kB, kann 87,5\% auf der
 Testmenge von Klisch erzielt werden, 96,9\% auf der Gestentestmenge und 92,5\% auf der Nullgestentestmenge bei einer Programmgröße von 20552 Byte und einer WCET von 4680,0625 $\mu s\ \approx\ $ 4,7 ms.
 \newline
 \newline
@@ -20,9 +20,10 @@ Die Schwerpunktverteilung mit Ganzzahlen mit einer Programmgröße unter 28 kB h
 Dieser Ansatz erzielt bessere Ergebnisse als der kombinierte Ansatz auf den Testmengen unter gleichen Restriktionen, ist aber nicht robust gegenüber skalierten Helligkeiten.
 \newline
 \newline
-Insgesamt benötigt die Implementierung der kombinierten Schwerpunktverteilung auf dem ATmega328P $X$(TODO) RAM. Dieser setzt sich zusammen aus $X$(TODO) zur Berechnung der Features, $X$(TODO) für den Puffer und
-$X$(TODO) für die restliche Firmware. Im Puffer werden keine Bilder mehr gespeichert, sondern partiell ausgerechnete Features, d. h. im Fall der Schwerpunktverteilung, den Schwerpunkt jedes Bildes.
-Dafür wird weniger Speicher pro Bild verwendet als zuvor, wodurch der Puffer größer sein kann als bei den KNNs. Die Programmgröße beträgt $X$(TODO).
+Insgesamt benötigt die Implementierung der kombinierten Schwerpunktverteilung auf dem ATmega328P 1640 Bytes RAM. Dieser setzt sich zusammen aus 60 Bytes zur Berechnung der Features, 1200 Bytes für den Puffer
+mit einer Größe von 100 Einträgen
+und 380 Bytes für die restliche Firmware. Im Puffer werden keine Bilder mehr gespeichert, sondern partiell ausgerechnete Features, d. h. im Fall der Schwerpunktverteilung, den Schwerpunkt jedes Bildes.
+Dafür wird weniger Speicher pro Bild verwendet als zuvor, wodurch der Puffer größer sein kann als bei den KNNs. Die Programmgröße beträgt 31520.
 \newline
 \newline
 Der Entscheidungsbaum bietet viel Optimierungspotenzial gegenüber der naiven Implementierung. Allein der Datentyp hat einen großen Einfluss sowohl auf die Programmgröße, als auch die Ausführungsgeschwindigkeit.
