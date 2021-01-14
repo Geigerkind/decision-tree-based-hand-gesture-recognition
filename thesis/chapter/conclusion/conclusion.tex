@@ -7,7 +7,7 @@ schneller als KNNs und benötigen kaum RAM zur Ausführung. Die Klassifizierungs
 Die beste Konfiguration, der Klassifizierer der kombinierten Schwerpunktverteilung, erzielte 94,8\% auf der Testmenge von Klisch, 99\% auf der Gestentestmenge und 95,8\% auf der Nullgestentestmenge. Damit
 ist der Ansatz nur marginal schlechter als der beste Klassifizierer der vorherigen Arbeiten, der 98,96\% auf der Testmenge von Klisch erzielte. Die kombinierte Schwerpunktverteilung erwies sich als
 äußerst robust gegenüber skalierte Helligkeiten und Helligkeiten mit einem Offset. Selbst bei geringem Kontrast erzielt der Ansatz eine hohe Klassifizierungsgenauigkeit. Die WCET beläuft
-sich auf 5819 $\mu s\ \approx\ $ 5,8 ms. Der Großteil, ca. 4,5 ms, wird davon für die Berechnung der Features benötigt. Damit ist der Ansatz 9,4\% schneller, als der schnellste vorherige Ansatz.
+sich auf 5819 $\mu s\ \approx\ $ 5,8 ms. Der Großteil, ca. 4,5 ms, wird davon für die Berechnung der Features benötigt. Damit ist der Ansatz 70,1\% schneller, als der schnellste vorherige Ansatz.
 Nach Anwendung aller Optimierungen und unter Annahme, dass Festkommazahlen keine Auswirkung auf die Klassifizierungsgenauigkeit haben, ist der Klassifizierer trotzdem zu groß für den ATmega328P.
 \newline
 \newline
@@ -16,7 +16,7 @@ der Gestentestmenge und 92,9\% auf der Nullgestentestmenge bei einer Programmgr�
 Testmenge von Klisch erzielt werden, 96,9\% auf der Gestentestmenge und 92,5\% auf der Nullgestentestmenge bei einer Programmgröße von 20552 Byte und einer WCET von 4680,0625 $\mu s\ \approx\ $ 4,7 ms.
 \newline
 \newline
-Die Schwerpunktverteilung mit Ganzzahlen mit einer Programmgröße unter 28 kB hat eine WCET von 651,6875 $\mu s\ \approx\ $ 0,7 ms und ist damit 89,1\% schneller als das schnellste KNN von Giese \cite{gieseThesis}.
+Die Schwerpunktverteilung mit Ganzzahlen mit einer Programmgröße unter 28 kB hat eine WCET von 651,6875 $\mu s\ \approx\ $ 0,7 ms und ist damit 96,4\% schneller als das schnellste KNN von Giese mit Skalierung \cite{gieseThesis}.
 Dieser Ansatz erzielt bessere Ergebnisse als der kombinierte Ansatz auf den Testmengen unter gleichen Restriktionen, ist aber nicht robust gegenüber skalierten Helligkeiten.
 \newline
 \newline
