@@ -21,13 +21,13 @@ Zudem muss analysiert werden, welche Methode am besten geeignet zur Konstruktion
 Handgesten unterscheidbar machen. Ein Feature ist ein Attribut der Rohdaten, oder wird aus Rohdaten berechnet.
 \newline
 \newline
-Insgesamt wurden 22528 verschiedene Konfigurationen analysiert. Eine Konfiguration ist eine Vorlage, um das ML Modell mit Entscheidungsbäumen zu trainieren. Sie bestehen aus verschiedenen Featuremengen,
-Hyperparametern und Ensemble-Methoden. Die Featuremengen sind eine Auswahl aus einer Untersuchung von 28 Variationen an Features. Jede Konfiguration wurde auf ihre Klassifizierungsgenauigkeit und Ressourcenverbrauch
-hin analysiert. Von jeder Featuremenge wurden die Konfigurationen mit der höchsten Klassifizierungsgenauigkeit ausgewertet, die innerhalb der Speicherrestriktionen des Mikrocontrollers waren. Die beste
+Insgesamt wurden 22528 verschiedene Konfigurationen analysiert. Eine Konfiguration ist eine Vorlage, um das ML Modell mit Entscheidungsbäumen zu trainieren. Sie bestehen aus verschiedenen Feature-Mengen,
+Hyperparametern und Ensemble-Methoden. Die Feature-Mengen sind eine Auswahl aus einer Untersuchung von 28 Variationen an Features. Jede Konfiguration wurde auf ihre Klassifizierungsgenauigkeit und Ressourcenverbrauch
+hin analysiert. Von jeder Feature-Menge wurden die Konfigurationen mit der höchsten Klassifizierungsgenauigkeit ausgewertet, die innerhalb der Speicherrestriktionen des Mikrocontrollers waren. Die beste
 Konfiguration wurde auf ihre Worst-Case-Execution-Time (WCET) auf dem Mikrocontroller untersucht. Dabei wurden verschiedene Optimierungen diskutiert, um den Ressourcenverbrauch und die WCET zu minimieren.
 Bei diesen Arbeiten ist eine komplexe Infrastruktur entstanden, die in Rust und Python implementiert wurde. Diese stellt Code-Bibliotheken und Werkzeuge bereit, um die Rohdaten der Handgesten zu verarbeiten und
 ML Modelle zu trainieren und zu validieren. Es wurde ein Codegenerator implementiert, der C-Code für ein ML Modell mit Entscheidungsbäumen generiert. Außerdem wurden 14410 Handgesten aufgenommen,
-2 neue Trainingsmengen und 5 neue Testmengen erzeugt.
+zwei neue Trainingsmengen und fünf neue Testmengen erzeugt.
 \newline
 \newline
 Kapitel 2 führt in Entscheidungsbäume und Ensemble-Methoden ein. Kapitel 3 erläutert die bisherigen Arbeiten zur Handgestenerkennung. In Kapitel 4 wird auf die Generierung des ML Modells mit Entscheidungsböumen,

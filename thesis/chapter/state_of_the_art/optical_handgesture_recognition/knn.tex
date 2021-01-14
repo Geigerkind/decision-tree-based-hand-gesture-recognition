@@ -1,8 +1,8 @@
 \section{Gestenerkennung mit künstliche neuronalen Netzen}
-Insgesamt gingen dieser Arbeit 4 Arbeiten voraus, die sich im Zusammenhang mit dieser Fallstudie mit künstlichen neuronalen Netzen beschäftigt hatten.
+Insgesamt gingen dieser Arbeit vier Arbeiten voraus, die sich im Zusammenhang mit dieser Fallstudie mit künstlichen neuronalen Netzen beschäftigt hatten.
 \newline
 \newline
-Engelhardt führte die in \ref{sec:fallstudie} definierten Handgesten mit der Hand, einem Finger und 2 Fingern unter verschiedenen Helligkeiten aus. Damit hat Engelhardt seine ML Modelle trainiert und validiert. Er
+Engelhardt führte die in \ref{sec:fallstudie} definierten Handgesten mit der Hand, einem Finger und zwei Fingern unter verschiedenen Helligkeiten aus. Damit hat Engelhardt seine ML Modelle trainiert und validiert. Er
 argumentiert, dass rekurrente neuronale Netze (RNN), Feedforward neuronale Netze (FFNN) und Long-Short-Term Memory neuronale Netze (LSTMNN) für temporale Probleme am besten geeignet seien. Convolutional neuronale
 Netze (CNN) verwarf Engelhardt aufgrund der geringen Auflösung der Handgesten und da die Faltung rechenaufwendig sei. Des Weiteren verwarf er LSTMNN, da diese zu viel Rechenleistung und Speicherplatz
 benötigen. Als Eingabewerte zu seinen RNNs und FFNNs diente eine Sequenz von 20 Bilder, die zu 180 Werten konkateniert und auf Werte zwischen 0 und 1 normalisiert wurden. Als bestes ML Modell stellte sich eines
@@ -36,4 +36,4 @@ den Optimierungsparametern von GCC. Mit Pruning und erneutem Trainieren konnte G
 erneutem Trainieren erhöhte die Klassifizierungsgenauigkeit. Die beste Ausführungszeit wurde mit dem CSC-MA-Bit Format erzielt, dass unnötige Multiplikationen vermied. Die kleinste Programmgröße wurde mit dem
 CSC-Centroid Format erzielt. SeeDot hat im Vergleich zum Ausgangsmodell sowohl Ausführungszeit als auch Programmgröße verringert. SeeDot verringerte die Klassifizierungsgenauigkeit aber signifikant. Der Vorteil von SeeDot
 ist die geringe Zeit, die diese Optimierung benötigt. Der Optimierungsparameter O2 hat den besten Kompromiss zwischen Programmgröße und Ausführungszeit erzielt. Insgesamt hat die beste Lösung 35,7\% weniger Programmspeicher
-benötigt und die Ausführungszeit wurde von 26,1 ms auf 6,8 ms reduziert \cite{gieseThesis}.
+benötigt und die Ausführungszeit wurde von 26,1 ms auf 6,8 ms reduziert. Eine Skalierung ist immernoch notwendig. Dafür gibt Giese 13 ms an. \cite{gieseThesis}.

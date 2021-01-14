@@ -1,11 +1,10 @@
 \section{Modell}
 Als Modell wird ein Klassifizierer bezeichnet, das mit ML konstruiert wurde. In diesem Fall besteht der Klassifizierer aus Entscheidungsbäumen. Jede Konfiguration eines Modells besteht aus einer
-Ensemble-Methode, einer Featuremenge und Hyperparametern. Die Hyperparameter bestimmen die maximale Baumhöhe, die Waldgröße und die Blattgröße. Im Folgenden ist \glqq Konfiguration\grqq\ und \glqq Modell\grqq\
-als austauschbar zu betrachten.
+Ensemble-Methode, einer Feature-Menge und Hyperparametern. Die Hyperparameter bestimmen die maximale Baumhöhe, die Waldgröße und die Blattgröße.
 \newline
 \newline
 Jede Konfiguration wird mit dem in Abbildung \ref{fig:model_workflow} illustrierten Arbeitsablauf verarbeitet. Zunächst werden die Rohdaten verarbeitet, wobei eine beschriftete Trainingsmenge mit der definierten
-Featuremenge extrahiert wird. Dann wird das Modell trainiert und als C-Code exportiert. Der C-Code wird mit \textit{GCC} kompiliert, wodurch der C-Code zu einem ausführbaren Programm konvertiert wird. Das Programm
+Feature-Menge extrahiert wird. Dann wird das Modell trainiert und als C-Code exportiert. Der C-Code wird mit \textit{GCC} kompiliert, wodurch der C-Code zu einem ausführbaren Programm konvertiert wird. Das Programm
 wird anschließend mit dem Werkzeug \texttt{Simulator} auf den definierten Trainingsmengen validiert.
 \begin{figure}
     \centering
@@ -22,13 +21,13 @@ Trainings- und Testmenge. Der Zufall kann gesteuert werden, indem der Startwert 
 \newline
 \newline
 Daraus folgt, dass einige Startwerte bessere Modelle erzeugen als andere, obwohl die Konfiguration identisch ist. Folglich wurde festgestellt, dass die Konstruktion mit Scikit-Learn als Monte Carlo Methode verstanden
-werden kann. Durch wiederholtes Trainieren mit unterschiedlichen Startwerten, erhöht sich die Wahrscheinlichkeit, dass das optimale Modell gefunden wurde. Aus diesem Grund wird das
-Modell mit 140 verschiedenen Startwerten für den Zufallsgenerator trainiert. Beim manuellen testen wurden im schlimmsten Fall nach 138 verschiedenen Startwerten keine Verbesserungen im Modell mehr festgestellt,
+werden kann. Durch wiederholtes Trainieren mit unterschiedlichen Startwerten, erhöht sich die Wahrscheinlichkeit, dass das beste Modell gefunden wurde. Aus diesem Grund wird das
+Modell mit 140 verschiedenen Startwerten für den Zufallsgenerator trainiert. Beim manuellen testen wurden im schlechtesten Fall nach 138 verschiedenen Startwerten keine Verbesserungen im Modell mehr festgestellt,
 weswegen sich für etwas mehr, d. h. 140, entschieden wurde.
 \newline
 \newline
 Um die 140 Modelle der gleichen Konfiguration miteinander zu vergleichen, wurde die Trainingsmenge zufällig in zwei Mengen unterteilt. Die eine Hälfte wurde zum Trainieren des Modells verwendet und die andere
-Hälfte wurde zum Validieren des Modells verwendet. Folglich wurde aus den 140 trainierten Modellen, das Modell mit der höchsten Klassifizierungsgenauigkeit auf der Validationsmenge ausgewählt.
+Hälfte wurde zum Validieren des Modells verwendet. Aus den 140 trainierten Modellen wurde das Modell mit der höchsten Klassifizierungsgenauigkeit auf der Validationsmenge ausgewählt.
 \newline
 \newline
 Es wurde jede Ensemble-Methode getestet, die in Kapitel \ref{sec:Ensemble} genannt wurde und mit dem Wahlklassifizier zusammengefasst. Die Waldgrößen sind zwischen 1 und 16, die maximalen Baumhöhen zwischen
@@ -37,20 +36,20 @@ Es wurde jede Ensemble-Methode getestet, die in Kapitel \ref{sec:Ensemble} genan
 \subsection{C-Code Generierung eines Entscheidungsbaumes}
 \label{sec:cCodeTree}
 Zur Ausführung eines Entscheidungsbaumes wird C-Code erzeugt. Dies ist erforderlich, weil der Entscheidungsbaum auf einem kleinen eingebetteten System ausgeführt werden soll. Die Toolchain, um die Firmware
-dafür zu generieren, bedarf meistens, dass der Quellcode in der Programmiersprache \texttt{C} implementiert ist. Dies trifft auch auf das Arduino Board ATmega328P zu.
+dafür zu generieren, bedarf meistens, dass der Quellcode in der Programmiersprache \texttt{C} implementiert ist. Dies trifft auch auf das für dieses Projekt verwendete Arduino Board ATmega328P zu.
 \newline
 \newline
-Für jeden Entscheidungsbaum wird eine Funktion erstellt. Listing \ref{lst:sklearnCCodeTreeFunction} zeigt den Funktionskopf eines Entscheidungsbaumes. Als Eingabe wird ein Zeiger auf die Featuremenge
+Für jeden Entscheidungsbaum wird eine Funktion generiert. Listing \ref{lst:sklearnCCodeTreeFunction} zeigt den Funktionskopf eines Entscheidungsbaumes. Als Eingabe wird ein Zeiger auf die Feature-Menge
 \texttt{features} übergeben und ein Zeiger auf das Rückgabe-Array \texttt{result}, dass die Wahrscheinlichkeitsverteilung des Entscheidungsbaumes als Ergebnis speichert.
 \begin{lstlisting}[label=lst:sklearnCCodeTreeFunction,caption={C-Code Funktionskopf eines Baumes $i$.}]
 void tree_i(float* features, float* result);
 \end{lstlisting}
 Das Modell, dass von Scikit-Learn generiert wird, hat eine interne Datenstruktur, um den Entscheidungsbaum darzustellen. Aus dieser Datenstruktur wird der C-Code generiert. Listing
-\ref{lst:sklearnTreeStructure} skizziert eine vereinfachte Darstellung dieser Datenstruktur, wobei \texttt{T} der Datentyp der Featuremenge ist. Jeder Knoten ist entweder ein Blattknoten oder
+\ref{lst:sklearnTreeStructure} skizziert eine vereinfachte Darstellung dieser Datenstruktur, wobei \texttt{T} der Datentyp der Feature-Menge ist. Jeder Knoten ist entweder ein Blattknoten oder
 ein innerer Knoten. Jeder Blattknoten beinhaltet die Wahrscheinlichkeitsverteilung, mit der jede Klasse in diesem Knoten anzutreffen ist. Jeder innere Knoten verfügt über einen Schwellenwert und
-dem Index zum Feature, dass er nutzt, um im Test den Schwellenwert mit dem Feature zu vergleichen. Außerdem enthält er seine Kindknoten. Scikit-Learn konstruiert binäre Entscheidungsbäume,
-weswegen es genau 2 Kindknoten gibt.
-\begin{lstlisting}[label=lst:sklearnTreeStructure,caption={Vereinfachte Skizze der Datenstruktur die von Scikit-Learn für Entscheidungsbäume genutzt wird.}]
+den Index zum Feature, dass er nutzt, um im Test den Schwellenwert mit dem Feature zu vergleichen. Außerdem enthält er seine Kindknoten. Scikit-Learn konstruiert binäre Entscheidungsbäume,
+weswegen es genau zwei Kindknoten gibt.
+\begin{lstlisting}[label=lst:sklearnTreeStructure,caption={Vereinfachte Datenstruktur von Scikit-Learn für Entscheidungsbäume.}]
 enum Knoten<T> {
     Blattknoten {
         klassen_wahrscheinlichkeiten: Vec<f64>
@@ -64,9 +63,9 @@ enum Knoten<T> {
 }
 \end{lstlisting}
 Listing \ref{lst:sklearnCCodeParent} zeigt den C-Code, der für einen inneren Knoten generiert wird. Von der Wurzel aus, wird bis zu einem Blattknoten traversiert. Dabei wird rekursiv für jeden inneren
-Knoten ein \texttt{if (Test) \{ \ldots\ \} else \{ \ldots\ \}} Ausdruck generiert. Der \textit{Test} ist ein Vergleich des ausgewählten Features und einem Schwellenwert. Aus der Featuremenge \texttt{features}
-wird das Feature an der Stelle \texttt{feature\_index} mit dem \texttt{schwellenwert} verglichen. Im Fall, indem der Ausdruck wahr ist wird der linke Kindknoten traversiert, ansonsten dar rechte Kindknoten.
-Die Ausdrücke \texttt{feature\_index} und \texttt{schwellenwert} werden im generierten C-Code durch die in der Datenstruktur eines inneren Knotens vorzufindenden Konstanten ersetzt.
+Knoten ein \texttt{if (Test) \{ \ldots\ \} else \{ \ldots\ \}} Ausdruck generiert. Der \textit{Test} ist ein Vergleich des ausgewählten Features und einem Schwellenwert. Aus der Feature-Menge \texttt{features}
+wird das Feature an der Stelle \texttt{feature\_index} mit dem \texttt{schwellenwert} verglichen. Im Fall, indem der Ausdruck wahr ist wird der linke Kindknoten traversiert, ansonsten der rechte Kindknoten.
+Die Ausdrücke \texttt{feature\_index} und \texttt{schwellenwert} werden im in Listing \ref{lst:sklearnCCodeParent} durch die in der Datenstruktur eines inneren Knotens vorzufindenden Konstanten ersetzt.
 \begin{lstlisting}[label=lst:sklearnCCodeParent,caption={C-Code eines inneren Knotens.}]
 if (features[feature_index] <= schwellenwert) {
     Traversiere Kindknoten links...

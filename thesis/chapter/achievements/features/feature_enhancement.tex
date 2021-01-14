@@ -1,14 +1,15 @@
 \subsection{Feature Verbesserungen}
-Einige Anforderungen, können durch spezielle Änderungen an einem Feature ergänzt werden. Dazu gehören relative Helligkeitsunterschiede, Positionsinformationen und Entwicklung über Zeit.
+Einige Anforderungen, können durch spezielle Änderungen an einem Feature ergänzt werden. Dazu gehören relative Helligkeitsunterschiede, Positionsinformationen und Entwicklung über die Zeit.
 \newline
 \newline
 Relative Helligkeitsunterschiede können durch Normalisierung über die lokale Gesamthelligkeit eliminiert werden. Dadurch ändert sich aber die Art der Aussage über die absolute Helligkeit
-zu einer Aussage über die relative Helligkeit. Dies erzeugt eine Invarianz gegenüber der Skalierung der Helligkeiten, jedoch nicht gegenüber einem Offset.
+zu einer Aussage über die relative Helligkeit. Das heißt, jeder Pixel in einem Bild wird durch die Summe der Pixel im Bild geteilt. Dies erzeugt eine Invarianz gegenüber der skalierten Helligkeiten,
+jedoch nicht gegenüber Helligkeiten auf denen ein Offset addiert wurde.
 \newline
 \newline
 Informationen über die Position können einerseits aus dem Argument des Features und andererseits durch partielle Anwendung inferiert werden. Beim Argument eines Features wird das Argument als Feature
 bereitgestellt, indem das Feature bestimmte Bedingungen erfüllt. Bei $\arg(\max X)$ zum Beispiel, wird der Index bereitgestellt, an dem die Menge $X$ maximal ist. Bei der partiellen Anwendung wird das Feature auf
-Teilmengen der Definitionsmenge angewendet und damit mehrfach zur Featuremenge hinzugefügt, z. B. bei der Fotowiderstandmatrix könnten Zeilen und Spalten Teilmengen sein.
+Teilmengen der Definitionsmenge angewendet und damit mehrfach zur Feature-Menge hinzugefügt, z. B. bei der Fotowiderstandmatrix könnten Zeilen und Spalten Teilmengen sein.
 \newline
 \newline
 Die Entwicklung über Zeit kann ebenfalls über die Duplizierung des Features dargestellt werden. Anstatt einen einzelnen Bild zu unterteilen, wird die Handgeste in Zeitfenster aufgeteilt. Jedes Zeitfenster

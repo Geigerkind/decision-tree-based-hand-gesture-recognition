@@ -1,10 +1,11 @@
 \chapter{Handgestenerkennung mit Entscheidungsbäumen}
-Mit \textit{Scikit-Learn} werden verschiedene ML Modelle mit Entscheidungsbäumen trainiert, die Handgesten klassifizieren. Die Modelle unterscheiden sich in der Ensemble-Methode, Hyperparametern und
-der Featuremenge mit denen sie konstruiert wurden. Jede ausgewählte Featuremenge erfüllt eine Reihe an Anforderungen, die nötig sind, damit das ML Modell die Handgesten unterscheiden kann.
+Mit \textit{Scikit-Learn} wurden verschiedene ML Modelle mit Entscheidungsbäumen trainiert, um zu untersuchen, wie gut sie sich für die Klassifizierung von Handgesten eignen.
+Die Modelle unterscheiden sich in der Ensemble-Methode, Hyperparametern und der Feature-Menge mit denen sie konstruiert wurden. Jede ausgewählte Feature-Menge erfüllt eine Reihe an Anforderungen (z. B.
+Invarianz gegenüber der Geschwindigkeit), die nötig sind, damit das ML Modell gut generalisieren kann.
 \newline
 \newline
-Das Modell wird innerhalb einer komplexen Infrastruktur generiert. Diese stellt Werkzeuge und Code-Bibliotheken bereit, um die Rohdaten der Handgeste zu Featuremengen zu verarbeiten und auf vordefinierten
-Testmengen zu validieren. Für diese Arbeit wurden 14410 Handgesten aufgenommen, um einerseits die Trainingsdaten mit Nullgesten zu ergänzen und andererseits, um Testmengen zur Validierung von Nullgesten
+Das Modell wird innerhalb einer komplexen Infrastruktur generiert. Diese stellt Werkzeuge und Code-Bibliotheken bereit, um die Rohdaten der Handgeste zu Feature-Mengen zu verarbeiten und auf vordefinierten
+Testmengen zu validieren. Für diese Arbeit wurden 14410 Handgesten aufgenommen, um einerseits die verfügbaren Trainingsdaten mit Nullgesten zu ergänzen und andererseits, um Testmengen zur Validierung von Nullgesten
 und Lichtverhältnissen zu generieren.
 
 \input{chapter/achievements/model}

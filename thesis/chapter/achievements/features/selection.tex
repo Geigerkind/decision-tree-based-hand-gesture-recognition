@@ -1,22 +1,23 @@
 \subsection{Featureauswahl}
 \label{sec:feature_selection}
-Untersucht wurden die Features aus Tabelle \ref{tab:songFeatures} die von Song et al. genutzt wurden, das Motion History Image und 2 selbst entwickelte Features. Die Features aus
-Tabelle \ref{tab:songFeatures} erfüllen ohne Änderungen nicht ausreichend Anforderungen. Die Features 2, 5 und 7 bis 9 wurden nicht getestet, da sie sehr komplexe Berechnungen bedürfen.
+Untersucht wurden die Features aus Tabelle \ref{tab:songFeatures} die von Song et al. genutzt wurden, das Motion History Image und zwei selbst entwickelte Features. Die Features aus
+Tabelle \ref{tab:songFeatures} erfüllen ohne Änderungen nicht ausreichend Anforderungen. Die Features 2, 5 und 7 bis 9 wurden nicht getestet, da sie zu komplexe Berechnungen
+für kleine eingebettete Systeme bedürfen.
 \newline
 \newline
-Das \textit{Mean absolute value} Feature ermöglicht die einzelnen Handgesten zu unterscheiden, wenn das Feature auf verschiedene Zeitfenster dupliziert wird. Zusätzlich kann die Helligkeit normalisiert werden.
-Um die Featuremenge zu verringern, können Spalten und Zeilen zusammengefasst werden. In der Praxis generalisierte der Ansatz aber nicht gut. Es wird vermutet, dass die Varianz sehr groß ist, wenn die
-Handgeste mit verschiedenen Geschwindigkeiten ausgeführt wird.
+Das \textit{Mean absolute value} Feature von Song et al. ermöglicht die einzelnen Handgesten zu unterscheiden, wenn das Feature auf verschiedene Zeitfenster dupliziert wird. Zusätzlich kann die Helligkeit
+normalisiert werden. Um die Feature-Menge zu verringern, können Spalten und Zeilen zusammengefasst werden. In der Praxis generalisierte der Ansatz aber nicht gut. Es wird vermutet, dass die Varianz sehr groß
+ist, wenn die Handgeste mit verschiedenen Geschwindigkeiten ausgeführt wird.
 \newline
 \newline
-\textit{Average amplitude change} eignet sich gut, um horizontale und vertikale Bewegungen zu unterscheiden. Allerdings ist es nicht möglich symmethrische Bewegungen zu unterscheiden, da die Berechnung
-unabhängig von der Richtung ist. Dadurch wäre zum Beispiel eine Links nach Rechts Bewegung nicht von einer Rechts nach Links Bewegung zu unterscheiden. Aus diesem Grund wurde dieses Feature nicht
+\textit{Average amplitude change} von Song et al. eignet sich gut, um horizontale und vertikale Bewegungen zu unterscheiden. Allerdings ist es nicht möglich symmetrische Bewegungen zu unterscheiden, da
+die Berechnung unabhängig von der Richtung ist. Dadurch wäre zum Beispiel eine Links nach Rechts Bewegung nicht von einer Rechts nach Links Bewegung zu unterscheiden. Aus diesem Grund wurde dieses Feature nicht
 weiter untersucht.
 
 \subsubsection{Motion History}
-Das Motion History Feature komprimiert die Bewegung vieler Bilder in ein Bild, indem kürzlich stattgefundene Bewegungen heller erscheinen als länger zurückliegende Bewegungen. Das Feature ist invariant
-gegenüber unterschiedlichen Lichtverhältnissen, solange die Funktion $\psi$ invariant ist, um Bewegungen zu detektieren. Überlappende Bewegungen können nicht dargestellt werden, da die Historie überschrieben
-wird. In dieser Arbeit ist das bei den validen Handgesten kein Problem, da diese keine überlappenden Bewegungen beinhalten.
+Das Motion History Feature komprimiert die Bewegung vieler Bilder in ein Bild, indem kürzlich stattgefundene Bewegungen heller erscheinen als länger zurückliegende Bewegungen (Kapitel \ref{sec:sota_misc}). Das
+Feature ist invariant gegenüber unterschiedlichen Lichtverhältnissen, solange die Funktion $\psi$ invariant ist, um Bewegungen zu detektieren. Überlappende Bewegungen können nicht dargestellt werden, da die
+Historie überschrieben wird. In dieser Arbeit ist das bei den validen Handgesten kein Problem, da diese keine überlappenden Bewegungen beinhalten.
 \newline
 \newline
 Die Aussagekraft des Features ist abhängig von den Parametern $\tau$ und $\delta$. Je nach dem, ist eine Bewegungshistorie nicht sichtbar, wenn $\delta$ zu gering ist oder $\tau$ zu groß, oder ein Teil der
@@ -50,7 +51,7 @@ die einzelnen Bilder in einem Zeitfenster zusammenzufassen.
     \item Unterteile die Pixel der Extrema in Quadranten und wähle den Quadranten, der die meisten Einträge hat.
 \end{itemize}
 Außerdem können die Anzahl der Zeitfenster variiert werden und Pixel zu Gruppen zusammengefasst werden, d. h. Spalten und Zeilen. In der Variation dieses Features, das ausgewählt wurde, wird aber
-keine Gruppierung vorgenommen. Es werden 6 Zeitfenster extrahiert, die über die Projektion der Pixel der Extrema auf ein kartesisches System über den euklidischen Abstand zusammengefasst werden.
+keine Gruppierung vorgenommen. Es werden sechs Zeitfenster extrahiert, die über die Projektion der Pixel der Extrema auf ein kartesisches System über den euklidischen Abstand zusammengefasst werden.
 \newline
 \newline
 Es wird davon ausgegangen, dass dieses Feature invariant gegenüber unterschiedlichen Lichtverhältnissen ist, da nur relative Helligkeitsunterschiede Relevant sind und Kontraste irrelevant bei der
@@ -79,7 +80,7 @@ Die Handgeste wird in Zeitfenster aufgeteilt. Jedes Zeitfenster beinhaltet gleic
 überschüssigen Bilder uniform auf die Zeitfenster verteilt.
 \newline
 \newline
-Es wurden unterschiedliche Anzahlen an Zeitfenster getestet. Entschieden wurde sich letztlich um 5 Zeitfenster, da einerseits die Berechnung des Features mit zunehmender Zeitfensteranzahl komplexer wird
+Es wurden unterschiedliche Anzahlen an Zeitfenster getestet. Entschieden wurde sich letztlich um fünf Zeitfenster, da einerseits die Berechnung des Features mit zunehmender Zeitfensteranzahl komplexer wird
 (Kapitel \ref{sec:eval_speed}) und andererseits zu viele Zeitfenster redundant sein können.
 \newline
 \newline

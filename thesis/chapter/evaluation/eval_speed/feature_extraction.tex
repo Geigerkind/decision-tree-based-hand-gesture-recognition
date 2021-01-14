@@ -1,15 +1,15 @@
 \subsection{Feature-Extrahierung}
-Die Feature-Extrahierung implementiert die Berechnung der 5 Zeitfenster für die Schwerpunktverteilung. Einerseits muss aus jedem Bild der Schwerpunkt berechnet werden und andererseits müssen die Schwerpunkte auf 5
-Schwerpunkte zusammengefasst werden, die die 5 Zeitfenster repräsentieren.
+Die Feature-Extrahierung implementiert die Berechnung der fünf Zeitfenster für die Schwerpunktverteilung. Einerseits muss aus jedem Bild der Schwerpunkt berechnet werden und andererseits müssen die Schwerpunkte
+auf fünf Schwerpunkte zusammengefasst werden, die die fünf Zeitfenster repräsentieren.
 \newline
 \newline
 Jedes Mal wenn ein Bild aufgenommen wird, wird der Schwerpunkt dieses Bildes berechnet und gespeichert. Dies reduziert einerseits die WCET, da im WCEP weniger Schwerpunkte berechnet werden müssen, und andererseits
 wird weniger Pufferspeicher benötigt pro Bild. Für Gleitkommazahlen reduziert sich der Verbrauch pro Bild von 18 Byte auf 8 Byte und für Ganzzahlen auf 4 Byte. Der kombinierte Ansatz muss beide Schwerpunkte speichern.
 Die jeweiligen Schwerpunktkoordinaten berechnen sich mit der in Kapitel \ref{sec:schwerpunktverteilung} beschriebenen Formel. Dabei muss die Summe der Pixel einmalig pro Bild berechnet werden und jeweils die
 berechnete X und Y Koordinate im Puffer für den derzeitige Schwerpunkt gespeichert werden. Listing \ref{lst:cocdAlgoCOCDPerPicture} zeigt, wie dies auf dem ATmega328P implementiert ist. Insgesamt werden bei der
-Schwerpunktverteilung mit Gleitkommazahlen 201 Zyklen für die einzelnen Instruktionen benötigt (12,5625 $\mu s$). Zusätzlich wird \textit{\_\_floatsisf} 6-mal aufgerufen, \textit{\_\_lesf2} und \textit{\_\_divsf3}
-jeweils 2-mal aufgerufen. Die WCET zur Schwerpunktberechnung eines Bildes beläuft sich damit auf 116,5625 $\mu s$. Davon werden 104 $\mu s$ für Gleitkommaoperationen aufgewendet. Der Ansatz mit Ganzzahlen benötigt
-keine Gleitkommaoperationen und 57 Zyklen weniger, da die summe der Pixel nicht berechnet werden muss, d. h. es werden für die WCET nur 8,875 $\mu s$ benötigt. Für den kombinierten Ansatz werden zusätzlich 4
+Schwerpunktverteilung mit Gleitkommazahlen 201 Zyklen für die einzelnen Instruktionen benötigt (12,5625 $\mu s$). Zusätzlich wird \textit{\_\_floatsisf} sechs mal aufgerufen, \textit{\_\_lesf2} und \textit{\_\_divsf3}
+jeweils zwi mal aufgerufen. Die WCET zur Schwerpunktberechnung eines Bildes beläuft sich damit auf 116,5625 $\mu s$. Davon werden 104 $\mu s$ für Gleitkommaoperationen aufgewendet. Der Ansatz mit Ganzzahlen benötigt
+keine Gleitkommaoperationen und 57 Zyklen weniger, da die summe der Pixel nicht berechnet werden muss, d. h. es werden für die WCET nur 8,875 $\mu s$ benötigt. Für den kombinierten Ansatz werden zusätzlich vier
 Speicherinstruktionen benötigt, die einen Overhead von 0,25 $\mu s$ erzeugen, d. h. es werden für die WCET 116,8125 $\mu s$ benötigt.
 \begin{lstlisting}[label=lst:cocdAlgoCOCDPerPicture,caption={Implementierung um den Schwerpunkt für ein Bild zu berechnen.}]
 short helligkeits_summe = 0;
@@ -25,8 +25,8 @@ Listing \ref{lst:cocdAlgo} zeigt den Algorithmus, um die Schwerpunktverteilung a
 Jeder Durchlauf benötigt im schlimmsten Fall 27 Zyklen für die einzelnen Instruktionen (1,6875 $\mu s$) und führt \textit{\_\_addsf3} einmal aus. Der WCET für einen Durchlauf beläuft sich damit auf 13,6875 $\mu s$.
 Der Ansatz mit Ganzzahlen benötigt im schlimmsten Fall 17 Zyklen (1,125 $\mu s$). Bei einer Gesamtpuffergröße von 125 wird für den Teil der inneren Schleife für die Schwerpunktverteilung mit Gleitkommazahlen
 1710,9375 $\mu s$ benötigt, für die Schwerpunktverteilung mit Ganzzahlen 140,625 $\mu s$ und für den kombinierten Ansatz 1851,5625 $\mu s$. Die äußere Schleife benötigt im schlimmsten Fall 57 Zyklen für die einzelnen
-Instruktionen (3,5625 $\mu s$) und ruft im Ansatz mit Gleitkommazahlen 5 mal \textit{\_\_floatsisf} und \textit{\_\_divsf3} auf und im Ansatz mit Ganzzahlen 5 mal \textit{\_\_divmodhi4}. Damit beläuft sich der WCET
-bei 5 Durchläufen der äußeren Schleife für den Ansatz mit Gleitkommazahlen auf 217,8125 $\mu s$, für den Ansatz mit Ganzzahlen auf 117,8125 $\mu s$ und für den kombinierten Ansatz 335,625 $\mu s$.
+Instruktionen (3,5625 $\mu s$) und ruft im Ansatz mit Gleitkommazahlen fünf mal \textit{\_\_floatsisf} und \textit{\_\_divsf3} auf und im Ansatz mit Ganzzahlen fünf mal \textit{\_\_divmodhi4}. Damit beläuft sich der WCET
+bei fünf Durchläufen der äußeren Schleife für den Ansatz mit Gleitkommazahlen auf 217,8125 $\mu s$, für den Ansatz mit Ganzzahlen auf 117,8125 $\mu s$ und für den kombinierten Ansatz 335,625 $\mu s$.
 \begin{lstlisting}[label=lst:cocdAlgo,caption={Algorithmus um die Schwerpunktverteilung in horizontaler Richtung zu berechnen.}]
 Initialisierung.
 for (char i = 0; i < 5; ++i) { // Äußere Schleife
