@@ -19,7 +19,7 @@
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/cocd_int_acc_per_size.png}
-    \caption{Die besten Konfigurationen pro Waldgröße der Schwerpunktverteilung mit Ganzzahlen.}
+    \caption{Die besten Modelle pro Waldgröße der Schwerpunktverteilung mit Ganzzahlen.}
     \label{fig:cocd_int_per_forest_size}
 \end{figure}
 Die Feature-Menge Schwerpunktverteilung mit Ganzzahlen folgt der Definition aus Kapitel \ref{sec:schwerpunktverteilung} und beinhaltet insgesamt zehn Einträge. Jeweils zwei Einträge bilden die X und Y
@@ -28,7 +28,7 @@ Koordinate des Schwerpunktes. Damit spiegeln zehn Einträge insgesamt fünf Zeit
 \newline
 Aus der Tabelle \ref{tab:schwerpunktverteilung_int} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode ExtraTrees gefunden.
 Mit einer Klassifizierungsgenauigkeit von 95,8\% auf der Testmenge von Klisch ist dieser Ansatz nur 3,2\% schlechter als das neuronale Netz von Giese \cite{gieseThesis}. Es wurde aber auch eine Konfiguration
-gefunden, die 96,9\% der Testmenge von Klisch korrekt klassifiziert und damit nur 2,1\% schlechter ist. Diese maximiert aber in keiner Kategorie die Gesamtklassifizierungsgenauigkeit.
+gefunden, wo das Modell 96,9\% der Testmenge von Klisch korrekt klassifiziert und damit nur 2,1\% schlechter ist. Diese maximiert aber in keiner Kategorie die Gesamtklassifizierungsgenauigkeit.
 Außerdem werden 98,8\% der Gestentestmenge und 95,6\% der Nullgestentestmenge korrekt klassifiziert. Es wurde kein Entscheidungswald gefunden, der weniger als 44 kB Programmspeicher benötigt und besser ist als die
 Konfiguration in der Kategorie \textit{Unter 28 kB}.
 \newline

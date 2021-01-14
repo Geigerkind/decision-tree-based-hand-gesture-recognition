@@ -19,14 +19,14 @@
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/motion_history_acc_per_size.png}
-    \caption{Die besten Konfigurationen pro Waldgröße mit Motion History.}
+    \caption{Die besten Modelle pro Waldgröße mit Motion History.}
     \label{fig:motion_history_per_forest_size}
 \end{figure}
 Die Feature-Menge von Motion History beinhaltet für jeden Pixel einen Eintrag, die der Definition des Motion History Image folgen (Formel \ref{formular:mhi}), wobei $\tau=100$ und $\delta=\frac{\tau}{\#Bilder}$ ist.
 \newline
 \newline
 Aus der Tabelle \ref{tab:helligkeitsverteilung} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode \textit{ExtraTrees} gefunden.
-Sie erzielt eine Klassifizierungsgenauigkeit von 68,8\% auf der Testmenge von Klisch, 74\% auf der Gestentestmenge und 69\% auf der Nullgestentestmenge. Im Vergleich zu der Helligkeitsverteilung
+Das Modell erzielt eine Klassifizierungsgenauigkeit von 68,8\% auf der Testmenge von Klisch, 74\% auf der Gestentestmenge und 69\% auf der Nullgestentestmenge. Im Vergleich zu der Helligkeitsverteilung
 wird mehr Programmspeicher benötigt und die Gesamtklassifizierungsgenauigkeit ist 1,84\% geringer.
 \newline
 \newline
