@@ -1,7 +1,7 @@
 \chapter{Einleitung}
 Maschinelles Lernen (ML) gewann in den vergangenen Jahren an Popularität, u.a. durch die Fortschritte im parallelen Rechnen,
 sinkende Speicherpreise und schnelleren Speicher. Zudem sind gute ML-Bibliotheken frei verfügbar, wie Scikit-Learn \cite{scikit-learn} und TensorFlow \cite{abadi2016tensorflow}, die
-den Einstieg in maschinellen Lernen erleichtern. Ein namenhaftes Beispiel für das Potenzial maschinellen Lernens ist \textit{AlphaGo Zero},
+den Einstieg in maschinelles Lernen erleichtern. Ein namenhaftes Beispiel für das Potenzial maschinellen Lernens ist \textit{AlphaGo Zero},
 das einen Sieg gegen den besten menschlichen Spieler im Brettspiel Go erringen konnte. Das galt als besonders schwierig für Computer,
 da der Suchraum möglicher Aktionen sehr groß ist \cite{silver2017mastering}.
 \newline
@@ -14,15 +14,15 @@ Infrastruktur und andererseits vergrößert sich die Latenz durch die zusätzlic
 Komplexität des Modells reduziert wird, sodass eine akzeptable Ausführungszeit gewährleistet werden kann.
 \newline
 \newline
-In dieser Arbeit wird untersucht, wie Handgesten mit Entscheidungsbäumen auf kleinen Mikrocontrollern erkannt werden. Es wird vermutet, dass Entscheidungsbäume schneller sind als neuronale Netze (NN) und
-trotzdem eine akzeptable Klassifizierungsgenauigkeit erzielen. Maßgeblich ist die Leistung im Hinblick auf Klassifizierungsgenauigkeit, Ausführungszeit und Ressourcenverbrauch.
+In dieser Arbeit wird untersucht, wie Handgesten mit Entscheidungsbäumen auf kleinen Mikrocontrollern erkannt werden können. Es wird vermutet, dass Entscheidungsbäume schneller sind als künstliche neuronale Netze (KNN) und
+trotzdem eine akzeptable Klassifizierungsgenauigkeit erzielen. Betrachtet werden muss die Leistung im Hinblick auf Klassifizierungsgenauigkeit, Ausführungszeit und Ressourcenverbrauch.
 Dafür ist ein Konzept zur Übersetzung von Entscheidungsbäumen in Programmcode auf dem Mikrocontroller nötig.
-Zudem muss analysiert werden, welche Methode am besten geeignet zur Konstruktion eines Klassifizierers mit Entscheidungsbäumen ist. Außerdem müssen Features gefunden werden, die die einzelnen
-Handgesten unterscheidbar machen. Ein Feature ist ein Attribut der Rohdaten, oder wird aus Rohdaten berechnet.
+Es muss analysiert werden, welche Methode am besten zur Konstruktion eines Klassifizierers mit Entscheidungsbäumen geeignet ist. Als Eingabe für die Entscheidungsbäume müssen Features gefunden werden,
+die die einzelnen Handgesten unterscheidbar machen.
 \newline
 \newline
-Insgesamt wurden 22528 verschiedene Konfigurationen analysiert. Eine Konfiguration ist eine Vorlage, um das ML Modell mit Entscheidungsbäumen zu trainieren. Sie bestehen aus verschiedenen Feature-Mengen,
-Hyperparametern und Ensemble-Methoden. Die Feature-Mengen sind eine Auswahl aus einer Untersuchung von 28 Variationen an Features. Jede Konfiguration wurde auf ihre Klassifizierungsgenauigkeit und Ressourcenverbrauch
+Insgesamt wurden 22528 verschiedene Konfigurationen analysiert, bestehend aus Kombinationen von Feature-mengen, Hyperparameter und Ensemble-Methoden für das Training von Entscheidungsbäumen.
+Betrachtet wurden 28 Variationen von Features. Jede Konfiguration wurde auf ihre Klassifizierungsgenauigkeit und Ressourcenverbrauch
 hin analysiert. Von jeder Feature-Menge wurden die Konfigurationen mit der höchsten Klassifizierungsgenauigkeit ausgewertet, die innerhalb der Speicherrestriktionen des Mikrocontrollers waren. Die beste
 Konfiguration wurde auf ihre Worst-Case-Execution-Time (WCET) auf dem Mikrocontroller untersucht. Dabei wurden verschiedene Optimierungen diskutiert, um den Ressourcenverbrauch und die WCET zu minimieren.
 Bei diesen Arbeiten ist eine komplexe Infrastruktur entstanden, die in Rust und Python implementiert wurde. Diese stellt Code-Bibliotheken und Werkzeuge bereit, um die Rohdaten der Handgesten zu verarbeiten und
@@ -30,6 +30,6 @@ ML Modelle zu trainieren und zu validieren. Es wurde ein Codegenerator implement
 zwei neue Trainingsmengen und fünf neue Testmengen erzeugt.
 \newline
 \newline
-Kapitel 2 führt in Entscheidungsbäume und Ensemble-Methoden ein. Kapitel 3 erläutert die bisherigen Arbeiten zur Handgestenerkennung. In Kapitel 4 wird auf die Generierung des ML Modells mit Entscheidungsböumen,
+Kapitel 2 führt in Entscheidungsbäume und Ensemble-Methoden ein. Kapitel 3 erläutert die bisherigen Arbeiten zur Handgestenerkennung. In Kapitel 4 wird auf die Generierung des ML Modells mit Entscheidungsbäumen,
 die Tauglichkeit von Features und die Infrastruktur eingegangen, sowie die neu erstellte Trainings- und Testmenge erläutert. Darauf folgt die Evaluation der Klassifizierungsgenauigkeit, Ausführungszeit
 und des Ressourcenverbrauchs in Kapitel 5. Kapitel 6 enthält einen kritischen Rückblick auf die Entscheidungen dieser Arbeit, bevor Kapitel 6 Schlussfolgerungen zieht.
