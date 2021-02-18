@@ -5,7 +5,8 @@ Die Ensemble-Methoden beschreiben wie verschiedene Entscheidungsbäume trainiert
 dann zu einem Ergebnis zusammengefasst \cite{dietterich2002ensemble}.
 \newline
 \newline
-Der Wahlklassifizierer $H(x) = w_1 h_1(x) + ... + w_K h_K(x)$ fasst eine Menge von Lösungen $\{h_1, ..., h_K\}$ zusammen mit Hilfe einer Menge von Gewichten $\{w_1, ..., w_K\}$, die in der Summe 1
+Ensemble-Methoden haben einen
+Wahlklassifizierer $H(x) = w_1 h_1(x) + ... + w_K h_K(x)$, der die Menge von Lösungen $\{h_1, ..., h_K\}$ zusammenfasst mit Hilfe einer Menge von Gewichten $\{w_1, ..., w_K\}$, die in der Summe 1
 ergeben. Eine Lösung $h_i: D^n \mapsto \setR^m$ weist einer arbiträren, $n$-dimensionalen Menge $D^n$ jeder der $m$ möglichen Klassen eine Wahrscheinlichkeit zu.
 Die Summe einer Lösung ist immer 1. Die Klassifizierung einer Lösung ist die Klasse mit der höchsten Wahrscheinlichkeit. Dementsprechend ist analog dazu $H: D^n \mapsto \setR^m$ definiert.
 Für gewöhnlich hat jeder Teilnehmer einer Wahl das gleiche Gewicht \cite{dietterich2002ensemble}.
@@ -17,8 +18,9 @@ Für gewöhnlich hat jeder Teilnehmer einer Wahl das gleiche Gewicht \cite{diett
 \end{figure}
 \newline
 \newline
-Bagging ist ein Akronym für \glqq \textbf{B}ootstrap \textbf{agg}regat\textbf{ing}\grqq. Abbildung \ref{fig:bagging} illustriert den die Bagging Methode für $n$ Klassifizierer. Zuerst wird die Trainingsmenge
-aufgeteilt in $n$ Teilmengen. Auf jeder Teilmenge wird ein Klassifizierer trainiert. Schließlich werden die Ergebnisse jedes Klassifizierers aggregiert, z. B. durch Wahlen \cite{breiman1996bagging}.
+Bagging (\textbf{B}ootstrap \textbf{agg}regat\textbf{ing}) ist ein Verfahren, das Entscheidungsbäume mit unterschiedlichen Trainingsdaten konstruiert.
+Abbildung \ref{fig:bagging} illustriert die Bagging Methode für $n$ Klassifizierer. Zuerst wird die Trainingsmenge
+aufgeteilt in $n$ Teilmengen. Auf jeder Teilmenge wird ein Klassifizierer trainiert. Schließlich werden die Ergebnisse jedes Klassifizierers aggregiert, z. B. mit Hilfe des Wahlklassifizierers \cite{breiman1996bagging}.
 Die Methode, die dahinter steht, nennt sich \glqq Bootstrap sampling\grqq, welche einen Prozess beschreibt aus einer Grundmenge, $l$-mal jeweils $k$ Einträge zu ziehen, die eine Teilmenge
 bilden \cite{efron1992bootstrap}. Der Name ist folglich aus der Methode und dem Aggregierungsprozess abgleitet.
 \newline
@@ -27,12 +29,13 @@ Random Forest ist eine Erweiterung der Bagging-Methode. Zusätzlich zu der zufä
 Entscheidungsbäumen generiert die anschließend aggregiert werden \cite{breiman2001random}.
 \newline
 \newline
-Extremely Randomized Trees (ExtraTrees) gehen im Vergleich zu Random Forest einen Schritt weiter. Anstatt den besten Teilungspunkt für die ausgewählten Features zu suchen, werden zufällig Teilungspunkte ausgewählt, aus denen
-der beste genutzt wird. Das soll die Varianz reduzieren. Außerdem wird nicht, wie bei der Bagging-Methode, auf Teilmengen trainiert, sondern auf der gesamten Trainingsmenge. Dies soll den Bias reduzieren \cite{geurts2006extremely}.
+Extremely Randomized Trees (ExtraTrees) gehen im Vergleich zu Random Forest einen Schritt weiter. Anstatt den Schwellenwert zu finden, welcher für die ausgewählten Features die Trainingsmenge bestmöglich teilt,
+werden zufällig Schwellenwerte ausgewählt, aus denen der Beste genutzt wird. Das soll die Varianz reduzieren. Außerdem wird nicht, wie bei der Bagging-Methode, auf Teilmengen trainiert, sondern
+auf der gesamten Trainingsmenge. Dies soll den Bias reduzieren \cite{geurts2006extremely}.
 \newline
 \newline
-Boosting bezeichnet das Konvertieren eines \glqq schwachen\grqq\ PAC-Algorithmus (\textbf{P}robably \textbf{A}pproximately \textbf{C}orrect), welcher nur leicht besser ist als Raten, in einen \glqq starken\grqq\
-PAC-Algorithmus. Ein starker PAC-Algorithmus, ist ein Algorithmus der mit einer Wahrscheinlichkeit $1 - \delta$ und einem Fehler von bis zu $\epsilon$ klassifizieren kann, wobei $\epsilon, \delta > 0$. Die
+Boosting bezeichnet das Konvertieren eines \glqq schwachen\grqq\ PAC-Algorithmus (\textbf{P}robably \textbf{A}pproximately \textbf{C}orrect), d. h. ein Algorithmus der nur leicht besser als Raten ist,
+in einen \glqq starken\grqq\ PAC-Algorithmus. Ein starker PAC-Algorithmus, ist ein Algorithmus der mit einer Wahrscheinlichkeit $1 - \delta$ und einem Fehler von bis zu $\epsilon$ klassifizieren kann, wobei $\epsilon, \delta > 0$. Die
 Laufzeit muss polynomial in $\frac{1}{\epsilon}, \frac{1}{\delta}$ sein. Für einen schwachen PAC-Algorithmus gilt das Gleiche mit dem Unterschied, dass $\epsilon \geq \frac{1}{2} - \gamma$, wobei $\delta > 0$ \cite{freund1997decision}.
 \begin{figure}
     \centering

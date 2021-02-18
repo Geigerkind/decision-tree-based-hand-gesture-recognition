@@ -7,8 +7,8 @@
     \label{fig:entscheidungsbaum}
 \end{figure}
 Der einzelne Entscheidungsbaum ist eine rekursive Datenstruktur, um Entscheidungsregeln darzustellen. Jedem inneren Knoten ist ein \textit{Test} zugeordnet, der eine arbiträre Anzahl von sich gegenseitig
-ausschließenden Ergebnissen hat. Das Ergebnis bestimmt mit welchem Kindknoten fortgefahren wird \cite{quinlan1990decision}. Abbildung \ref{fig:entscheidungsbaum} zeigt einen Entscheidungsbaum, indem jeder Test
-zwei mögliche Ergebnisse hat. Dieser wird als binärer Entscheidungsbaum bezeichnet.
+ausschließenden Ergebnissen hat. Das Ergebnis bestimmt mit welchem Kindknoten fortgefahren wird \cite{quinlan1990decision}. Abbildung \ref{fig:entscheidungsbaum} zeigt einen Entscheidungsbaum, in dem jeder Test
+zwei mögliche Ergebnisse hat, einen binäreren Entscheidungsbaum.
 \newline
 \newline
 Beim maschinellen Lernen werden Entscheidungsbäume aus Trainingsmengen generiert. Die Trainingsmenge besteht aus Feature-Mengen, die mit Klassen beschriftet sind \cite{steinbergCART}. Sie sollte möglichst repräsentativ
@@ -17,14 +17,14 @@ Partitionierung aller Klassen ermöglichen. Außerdem sollte die Feature-Menge k
 gute Generalisierung möglich \cite{pei1998feature}.
 \newline
 \newline
-Es gibt verschiedene Algorithmen, um Entscheidungsbäume zu erzeugen. Häufig sind \texttt{ID3} \cite{quinlan1986induction}, \texttt{C4.5} \cite{quinlan2014c4}
-und \texttt{CART} \cite{breiman1984classification} referenziert. Das Grundprinzip ist dabei immer das gleiche. Partitioniere die Trainingsmenge, sodass möglichst nur Einträge mit der
+Es gibt verschiedene Algorithmen, um Entscheidungsbäume zu erzeugen, z. B. \texttt{ID3} \cite{quinlan1986induction}, \texttt{C4.5} \cite{quinlan2014c4}
+oder \texttt{CART} \cite{breiman1984classification}. Das Grundprinzip ist dabei immer das gleiche. Partitioniere die Trainingsmenge, sodass möglichst nur Einträge mit der
 gleichen Beschriftung in einer Partitionierung enthalten sind. Die Algorithmen unterscheiden sich in ihrer Strategie. Der naive Ansatz ist alle möglichen Entscheidungsbäume zu generieren und davon den besten auszuwählen.
 Das ist aber bei großen Feature- und Trainingsmengen sehr rechenaufwändig. Aus diesem Grund werden Heuristiken verwendet, die schnell sind aber nicht optimal sein müssen \cite{quinlan1986induction}.
 \newline
 \newline
 Scikit-Learn implementiert eine optimierte Version des \texttt{CART} (Classification and Regression Trees) Algorithmus \cite{ScikitLearnCART}.
-CART partitioniert die Trainingsmenge und wählt dabei immer lokal die beste Teilung aus.
+CART partitioniert die Trainingsmenge und wählt dabei immer lokal die beste Teilung aus, d. h. es wird der beste Schwellenwert ausgewählt, der die Menge teilt.
 \begin{lstlisting}[label=lst:CARTtreeGrowing,caption={Skizze von vereinfachten Baumwachstumsalgorithmus \cite{steinbergCART}.}]
 BEGIN:
 Assign all training data to the root node
