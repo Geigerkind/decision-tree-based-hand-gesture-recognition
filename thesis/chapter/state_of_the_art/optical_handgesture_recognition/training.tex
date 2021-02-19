@@ -6,7 +6,7 @@ sind durch verschiedene Lichtquellen und Ausführungsdistanzen der Handgeste zur
 Die Datenmenge umfasst insgesamt 4792 Handgesten.
 \newline
 \newline
-Listing \ref{lst:sampleGesture} zeigt ein Beispiel einer gespeicherten Handgeste von Links nach Rechts. Abbildung \ref{fig:sample_gesture} illustriert die Handgeste als Graustufenbild.
+Listing \ref{lst:sampleGesture} zeigt ein Beispiel einer gespeicherten Handgeste von Links nach Rechts. Abbildung \ref{fig:sample_gesture} illustriert die Handgeste als Graustufenbilder.
 Jedes Bild wird durch einen Komma separierten Vektor von Zahlen dargestellt. Die letzte Zahl ist die Beschriftung der Handgeste.
 \begin{lstlisting}[label=lst:sampleGesture,caption={Beispiel einer gespeicherten Handgeste von Links nach Rechts.}]
     ...
@@ -26,9 +26,9 @@ Um die Datenmenge zu vergrößern, können synthetische Daten erzeugt werden. Da
 Kontraste und Gamma verändert werden \cite{venzkeArticle}.
 \newline
 \newline
-Als Testmenge wird ein Teil der Datenmenge bezeichnet, der nicht zum Trainieren verwendet wird. Kubik hat Testdaten unter verschiedenen Lichtverhältnissen und Entfernungen zur Kamera aufgenommen. Klisch hat
-daraus eine Testmenge erstellt, die von Klisch und Giese zur Verifikation verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die Klassifizierungsgenauigkeit gemäß \ref{klisch_metric}. Die
-Klassifizierungsgenauigkeit ist das Verhältnis zwischen der Anzahl an korrekt klassifizierten Handgesten und der Anzahl der Einträge in der Testmenge.
+Als Testmenge wird ein Teil der Datenmenge bezeichnet, der zum Testen des trainierten Modells verwendet wird. Kubik hat Testdaten unter verschiedenen Lichtverhältnissen und Entfernungen zur Kamera aufgenommen.
+Klisch hat daraus eine Testmenge erstellt, die von Klisch und Giese zum Ermitteln der Klassifizierungsgenauigkeit verwendet wurden \cite{klischThesis, gieseThesis}. Klisch definiert die
+Klassifizierungsgenauigkeit gemäß \ref{klisch_metric}. Die Klassifizierungsgenauigkeit ist das Verhältnis zwischen der Anzahl an korrekt klassifizierten Handgesten und der Anzahl der Einträge in der Testmenge.
 \begin{align}
     accuracy = \frac{\#true\ positives}{\#total\ gestures}
     \label{klisch_metric}

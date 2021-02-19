@@ -1,8 +1,9 @@
 \section{Gestenerkennung mit Entscheidungsbäumen}
 \label{sec:sota_misc}
-Song et al. \cite{song2019design} haben die Handgestenerkennung mit Gradient Boosting Entscheidungsbäumen untersucht. Sie wählten einen nicht-optischen Ansatz, der mit Hilfe eines tragbaren sEMG Recorders
-die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den Entscheidungsbaum wählten sie neun Features, die in die Kategorie von zeitabhängigen Features einzuordnen sind
-(siehe Tabelle \ref{tab:songFeatures}). Damit erzielten sie eine Klassifizierungsgenauigkeit von 91\% unter zwölf verschiedenen Handgesten.
+Song et al. \cite{song2019design} haben die Handgestenerkennung mit Gradient Boosting Entscheidungsbäumen (GBDT) untersucht. Gradient Boosting definiert boosting als numerisches Optimierungsproblem,
+indem eine Kostenfunktion minimiert wird durch die iterative Summierung von schwachen Lernern, die durch den Gradient Descent Algorithmus gefunden wird \cite{friedman1999greedy}. Sie wählten einen nicht-optischen
+Ansatz, der mit Hilfe eines tragbaren sEMG Recorders die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den Entscheidungsbaum wählten sie neun Features (siehe Tabelle \ref{tab:songFeatures}).
+Damit erzielten sie eine Klassifizierungsgenauigkeit von 91\% unter zwölf verschiedenen Handgesten.
 \begin{table}[h!]
     \centering
     \begin{tabular}{ c | c | c }
@@ -25,12 +26,12 @@ die elektrischen Signale der Muskelaktivitäten erfasst. Als Eingabe für den En
 \end{table}
 \newline
 \newline
-Ahad et al. \cite{ahad2012motion} diskutieren den Motion History Image (MHI) Ansatz. MHI ist ein optischer Ansatz, der eine Sequenz von Bildern in ein einziges Bild komprimiert. Dabei werden dominante Bewegungen, die
-kürzlich verarbeitet wurden heller angezeigt als nicht dominante Bewegungen oder Bewegungen die schon länger zurück liegen.
+Ahad et al. \cite{ahad2012motion} diskutieren den Motion History Image (MHI) Ansatz. MHI ist ein optischer Ansatz, der eine Sequenz von Bildern in ein einziges Bild komprimiert. Dabei werden Bewegungen,
+die nach anderen Bewegungen stattgefunden haben heller angezeigt. Die Funktion $\psi(x,y,t)$ bestimmt, ob eine Bewegung in einem Pixel $(x,y)$ zu einem Zeitpunkt $t$ stattfindet.
 \newline
 \newline
-Formel \ref{formular:mhi} beschreibt die rekursive Berechnung des MHI. Das MHI kann aber auch sequenziell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine dominante Bewegung in einem Pixel $(x,y)$
-zu einem Zeitpunkt $t$ signalisiert, dann wird der Pixel zum Maximalwert $\tau$ gesetzt. Mit jedem Bild, indem keine dominante Bewegung im Pixel $(x,y)$ stattgefunden hat, wird der Wert um den
+Formel \ref{formular:mhi} beschreibt die rekursive Berechnung des MHI. Das MHI kann aber auch sequenziell berechnet werden. Initial sind alle Werte 0. Wenn $\psi(x,y,t)$ eine Bewegung in einem Pixel $(x,y)$
+zu einem Zeitpunkt $t$ signalisiert, dann wird der Pixel auf den Maximalwert $\tau$ gesetzt. Mit jedem Bild, indem keine Bewegung im Pixel $(x,y)$ durch $\psi$ signalisiert wurde, wird der Wert um den
 Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0.
 \begin{align}
     H_{\tau}(x,y,t) = \begin{cases}
