@@ -1,14 +1,15 @@
 \chapter{Diskussion}
 Der Fokus der Arbeit lag sehr früh auf der Evaluierung von verschiedenen Ensemble-Methoden und Hyperparametern. Dieser Ansatz ist aber nicht optimal, da die Ensemble-Methoden ihr Potenzial nicht vollständig
-ausnutzen konnten. Der Grund dafür ist die Wahl der Feature-Mengen. Im engeren Sinne sind die Feature-Mengen keine Feature-Mengen, sondern Features die aus mehreren Werten bestehen. Dementsprechend können
-Ensemble-Methoden, wie Random Forests oder ExtraTrees keinen Vorteil daraus ziehen, dass sie nur Teilmengen der Feature-Menge nutzen. Diese Ansätze funktionieren besser mit eigenständigen Features.
+ausnutzen konnten. Der Grund dafür ist die Wahl der Feature-Mengen. Im engeren Sinne sind die für diese Arbeit verwendeten Feature-Mengen keine Feature-Mengen, sondern Features die aus mehreren Werten
+bestehen. Dementsprechend können Ensemble-Methoden, wie Random Forests oder ExtraTrees keinen Vorteil daraus ziehen, dass sie nur Teilmengen der Feature-Menge nutzen.
+Diese Ansätze funktionieren besser mit eigenständigen Features.
 \newline
 \newline
-Ein besserer Ansatz wäre vermutlich Stacking gewesen. Dieser Ansatz baut iterativ einen Entscheidungsbaum nach dem anderen, auf Basis der Ergebnisse der vorherigen Entscheidungsbäume und
+Vermutlich wäre es sinnvoll gewesen Stacking zu untersuchen. Dieser Ansatz baut iterativ einen Entscheidungsbaum nach dem anderen, auf Basis der Ergebnisse der vorherigen Entscheidungsbäume und
 unterschiedlichen Feature-Mengen. Der Vorteil ist, dass die einzelnen Feature-Mengen nicht so viele Anforderungen erfüllen müssen, solange alle unterschiedlichen Feature-Mengen zusammen alle
 Anforderungen erfüllen. Dies erleichtert die Suche nach Features signifikant. Mit jedem Entscheidungsbaum können einfache Attribute inferiert werden, wie z. B. dass es eine horizontale Bewegung ist.
 Im folgenden Entscheidungsbaum müsste dann lediglich die Richtung unterschieden werden. Es wird vermutet, dass der resultierende Ansatz simpler ist und kleinere Entscheidungswälder generiert.
 \newline
 \newline
-Die momentanen Trainingsdaten wurden weitesgehend unter den gleichen Lichtverhältnissen aufgenommen. Damit sind aber nicht alle möglichen Lichtverhältnisse gut repräsentiert. Womöglich könnte ein
-Teil der synthetischen Daten zur Überprüfung der Lichtverhältnisse dazu genutzt werden, um Modelle zu generieren die robuster gegenüber verschiedenen Kontrasten und Helligkeiten sind.
+Insgesamt wurden von 4 Personen Handgesten unter unterschiedlichen Lichtverhältnissen erfasst. Dies repräsentiert allerdings nicht alle Möglichen Lichtverhältnisse. Aus diesem Grund könnte ein
+Teil der synthetischen Daten zur Überprüfung der Lichtverhältnisse dazu genutzt werden, um Modelle zu generieren die robuster gegenüber bisher nicht erfasste Lichtverhältnisse in der Trainingsmenge sind.
