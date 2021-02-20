@@ -1,8 +1,7 @@
 \subsection{Minimierung der Instruktionen eines Vergleichs}
 Ein Vergleich in einem Entscheidungsbaum wurde in Kapitel \ref{sec:cCodeTree} als Abzweigungsexpression mit einem Test definiert. Der Compiler erzeugt für den gleichen Programmcode verschieden viele Instruktionen
 je nach Wahl des Datentyps.
-\newline
-\newline
+\newpage
 Listing \ref{lst:assemblyVergleich} zeigt die Komplexität eines einzigen Vergleichs in Instruktionen eines Gleitkommazahlvergleichs. Zeile 1 bis 4 lädt die konstante Gleitkommazahl in 4 hintereinander liegende
 8-Bit Register. Zeile 5 bis 7 lädt den Zeiger, der auf die Feature-Menge zeigt, und inkrementiert ihn um 36, um auf das 9. Feature zuzugreifen. In Zeile 8 bis 11 wird das Feature in die Register geladen. Zeile 12 bis 15 führen die
 Vergleichsfunktion aus. Damit benötigt ein Vergleich insgesamt 15 Instruktionen.
