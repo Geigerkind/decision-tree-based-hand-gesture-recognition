@@ -1,47 +1,43 @@
 \chapter{Schlussfolgerungen}
 Diese Arbeit hat gezeigt, dass sich Klassifizierer mit Entscheidungsbäumen sehr gut für die Handgestenerkennung eignen. Sie können, sowohl unter guten als auch
 relativ schlechten Lichtverhältnissen, sehr hohe Klassifizierungsgenauigkeiten erzielen. Nullgesten können von validen Handgesten unterschieden werden. Dabei sind diese Klassifizierer signifikant
-schneller als KNNs und benötigen kaum RAM zur Ausführung. Die Klassifizierungsgenauigkeit ist abhängig von dem Programmspeicher der genutzt werden darf.
+schneller als KNNs und benötigen kaum RAM zur Ausführung. Die Klassifizierungsgenauigkeit ist abhängig vom Programmspeicher der genutzt werden darf.
 \newline
 \newline
-Das beste Modell, der Klassifizierer der kombinierten Schwerpunktverteilung, erzielte 94,8\% auf der Testmenge von Klisch, 99\% auf der Gestentestmenge und 95,8\% auf der Nullgestentestmenge. Damit
-ist der Ansatz nur marginal schlechter als der beste Klassifizierer der vorherigen Arbeiten, der 98,96\% auf der Testmenge von Klisch erzielte. Die kombinierte Schwerpunktverteilung erwies sich als
-äußerst robust gegenüber skalierte Helligkeiten und Helligkeiten mit einem Offset. Selbst bei geringem Kontrast erzielt der Ansatz eine hohe Klassifizierungsgenauigkeit. Die WCET beläuft
-sich auf 5819 $\mu s\ \approx\ $ 5,8 ms. Der Großteil, ca. 4,5 ms, wird davon für die Berechnung der Features benötigt. Damit ist der Ansatz 70,1\% schneller, als der schnellste vorherige Ansatz.
+Das beste Modell, der Klassifizierer der kombinierten Schwerpunktverteilung, erzielte eine Klassifizierungsgenauigkeit von 94,8\% auf der Testmenge von Klisch, 99\% auf der Gestentestmenge und 95,8\% auf der Nullgestentestmenge. Damit
+ist der Ansatz 4,2\% schlechter als der beste Klassifizierer der vorherigen Arbeiten, der 98,96\% auf der Testmenge von Klisch erzielte. Die kombinierte Schwerpunktverteilung erwies sich als
+äußerst robust gegenüber skalierte Helligkeiten und Helligkeiten mit einem Offset. Selbst bei geringem Kontrast erzielt der Ansatz eine hohe Klassifizierungsgenauigkeit. Die Worst Case Execution Time (WCET) beläuft
+sich auf 5,8~ms. Der Großteil, ca. 4,5~ms, wird davon für die Berechnung der Features benötigt. Damit benötigt der Ansatz nur 29,9\% der Ausführungszeit des schnellsten vorherigen Ansatzes.
 Nach Anwendung aller Optimierungen und unter Annahme, dass Festkommazahlen keine Auswirkung auf die Klassifizierungsgenauigkeit haben, ist der Klassifizierer trotzdem zu groß für den ATmega328P.
 \newline
 \newline
-Mit einer Beschränkung von 48 kB kann der Klassifizierer der kombinierten Schwerpunktverteilung 87,5\% auf der Testmenge von Klisch erzielen, 97,7\% auf
-der Gestentestmenge und 92,9\% auf der Nullgestentestmenge bei einer Programmgröße von 33276 Byte und einer WCET von 4741,125 $\mu s\ \approx\ $ 4,7 ms. Mit der Beschränkung von 32\ kB, kann 87,5\% auf der
-Testmenge von Klisch erzielt werden, 96,9\% auf der Gestentestmenge und 92,5\% auf der Nullgestentestmenge bei einer Programmgröße von 20552 Byte und einer WCET von 4680,0625 $\mu s\ \approx\ $ 4,7 ms.
+Mit einer Beschränkung von 48~kB Programmspeicher kann der Klassifizierer der kombinierten Schwerpunktverteilung 87,5\% auf der Testmenge von Klisch erzielen, 97,7\% auf
+der Gestentestmenge und 92,9\% auf der Nullgestentestmenge bei einer Programmgröße von 33276~Byte und einer WCET von 4,7~ms. Mit der Beschränkung auf 32~kB, kann 87,5\% auf der
+Testmenge von Klisch erzielt werden, 96,9\% auf der Gestentestmenge und 92,5\% auf der Nullgestentestmenge bei einer Programmgröße von 20552 Byte und einer WCET von 4,7~ms.
 \newline
 \newline
-Die Schwerpunktverteilung mit Ganzzahlen mit einer Programmgröße unter 28 kB hat eine WCET von 651,6875 $\mu s\ \approx\ $ 0,7 ms und ist damit 96,4\% schneller als das schnellste KNN von Giese mit Skalierung \cite{gieseThesis}.
-Dieser Ansatz erzielt bessere Ergebnisse als der kombinierte Ansatz auf den Testmengen unter gleichen Restriktionen, ist aber nicht robust gegenüber skalierten Helligkeiten.
+Die schnellste Ausführungszeit hatte der Klassifizierer Schwerpunktverteilung mit Ganzzahlen. Mit einer Programmgröße unter 28~kB, hat dieser eine WCET von ~0,7 ms und benötigt damit nur 3,6\% der
+Ausführungszeit des schnellsten KNN von Giese mit Skalierung \cite{gieseThesis}. Dieser Ansatz erzielt bessere Ergebnisse als der kombinierte Ansatz auf den Testmengen unter gleichen Restriktionen,
+ist aber nicht robust gegenüber skalierten Helligkeiten.
 \newline
 \newline
-Insgesamt benötigt die Implementierung der kombinierten Schwerpunktverteilung auf dem ATmega328P 1640 Bytes RAM. Dieser setzt sich zusammen aus 60 Bytes zur Berechnung der Features, 1200 Bytes für den Puffer
-mit einer Größe von 100 Einträgen
-und 380 Bytes für die restliche Firmware. Im Puffer werden keine Bilder mehr gespeichert, sondern partiell ausgerechnete Features, d. h. im Fall der Schwerpunktverteilung, den Schwerpunkt jedes Bildes.
-Dafür wird weniger Speicher pro Bild verwendet als zuvor, wodurch der Puffer größer sein kann als bei den KNNs. Die Programmgröße beträgt 31520.
+Insgesamt benötigt die Implementierung der kombinierten Schwerpunktverteilung auf dem ATmega328P 1640~Bytes RAM. Dieser setzt sich zusammen aus 60 Bytes zur Berechnung der Features, 1200~Bytes
+für den Puffer mit einer Größe von 100 Einträgen und 380~Bytes für Variablen der restlichen Firmware. Im Puffer werden im Gegensatz zu bisherigen Arbeiten keine Bilder gespeichert, sondern partiell
+ausgerechnete Features, d. h. im Fall der Schwerpunktverteilung, der Schwerpunkt jedes Bildes. Dafür wird weniger Speicher benötigt als pro Bild, wodurch Gestenkandidaten mit mehr Bildern möglich sind
+als bei den KNNs. Die Programmgröße beträgt 31520~Bytes.
 \newline
 \newline
-Der Entscheidungsbaum bietet viel Optimierungspotenzial gegenüber der naiven Implementierung. Allein der Datentyp hat einen großen Einfluss sowohl auf die Programmgröße, als auch die Ausführungsgeschwindigkeit.
-Dies ist aus der Spezifizierung des ATmega328P begründet, der nur über einen 8-Bit Prozessor ohne Module zur Verarbeitung von Gleitkommazahlen verfügt. Gleitkommazahlen sind dementsprechend sehr teuer und 8-Bit
-Integer am günstigsten. Weitere Optimierungen sind Festkommazahlen und die Verwendung eines hybriden bzw. diskreten Wahlklassifizierers. Diese vergrößern jedoch den Suchraum für den besten Klassifizierer, da sie
-sowohl die Programmgröße verringern als auch einen Einfluss auf die Klassifizierungsgenauigkeit haben.
+Der Entscheidungsbaum bietet viel Optimierungspotenzial gegenüber der naiven Implementierung. Zum Beispiel hat der für Features gewählte Datentyp einen großen Einfluss sowohl auf die Programmgröße, als
+auch die Ausführungsgeschwindigkeit. Dies liegt am ATmega328P, der als 8-Bit Prozessor über kein Modul zur Verarbeitung von Gleitkommazahlen verfügt.
+Die Verarbeitung von Gleitkommazahlen erforder daher viel Ausführungszeit im Vergleich zum 8-Bit Integer. Weitere Optimierungen sind Festkommazahlen und die Verwendung eines hybriden bzw.
+diskreten Wahlklassifizierers.
 \newline
 \newline
-Insgesamt ist es sehr aufwändig den potenziell besten Klassifizierer zu finden, da es viele Parameter gibt, die in Kombination unterschiedliche Klassifizierer produzieren. Zudem ist die
-Konstruktion nicht immer deterministisch, weswegen sie als Monte Carlo Methode betrachtet werden kann. Insgesamt wurden 22528 verschiedene Konfigurationen untersucht und 30 Variationen an Features.
-Darunter wurden neben der Schwerpunktverteilung, die Helligkeitsverteilung und Motion History betrachtet, die wesentlich schlechtere Klassifizierungsgenauigkeiten auf den Testmengen erzielten.
+Insgesamt ist es sehr aufwändig den potenziell besten Klassifizierer zu finden, da es viele Parameter gibt, die in Kombination zu unterschiedlichen Klassifizierern führen. Zudem ist die
+Konstruktion nicht immer deterministisch, weswegen sie als Monte Carlo Methode betrachtet werden kann. Daher wurden für diese Arbeit insgesamt 22528 verschiedene Konfigurationen mit 140 verschiedenen
+Startwerten für den Zufallsgenerator untersucht und 30 Variationen an Features.
 \newline
 \newline
-Im Laufe dieser Arbeit ist eine komplexe Infrastruktur entstanden, die die Evaluierung von Modellen zur Handgestenerkennung erleichtert. Die Infrastruktur stellt nützliche Code-Bibliotheken und verschiedene
-Werkzeuge bereit. Mit einem dieser Werkzeuge wurden 14410 verschiedene Handgesten aufgenommen. Aus diesen Handgesten wurden drei synthetische Testmengen erstellt. Die Nullgestentestmenge und die
-Helligkeitstestmengen, die Kontraste und Skalierung testen. Außerdem wurde die Gestentestmenge damit erstellt.
-\newline
-\newline
-In folgenden Arbeiten sollte untersucht werden, ob Stacking oder hierarchische Klassifizierer nicht besser geeignet sind für Klassifizierer mit Entscheidungsbäumen auf kleinen eingebetteten Systemen.
+In folgenden Arbeiten sollte untersucht werden, ob Stacking oder hierarchische Klassifizierer nicht für Klassifizierer mit Entscheidungsbäumen auf kleinen eingebetteten Systemen besser geeignet sind.
 Es wird vermutet, dass dadurch simplere Klassifizierer generiert werden können, die simplere Feature-Mengen verwenden können. Außerdem könnte untersucht werden, ob KNNs nicht wesentlich kleiner sein
 können, wenn die Features dieser Arbeit verwendet werden, anstatt die Rohdaten der Handgeste.
