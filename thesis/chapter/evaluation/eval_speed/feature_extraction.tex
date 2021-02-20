@@ -6,11 +6,11 @@ auf fünf Schwerpunkte zusammengefasst werden, die die fünf Zeitfenster repräs
 Jedes Mal wenn ein Bild aufgenommen wird, wird der Schwerpunkt dieses Bildes berechnet und gespeichert. Dies reduziert einerseits die WCET, da im WCEP weniger Schwerpunkte berechnet werden müssen, und andererseits
 wird weniger Pufferspeicher benötigt pro Bild. Für Gleitkommazahlen reduziert sich der Verbrauch pro Bild von 18 Byte auf 8 Byte und für Ganzzahlen auf 4 Byte. Der kombinierte Ansatz muss beide Schwerpunkte speichern.
 Die jeweiligen Schwerpunktkoordinaten berechnen sich mit der in Kapitel \ref{sec:schwerpunktverteilung} beschriebenen Formel. Dabei muss die Summe der Pixel einmalig pro Bild berechnet werden und jeweils die
-berechnete X und Y Koordinate im Puffer für den derzeitige Schwerpunkt gespeichert werden. Listing \ref{lst:cocdAlgoCOCDPerPicture} zeigt, wie dies auf dem ATmega328P implementiert ist. Insgesamt werden bei der
+berechnete X- und Y-Koordinate im Puffer für den derzeitige Schwerpunkt gespeichert werden. Listing \ref{lst:cocdAlgoCOCDPerPicture} zeigt, wie dies auf dem ATmega328P implementiert ist. Insgesamt werden bei der
 Schwerpunktverteilung mit Gleitkommazahlen 201 Zyklen für die einzelnen Instruktionen benötigt (12,5625 $\mu s$). Zusätzlich wird \textit{\_\_floatsisf} sechs mal aufgerufen, \textit{\_\_lesf2} und \textit{\_\_divsf3}
 jeweils zwi mal aufgerufen. Die WCET zur Schwerpunktberechnung eines Bildes beläuft sich damit auf 116,5625 $\mu s$. Davon werden 104 $\mu s$ für Gleitkommaoperationen aufgewendet. Der Ansatz mit Ganzzahlen benötigt
-keine Gleitkommaoperationen und 57 Zyklen weniger, da die summe der Pixel nicht berechnet werden muss, d. h. es werden für die WCET nur 8,875 $\mu s$ benötigt. Für den kombinierten Ansatz werden zusätzlich vier
-Speicherinstruktionen benötigt, die einen Overhead von 0,25 $\mu s$ erzeugen, d. h. es werden für die WCET 116,8125 $\mu s$ benötigt.
+keine Gleitkommaoperationen und 57 Zyklen weniger, da die Summe der Pixel nicht berechnet werden muss, d. h. es werden für die WCET nur 8,875 $\mu s$ benötigt. Für den kombinierten Ansatz werden zusätzlich vier
+Speicherinstruktionen benötigt, die einen Overhead von 0,25 $\mu s$ erzeugen, d. h. es werden für die WCET 116,8125~$\mu s$ benötigt.
 \begin{lstlisting}[label=lst:cocdAlgoCOCDPerPicture,caption={Implementierung um den Schwerpunkt für ein Bild zu berechnen.}]
 short helligkeits_summe = 0;
 for (char i = 0; i < 9; ++i)

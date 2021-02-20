@@ -13,21 +13,21 @@
         Genauigkeit Gestentestmenge & 74,5\% & 67,6\% & 68,5\% \\\hline
         Genauigkeit Nullgestentestmenge & 68,3\% & 64,4\% & 67,6\% \\\hline
     \end{tabular}
-    \caption{Die besten Konfigurationen der Motion History.}
+    \caption{Die besten Konfigurationen der Feature-Menge Motion History.}
     \label{tab:motion_history}
 \end{table}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/motion_history_acc_per_size.png}
-    \caption{Die besten Modelle pro Waldgröße mit Motion History.}
+    \caption{Die besten Modelle pro Waldgröße der Feature-Menge Motion History.}
     \label{fig:motion_history_per_forest_size}
 \end{figure}
-Die Feature-Menge von Motion History beinhaltet für jeden Pixel einen Eintrag, die der Definition des Motion History Image folgen (Formel \ref{formular:mhi}), wobei $\tau=100$ und $\delta=\frac{\tau}{\#Bilder}$ ist.
+Die Feature-Menge Motion History beinhaltet für jeden Pixel ein Feature, das der Definition des Motion History Image folgt (Formel \ref{formular:mhi}), wobei $\tau=100$ und $\delta=\frac{\tau}{\#Bilder}$ ist.
 \newline
 \newline
-Aus der Tabelle \ref{tab:helligkeitsverteilung} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode \textit{ExtraTrees} gefunden.
+Aus Tabelle \ref{tab:helligkeitsverteilung} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde wieder mit der Ensemble-Methode \textit{ExtraTrees} gefunden.
 Das Modell erzielt eine Klassifizierungsgenauigkeit von 68,8\% auf der Testmenge von Klisch, 74\% auf der Gestentestmenge und 69\% auf der Nullgestentestmenge. Im Vergleich zu der Helligkeitsverteilung
-wird mehr Programmspeicher benötigt und die Gesamtklassifizierungsgenauigkeit ist 1,84\% geringer.
+wird mehr Programmspeicher benötigt und die Gesamtklassifizierungsgenauigkeit ist 1,84\% schlechter.
 \newline
 \newline
 Wird die Kategorie \textit{Beste} mit der Kategorie \textit{Unter 28 kB} verglichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 4,3\% ab. Dabei reduziert sich die Programmgröße um 72,9\%.

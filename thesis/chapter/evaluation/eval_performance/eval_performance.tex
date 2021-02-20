@@ -1,21 +1,22 @@
 \section{Klassifizierungsgenauigkeit}
-Es werden drei Features näher betrachtet. Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Daraus wurden vier Feature-Mengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden 22528
-verschiedene Konfigurationen trainiert und getestet, die in Kapitel \ref{sec:Training} beschrieben wurden. Jede Konfiguration nutzt zum Trainieren eine Kombination aus der Trainingsmenge von Feng und Kubik,
+Es werden drei Features näher betrachtet: Motion History, Helligkeitsverteilung und Schwerpunktverteilung. Daraus wurden vier Feature-Mengen generiert, die zum Trainieren genutzt werden. Insgesamt wurden 22528
+verschiedene Konfigurationen trainiert und getestet, die in Kapitel \ref{sec:Training} beschrieben wurden. Jede Konfiguration nutzt zum Trainieren die gleiche Kombination aus der Trainingsmenge von Feng und Kubik,
 sowie die Gestentestmenge und die Nullgestenmenge, die in Kapitel \ref{sec:DymelData} beschrieben wurden. Die Trainingsmenge beinhaltet insgesamt 7629 Handgesten. Davon wird 50\% zum Trainieren und 50\% zum
 Validieren und Optimieren auf Basis der Monte Carlo Methode benutzt.
 \newline
 \newline
 Unter jeder Feature-Menge werden jeweils drei Kategorien analysiert. Die erste Kategorie zeigt die beste Konfiguration, die ohne Restriktion des Programmspeichers gefunden wurde. Die zweite Kategorie hat eine Restriktion
-von 48 kB und die dritte Kategorie hat eine Restriktion von 32 kB. Diese beziehen sich auf den Programmspeicher des ATmega4809 und ATmega328P, die im Rahmen der Fallstudie verwendet werden \cite{venzkeArticle}.
+von 48 kB und die dritte Kategorie eine Restriktion von 32 kB. Diese beziehen sich auf den Programmspeicher des ATmega4809 und ATmega328P, die im Rahmen der Fallstudie verwendet werden \cite{venzkeArticle}.
 Dabei werden immer 4 kB abgezogen, da diese für andere systemrelevante Funktionen reserviert sind. Die beste Konfiguration einer Kategorie maximiert die Summe
 der Klassifizierungsgenauigkeiten der Testmenge von Klisch, der Gestentestmenge und der Nullgestentestmenge. Dabei wird stets die optimierte Programmgröße des Modells betrachtet,
 nachdem alle Optimierungen aus Kapitel \ref{sec:eval_size} angewendet wurden.
 \newline
 \newline
 In der Analyse werden die verschiedenen Feature-Mengen im Hinblick auf die Klassifizierungsgenauigkeit der Testmenge von Klisch, der Gestentestmenge, der Nullgestentestmenge und den synthetischen
-Helligkeitstestmengen untereinander verglichen und mit den Ergebnissen von Giese verglichen. Es wird ausschließlich mit Giese verglichen, da seine Ergebnisse die beste Klassifizierungsgenauigkeit,
+Helligkeitstestmengen untereinander verglichen und mit den Ergebnissen für KNNs von Giese verglichen. Es wird ausschließlich mit Giese verglichen, da seine Ergebnisse für KNNs die beste Klassifizierungsgenauigkeit,
 geringste Ausführungszeit und geringsten Ressourcenverbrauch erzielte. Außerdem wird die Auswirkung von verschiedenen Waldgrößen auf die Klassifizierungsgenauigkeit untersucht. Anzumerken ist, dass
-lediglich die Testmenge von Klisch vergleichbar mit den Ergebnissen von Giese ist, da die Gestentestmenge, Nullgestentestmenge und Helligkeitstestmengen erst im Laufe dieser Arbeit entstanden sind.
+lediglich die Testmenge von Klisch vergleichbar mit den Ergebnissen von Giese ist, da die Gestentestmenge, Nullgestentestmenge und Helligkeitstestmengen Teil dieser Arbeit sind.
+Der vollständige Datensatz der Evaluierung ist als Datei auf dem USB-Stick hinterlegt.
 
 \input{chapter/evaluation/eval_performance/brightness_distribution}
 \input{chapter/evaluation/eval_performance/motion_history}

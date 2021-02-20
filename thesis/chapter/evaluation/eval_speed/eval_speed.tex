@@ -1,12 +1,13 @@
 \section{Ausführungszeit}
 \label{sec:eval_speed}
-Die Ausführungszeit der Feature-Extrahierung und Klassifizierung ist ausschlaggebend für die mögliche FPS. Diese ermöglicht die Wahrnehmung von schnellen Handgesten. Ist die FPS bereits ausreichend
+Die Ausführungszeit der Feature-Extrahierung und Klassifizierung ist ausschlaggebend für die mögliche Bildrate. Diese ermöglicht die Wahrnehmung von schnellen Handgesten. Ist die Bildrate bereits ausreichend
 können leistungsschwächere Module verwendet werden, wodurch die Batterielaufzeit verlängert wird oder die Kosten reduziert werden.
-In dieser Arbeit wird das Arduino Board ATmega328P genutzt. Dieses Board verfügt über eine 8-Bit APU, 2 kB RAM, 32 kB Flash-Speicher und operiert unter 16 MHz \cite{atmega328p}.
+In dieser Arbeit wird das Arduino Board ATmega328P genutzt. Es verfügt über eine 8-Bit CPU, 2 kB RAM, 32 kB Flash-Speicher und verwendet eine Taktfrequenz von 16 MHz \cite{atmega328p}.
 \newline
 \newline
 Es wird ausschließlich die \textit{Worst-Case-Execution-Time} (WCET) betrachtet. Ausschlaggebend dafür ist der \textit{Worst-Case-Execution-Path} (WCEP) im Kontrollflussgraph \cite{wcc_intro}. Der WCEP
 setzt sich zusammen aus dem Vorgang das aktuelle Bild auszulesen, der Extrahierung der Features und der Ausführung des Klassifizierers. Für das Auslesen des Bildes wird eine konstante Zeit von 10 ms angenommen.
+Dies ist die Zeit die benötigt wird, um die Werte der Kamera auf dem in dieser Arbeit verwendeten Boards auszulesen.
 \newline
 \newline
 Die Auswertung bezieht sich auf die Instruktionen des Programms, die bei der Übersetzung der Firmware durch den \textit{AVR GCC} mit der Optimierungsstufe \texttt{Os} entstehen. Aus dem Handbuch des

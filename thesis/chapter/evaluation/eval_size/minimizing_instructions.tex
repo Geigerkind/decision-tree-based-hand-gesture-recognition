@@ -25,7 +25,7 @@ Vergleichsfunktion aus. Damit benötigt ein Vergleich insgesamt 15 Instruktionen
 \end{lstlisting}
 Zu vermeiden sind Zeile 5 bis 11, indem alle Features nur einmal in Register geladen werden. Dies ist allerdings nur möglich, wenn die Größe der Feature-Menge nicht 32 Bytes übersteigt bei dem
 ATmega328P. Zusätzlich müssten noch Bytes verfügbar sein, um die Konstanten zu laden. Die Feature-Menge der Schwerpunktverteilung beinhaltet 10 Einträge. Der Ansatz mit Gleitkommazahlen ist mit 40 Bytes zu groß.
-Der Ansatz mit Ganzzahlen kann diese Optimierung mit 20 Bytes ausnutzen. Der Compiler führt diese Optimierung bereits automatisch aus. Wenn die Feature-Menge zu groß ist, werden aus diesem Grund regelmäßig
+Der Ansatz mit Ganzzahlen kann diese Optimierung mit 20 Bytes ausnutzen. Der Compiler führt diese Optimierung bereits automatisch durch. Wenn die Feature-Menge zu groß ist, werden aus diesem Grund regelmäßig
 Register verdrängt, wodurch zusätzlich Instruktionen entstehen. Die Anzahl der Instruktionen können reduziert werden, indem die Größe der Feature-Menge reduziert wird, sodass die Feature-Menge und eine
 zusätzliche Konstante des gleichen Datentyps den Registerspeicher nicht übersteigen.
 \newline

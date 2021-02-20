@@ -13,13 +13,13 @@
         Genauigkeit Gestentestmenge & 98,8\% & 97,1\% & 95,5\% \\\hline
         Genauigkeit Nullgestentestmenge & 95,6\% & 94,5\% & 88,9\% \\\hline
     \end{tabular}
-    \caption{Die besten Konfigurationen der Schwerpunktverteilung mit Ganzzahlen.}
+    \caption{Die besten Konfigurationen der Feature-Menge Schwerpunktverteilung mit Ganzzahlen.}
     \label{tab:schwerpunktverteilung_int}
 \end{table}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth]{images/cocd_int_acc_per_size.png}
-    \caption{Die besten Modelle pro Waldgröße der Schwerpunktverteilung mit Ganzzahlen.}
+    \caption{Die besten Modelle pro Waldgröße der Feature-Menge Schwerpunktverteilung mit Ganzzahlen.}
     \label{fig:cocd_int_per_forest_size}
 \end{figure}
 Die Feature-Menge Schwerpunktverteilung mit Ganzzahlen folgt der Definition aus Kapitel \ref{sec:schwerpunktverteilung} und beinhaltet insgesamt zehn Einträge. Jeweils zwei Einträge bilden die X und Y
@@ -38,3 +38,7 @@ Restriktion größere Entscheidungswälder zu bilden, als die Schwerpunktverteil
 mit zunehmender Waldgröße. Es ist auszugehen, dass eine noch bessere Konfiguration gefunden werden könnte, wenn der Suchraum auf eine größere Waldgröße erweitert wird. Ähnlich wie die Schwerpunktverteilung mit
 Gleitkommazahlen ist der Zuwachs der durchschnittlichen Klassifizierungsgenauigkeit ab einer Waldgröße von 7 Bäumen gering. Somit kann bereits bei einer geringen Programmgröße eine hohe Klassifizierungsgenauigkeit
 erzielt werden. Damit eignet sich die Schwerpunktverteilung mit Ganzzahlen ebenfalls für kleine eingebettete Systeme.
+\newline
+\newline
+Zu Erwarten war, dass der Ansatz mit Gleitkommazahlen bessere Ergebnisse als der Ansatz mit Ganzzahlen erzielt. Da im Training ohne Nullgestentestmenge eine besseres Modell gefunden wurde, ist davon
+auszugehen, dass das equivalente Modell imt Training mit der Nullgestentestmenge nicht gefunden wurde, durch den größeren Suchraum.

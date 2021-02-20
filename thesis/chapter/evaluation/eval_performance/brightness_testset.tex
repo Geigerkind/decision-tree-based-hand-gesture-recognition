@@ -6,7 +6,7 @@
     \caption{Ergebnisse des Offset der Helligkeitstestmenge 1 je Ansatz.}
     \label{fig:brightness_offset}
 \end{figure}
-Dieses Kapitel validiert die Invarianzen der einzelnen Feature, die in Kapitel \ref{sec:feature_selection} diskutiert wurden. Mit Hilfe der Helligkeitstestmengen werden die Features validiert. Diese synthetischen Testmengen
+Dieses Kapitel validiert die Invarianzen der einzelnen Features, die in Kapitel \ref{sec:feature_selection} diskutiert wurden. Mit Hilfe der Helligkeitstestmengen werden die Features validiert. Diese synthetischen Testmengen
 verändern die Helligkeit und den Kontrast einer bestehenden Testmenge durch Skalierung und Offsets.
 \newline
 \newline
@@ -43,7 +43,7 @@ zur Kamera, da dort der Kontrast durch Streulicht ebenfalls geringer wird. Keine
 nimmt die Klassifizierungsgenauigkeit leicht ab. Bei einem initialen Kontrastunterschied von 100\% ist ab 0,3 der Kontrast nur noch 18\% des ursprünglichen Kontrasts. Dementsprechend ist die Helligkeitsverteilung extrem
 robust gegenüber schlechten Lichtverhältnissen. Im Vergleich sind die anderen Klassifizierer sehr sensibel gegenüber der abnehmenden Skalierung bei gleichbleibender Gesamthelligkeit.
 Die Schwerpunktverteilungen verhalten sich vom Trend her gleich, aber die
-kombinierte Schwerpunktverteilung erzielt wie Erwartet, fast durchweg, die beste Klassifizierungsgenauigkeit. Da keiner der Schwerpunktverteilungen invariant gegenüber einem Offset und der Skalierung waren, war auch
+kombinierte Schwerpunktverteilung erzielt wie erwartet, fast durchweg, die beste Klassifizierungsgenauigkeit. Da keiner der Schwerpunktverteilungen invariant gegenüber einem Offset und der Skalierung waren, war auch
 nicht zu erwarten, dass sie eine Invarianz in diesem Test zeigen. Trotzdem erzielen sie die beste Klassifizierungsgenauigkeit bis zu einem Faktor von 0,3. Von der Motion History war ein ähnliches Verhalten wie bei der
 Helligkeitsverteilung zu erwarten. Vermutet wird, dass die unterliegende Funktion, um eine Bewegung zu detektieren, zu restriktiv wird, wenn der Kontrast sinkt.
 \newline
