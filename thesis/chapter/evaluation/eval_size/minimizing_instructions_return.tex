@@ -8,7 +8,7 @@ Listing \ref{lst:assemblyBlattReturn} zeigt die Instruktionen die für die Zuwei
 und anschließend in den Rückgabeparameter gespeichert. In diesem Fall muss nur für die erste Klasse eine Konstante geladen werden, da jede andere Klasse 0 ist. Das heißt, dass im schlimmsten Fall 33
 Instruktionen benötigt werden, anstatt 21. Der Compiler führt hier bereits eine Optimierung aus, indem für jedes Ergebnis ein eigener \textit{Basic block} (Eine Datenstruktur die Instruktionen mit einer Annotation
 zusammenfasst)erzeugt wird. Zusätzlich könnte kein C-Code generiert werden für eine Zuweisungen mit 0. Dies erfordert aber, dass der Rückgabeparameter mit 0 vorinitialisiert ist.
-\begin{lstlisting}[label=lst:assemblyBlattReturn,caption={Beispiel der Instruktionen einer Rückgabe der Wahrscheinlichkeitsverteilung eines Entscheidungsbaumes mit 4 Klassen.}]
+\begin{lstlisting}[label=lst:assemblyBlattReturn,caption={Beispiel der Instruktionen einer Rückgabe der Wahrscheinlichkeitsverteilung eines Entscheidungsbaumes mit 4~Klassen.}]
 01: ldi r24,0
 02: ldi r25,0
 03: ldi r26,lo8(-128)
@@ -33,7 +33,7 @@ zusammenfasst)erzeugt wird. Zusätzlich könnte kein C-Code generiert werden fü
 \end{lstlisting}
 Eine weitere Optimierung ist den Wahlklassifizierer diskret zu modellieren. Dabei wird für jede Rückgabe des Entscheidungsbaumes ein einstimmiges Ergebnis angenommen, d. h. es wird die Klasse mit der
 höchsten Wahrscheinlichkeit in jedem Baum zurückgegeben und nicht mehr die Wahrscheinlichkeitsverteilung. Dadurch werden lediglich die erkannten Klassen
-gezählt, anstatt die Wahrscheinlichkeitsverteilungen zu addieren. Listing \ref{lst:assemblyBlattReturnDiskret} zeigt, dass sich die Anzahl der Instruktionen für eine Rückgabe auf genau 2 Instruktionen
+gezählt, anstatt die Wahrscheinlichkeitsverteilungen zu addieren. Listing \ref{lst:assemblyBlattReturnDiskret} zeigt, dass sich die Anzahl der Instruktionen für eine Rückgabe auf genau 2~Instruktionen
 reduzieren. Zusätzlich kann der Compiler diese Rückgabe in Basic blocks extrahieren, wodurch lediglich eine Sprunginstruktion benötigt wird. Diese Optimierung ist bei dem diskreten Wahlklassifizierer noch
 effektiver, da es genau $N$ verschiedene Rückgabewerte gibt, für $N$ mögliche Klassen. Im schlimmsten Fall reduzieren sich die Anzahl der Instruktionen pro Rückgabe um $\frac{100}{1 + 4N}$\%
 und im besten Fall um $\frac{100}{1 + 8N}$\%.

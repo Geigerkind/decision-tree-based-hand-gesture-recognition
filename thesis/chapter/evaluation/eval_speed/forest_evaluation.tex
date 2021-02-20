@@ -4,8 +4,8 @@ Der WCEP eines Entscheidungswaldes setzt sich aus dem WCEP des Wahlklassifizieru
 \newline
 Der in Listing \ref{lst:sklearnCCodeTreeVoting} gezeigte Code implementiert den Wahlvorgang. Die Komplexität ist abhängig von der Anzahl der Features $N$ und der Anzahl der Entscheidungsbäume $K$. In
 dieser Analyse wird für die Anzahl der Features $N=5$ angenommen.
-Jede Stimme eines Entscheidungsbaumes bedarf 18 Zyklen (1,125\ $\mu s$), um die Funktion, die den Entscheidungsbaum ausführt, aufzurufen und das Ergebnis des ausgeführten Entscheidungsbaumes auf die Gesamtsumme zu addieren.
-Die restlichen Instruktionen bedürfen 64 Zyklen (4\ $\mu s$).
+Jede Stimme eines Entscheidungsbaumes bedarf 18~Zyklen (1,125~$\mu s$), um die Funktion, die den Entscheidungsbaum ausführt, aufzurufen und das Ergebnis des ausgeführten Entscheidungsbaumes auf die Gesamtsumme zu addieren.
+Die restlichen Instruktionen bedürfen 64 Zyklen (4~$\mu s$).
 \newline
 \newline
-Die WCET eines Entscheidungswaldes beläuft sich damit auf 4 $\mu s$ + \#Entscheidungsbäume $\cdot$ (1,125 $\mu s$ + WCET der Entscheidungsbäume).
+Die WCET eines Entscheidungswaldes beläuft sich damit auf 4~$\mu s$ + \#Entscheidungsbäume $\cdot$ (1,125~$\mu s$ + WCET der Entscheidungsbäume).

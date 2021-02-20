@@ -22,8 +22,8 @@
     \caption{Die besten Modelle pro Waldgröße der Feature-Menge Schwerpunktverteilung mit Gleitkommazahlen.}
     \label{fig:cocd_float_per_forest_size}
 \end{figure}
-Die Feature-Menge Schwerpunktverteilung mit Gleitkommazahlen folgt der Definition aus Kapitel \ref{sec:schwerpunktverteilung} und beinhaltet insgesamt zehn Einträge. Jeweils zwei Einträge bilden die X und Y
-Koordinate des Schwerpunktes. Damit spiegeln zehn Einträge insgesamt fünf Zeitfenster wieder.
+Die Feature-Menge Schwerpunktverteilung mit Gleitkommazahlen folgt der Definition aus Kapitel \ref{sec:schwerpunktverteilung} und beinhaltet insgesamt zehn Einträge. Jeweils zwei Einträge bilden die X- und
+Y-Koordinate des Schwerpunktes. Damit spiegeln zehn Einträge insgesamt fünf Zeitfenster wieder.
 \newline
 \newline
 Aus der Tabelle \ref{tab:schwerpunktverteilung_float} sind die besten Konfigurationen jeder Kategorie zu entnehmen. Die beste Konfiguration wurde mit der Ensemble-Methode Boosting gefunden.
@@ -32,8 +32,8 @@ kleineren Trainingsmenge ohne die Gestentrainingsmenge und Nullgestentrainingsme
 Außerdem werden 97\% der Gestentestmenge und 92,2\% der Nullgestentestmenge korrekt klassifiziert.
 \newline
 \newline
-Im Vergleich zu der Helligkeitsverteilung und Motion History ist die Klassifizierungsgenauigkeit dieses Ansatzes signifikant besser, sogar wenn nur 6656 Byte Programmspeicher verwendet werden.
-Wird die Kategorie \textit{Beste} mit der Kategorie \textit{Unter 14 kB} verglichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 4,17\% ab. Dabei wird die Programmgröße um 92\% reduziert.
-Dies verspricht, dass mit zunehmender Waldgröße die Klassifizierungsgenauigkeit steigt. Abbildung \ref{fig:cocd_float_per_forest_size} zeigt, dass dies zwar der Fall ist, aber schon ab einer Waldgröße von 6
-Bäumen verzeichnet die durchschnittliche Klassifizierungsgenauigkeit keinen signifikanten Zuwachs mehr. Dementsprechend ist der Unterschied der Gesamtklassifizierungsgenauigkeit der Kategorie \textit{Beste}
-und der Kategorie \textit{Unter 44 kB} mit 1,8\% nicht groß. Damit eignet sich diese Feature-Menge gut für kleine eingebette Systeme, da nur wenige Bäume benötigt werden.
+Im Vergleich zu der Helligkeitsverteilung und Motion History ist die Klassifizierungsgenauigkeit dieses Ansatzes signifikant besser, sogar wenn nur 6656~Byte Programmspeicher verwendet werden.
+Wird die Kategorie \textit{Beste} mit der Kategorie \textit{Unter 14~kB} verglichen, nimmt die Gesamtklassifizierungsgenauigkeit nur um 4,17\% ab. Dabei wird die Programmgröße um 92\% reduziert.
+Dies verspricht, dass mit zunehmender Waldgröße die Klassifizierungsgenauigkeit steigt. Abbildung \ref{fig:cocd_float_per_forest_size} zeigt, dass dies zwar der Fall ist, aber schon ab einer Waldgröße von
+6~Bäumen verzeichnet die durchschnittliche Klassifizierungsgenauigkeit keinen signifikanten Zuwachs mehr. Dementsprechend ist der Unterschied der Gesamtklassifizierungsgenauigkeit der Kategorie \textit{Beste}
+und der Kategorie \textit{Unter 44~kB} mit 1,8\% nicht groß. Damit eignet sich diese Feature-Menge gut für kleine eingebette Systeme, da nur wenige Bäume benötigt werden.

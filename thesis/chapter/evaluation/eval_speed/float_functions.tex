@@ -10,8 +10,8 @@ Float-Zahl zu speichern.
 \newline
 Für jede Operation sind Algorithmen in Form von Funktionen hinterlegt. Diese werden vom Compiler automatisch zugelinkt. Tabelle \ref{tab:float_operations} zeigt die im schlechtesten Fall gemessene Ausführungszeit
 der Funktionen, die bei der Extrahierung der Features und Ausführung des Klassifizierers verwendet werden. Im Folgenden wird diese Zeit als der WCET der Funktionen angenommen.
-Zum Vergleich, die Addition von 8-Bit Integer benötigt nur 1 Zyklus. Die Addition von Gleitkommazahlen mit \textit{\_\_addsf3} benötigt dagegen im schlimmsten Fall 192 Zyklen. Zudem kommt noch ein
-Overhead von bis zu 4 Zyklen hinzu, um die Funktion aufzurufen. Dementsprechend sind die Gleitkommaoperationen besonders teuer im Vergleich zu hardwareunterstützten Operationen, weswegen sie vermieden
+Zum Vergleich, die Addition von 8-Bit Integer benötigt nur ein Zyklus. Die Addition von Gleitkommazahlen mit \textit{\_\_addsf3} benötigt dagegen im schlimmsten Fall 192~Zyklen. Zudem kommt noch ein
+Overhead von bis zu vier Zyklen hinzu, um die Funktion aufzurufen. Dementsprechend sind die Gleitkommaoperationen besonders teuer im Vergleich zu hardwareunterstützten Operationen, weswegen sie vermieden
 werden sollten auf Systemen ohne Hardwareunterstützung.
 \begin{table}[h!]
     \centering

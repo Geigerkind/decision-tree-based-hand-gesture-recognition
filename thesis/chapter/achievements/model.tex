@@ -73,7 +73,7 @@ if (features[feature_index] <= schwellenwert) {
     Traversiere Kindknoten rechts...
 }
 \end{lstlisting}
-Für einen Blattknoten muss der C-Code für die Rückgabe generiert werden. Listing \ref{lst:sklearnCCodeLeaf} zeigt, dass im Rückgabeparameter \texttt{result} für alle $M$ Klassen die Wahrscheinlichkeit
+Für einen Blattknoten muss der C-Code für die Rückgabe generiert werden. Listing \ref{lst:sklearnCCodeLeaf} zeigt, dass im Rückgabeparameter \texttt{result} für alle $M$~Klassen die Wahrscheinlichkeit
 jeder Klasse gespeichert wird. Diese Rückgabe ist notwendig, da der Wahlklassifizierer, der diese Funktion ausführt, eine Wahrscheinlichkeitsverteilung erwartet.
 Die Ausdrücke \texttt{klassen\_wahrscheinlichkeiten[i]} werden durch die Konstanten ersetzt, die in dieser Variable in der Datenstruktur eines Blattknotens gespeichert sind.
 \begin{lstlisting}[label=lst:sklearnCCodeLeaf,caption={C-Code eines Blattknotens.}]

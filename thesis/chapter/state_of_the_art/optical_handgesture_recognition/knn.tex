@@ -7,29 +7,29 @@ Long-Short-Term Memory neuronale Netze (LSTMNN) näher betrachtet, sowie die Opt
 Engelhardt führte die in \ref{sec:fallstudie} definierten Handgesten mit der Hand, einem Finger und zwei Fingern unter verschiedenen Helligkeiten aus. Damit hat Engelhardt seine ML Modelle trainiert und validiert. Er
 argumentiert, dass RNN, FFNN und LSTMNN für temporale Probleme am besten geeignet seien. Convolutional neuronale
 Netze (CNN) verwarf Engelhardt aufgrund der geringen Auflösung der Handgesten und da die Faltung rechenaufwendig sei. Des Weiteren verwarf er LSTMNN, da diese zu viel Rechenleistung und Speicherplatz
-benötigen. Als Eingabewerte zu seinen RNNs und FFNNs diente eine Sequenz von 20 Bilder, die zu 180 Werten konkateniert und auf Werte zwischen 0 und 1 normalisiert wurden. Als bestes ML Modell stellte sich eines
+benötigen. Als Eingabewerte zu seinen RNNs und FFNNs diente eine Sequenz von 20~Bilder, die zu 180~Werten konkateniert und auf Werte zwischen 0 und 1 normalisiert wurden. Als bestes ML Modell stellte sich eines
 seiner FFNNs heraus, das auf seinen Testdaten bis zu 99\% Klassifizierungsgenauigkeit erzielte. Außerdem erwies es sich als robust gegenüber Rauschen und Helligkeitsveränderungen als RNNs. Die Ausführungszeit
-des FFNN belief sich auf 11,54 ms, bei einer Programmgröße von 11 kB und 573 Bytes RAM \cite{engelhardtThesis}.
+des FFNN belief sich auf 11,54~ms, bei einer Programmgröße von 11~kB und 573~Byte RAM \cite{engelhardtThesis}.
 \newline
 \newline
 Kubik hat in seiner Arbeit den FFNN Ansatz von Engelhardt aufgegriffen. Er untersuchte Handgesten, die mit der Hand in verschiedenen Distanzen zur Kamera, unter guten und schlechten Lichtverhältnissen ausgeführt wurden.
 Neben der Facettenkamera untersuchte Kubik ebenfalls eine Lochkamera. Er stellte fest, dass diese aber wesentlich schwerer auszuleuchten ist, was sich auf die
-Klassifizierungsgenauigkeit auswirkte. Als Eingabe nutzte Kubik ebenfalls 180 Werte, die 20 Bilder repräsentieren. Um mit der variablen Länge von Handgesten umzugehen schlug Kubik vor, die Bildsequenzen auf 20 Bilder zu
+Klassifizierungsgenauigkeit auswirkte. Als Eingabe nutzte Kubik ebenfalls 180 Werte, die 20~Bilder repräsentieren. Um mit der variablen Länge von Handgesten umzugehen schlug Kubik vor, die Bildsequenzen auf 20~Bilder zu
 skalieren (Kapitel \ref{sec:scaling}). Um die Skalierung durchzuführen, musste aber der Anfang und das Ende der Handgeste bekannt sein. Aus diesem Grund war es nötig Gestenkandidaten erkennen zu können (Kapitel
 \ref{sec:gesture_extraction}). Er stellte fest, dass dies die Gesamtlänge der Handgeste limitierte in Anbetracht des RAMs des Mikrocontrollers. Um die Klassifizierungsgenauigkeit zu erhöhen, verwendete Kubik zusätzlich
 synthetische Trainingsdaten, die er aus der bestehenden Trainingsmenge durch Rotation generierte (Kapitel \ref{sec:synthetischeDaten}). Dies erhöhte die Klassifizierungsgenauigkeit erheblich. Kubik erstellte eine Testmenge
 (Kapitel \ref{sec:testdaten}) und evaluierte sein Modell damit. Im Allgemeinen stellte er fest, dass sich mit zunehmender Distanz zur Kamera die Klassifizierungsgenauigkeit verschlechtert. Dies erwies sich besonders als ein
-Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mit der Facettenkamera bis 30 cm eine Klassifizierungsgenauigkeit von 97,2\% erzielen. Bei schlechten Lichtverhältnissen war die Klassifizierungsgenauigkeit
-bereits ab 20 cm nur noch bei 83\%. Zusätzlich zu den 4 Grundgesten, untersuchte Kubik Nullgesten. Er stellte fest, dass ruckartige Veränderungen der Lichtverhältnisse mit 92\% erkannt wurden und Handbewegungen, die wieder
+Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mit der Facettenkamera bis 30~cm eine Klassifizierungsgenauigkeit von 97,2\% erzielen. Bei schlechten Lichtverhältnissen war die Klassifizierungsgenauigkeit
+bereits ab 20~cm nur noch bei 83\%. Zusätzlich zu den 4~Grundgesten, untersuchte Kubik Nullgesten. Er stellte fest, dass ruckartige Veränderungen der Lichtverhältnisse mit 92\% erkannt wurden und Handbewegungen, die wieder
 zurück gezogen wurden mit 96\%. Schwierigkeiten hat die Erkennung von diagonalen Bewegungen als Nullgeste bereitet, da diese eine hohe Ähnlichkeit zu der benachbarten horizontalen und vertikalen Handgeste aufweisen. Kubiks Ansatz
-hat insgesamt 36 ms benötigt, um das Modell auszuführen, und 11 ms für die Skalierung \cite{kubikThesis}.
+hat insgesamt 36~ms benötigt, um das Modell auszuführen, und 11~ms für die Skalierung \cite{kubikThesis}.
 \newline
 \newline
 Klisch hat einen Ansatz von Venzke untersucht, nach dem man ein RNN als mehrere FFNNs trainieren könnte. Engelhardt stellte vorher fest, dass RNNs sonst schlechtere
 Klassifizierungsgenauigkeiten erzielten als FFNNs, da sie schwerer zu trainieren sind \cite{engelhardtThesis}. Aus diesem Grund hat Klisch verschiedene Konfigurationen getestet und stellte fest,
 dass ein RNN bessere Ergebnisse erzielt, wenn els als ein Netzwerk trainiert wird, als wenn ein RNN vorher in mehrere FFNNs zerlegt wird. Mit seinem RNN erzielte Klisch mit einer Mischung aus guten und
 verhältnismäßig schlechten Lichtverhältnissen eine Klassifizierungsgenauigkeit von 71\%. Das ist eine Verbesserung zu dem Ergebnis, das Engelhardt mit RNNs erzielte.
-Klisch stellte fest, dass sein Modell schnell genug ist, um eine Bildrate 50 Hz zu unterstützen \cite{klischThesis}.
+Klisch stellte fest, dass sein Modell schnell genug ist, um eine Bildrate 50~Hz zu unterstützen \cite{klischThesis}.
 \newline
 \newline
 Der Fokus von Gieses Arbeit lag auf Kompression der Größe von FFNNs und Optimierung der Ausführungszeit. Er trainierte ein FFNN und erzielte eine Klassifizierungsgenauigkeit von 98,96\%.
@@ -42,4 +42,4 @@ Sparse Matrix Format CSC-Centroid erzielt.
 \newline
 SeeDot hat im Vergleich zum Ausgangsmodell sowohl Ausführungszeit als auch Programmgröße verringert. SeeDot verringerte die Klassifizierungsgenauigkeit aber signifikant. Der Vorteil von SeeDot
 ist die geringe Entwicklungszeit, die diese Optimierung benötigt. Der Optimierungsparameter O2 hat den besten Kompromiss zwischen Programmgröße und Ausführungszeit erzielt. Insgesamt hat die beste Lösung 35,7\% weniger Programmspeicher
-benötigt und die Ausführungszeit wurde von 26,1 ms auf 6,8 ms reduziert. Eine Skalierung ist immer noch notwendig. Dafür gibt Giese 13~ms an. \cite{gieseThesis}.
+benötigt und die Ausführungszeit wurde von 26,1~ms auf 6,8~ms reduziert. Eine Skalierung ist immer noch notwendig. Dafür gibt Giese 13~ms an. \cite{gieseThesis}.
