@@ -42,3 +42,15 @@ Zerfallswert $\delta$ dekrementiert bis zu einem Minimum von 0.
 \end{align}
 MHI ist leicht zu berechnen und invariant zu Lichtverhältnissen. Allerdings ist die Leistung stark abhängig von $\psi$, $\tau$ und $\delta$. MHI ist besonders anfällig für Bildfolgen mit verschiedener Länge.
 Je nachdem, wie $\tau$ und $\delta$ gewählt sind, ist die Bewegungshistorie nicht sichtbar oder der Einfluss der ersten Bilder geht verloren.
+\newline
+\newline
+Abbildung \ref{fig:mhi_ex} zeigt ein Motion History Image einer Bildsequenz. In der Bildsequenz wird eine Armbewegung ausgeführt. Unter jedem Bild ist das resultierende MHI zu dem Zeitpunkt zu sehen.
+Zu sehen ist, dass Pixel die sich verändert haben weiß sind und die anderen Pixel schwarz. Mit der fortlaufenden Bildsequenz wird das Bild erweitert und der Arm scheint sich zu duplizieren und seine
+Vergangenheit hinter sich her zu ziehen. Diese vergangene Bewegung ist aber dunkler als die kürzlich ausgeführten Bewegungen. Dies wird als die Historie des MHI bezeichnet. Durch den Zerfallswert sind
+vergangene Bewegungen dunkler.
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{images/mhi_ex.png}
+    \caption{Die Übersetzung von einer Bildsequenz zu einem Motion History Image \cite{ahad2012motion}.}
+    \label{fig:mhi_ex}
+\end{figure}

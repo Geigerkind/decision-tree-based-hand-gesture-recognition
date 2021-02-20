@@ -1,8 +1,8 @@
 \subsection{Featureauswahl}
 \label{sec:feature_selection}
 Untersucht wurden die Features aus Tabelle \ref{tab:songFeatures} die von Song et al. genutzt wurden, das Motion History Image und zwei selbst entwickelte Features. Die Features aus
-Tabelle \ref{tab:songFeatures} erfüllen ohne Änderungen nicht ausreichend Anforderungen. Die Features 2, 5 und 7 bis 9 wurden nicht getestet, da sie zu komplexe Berechnungen
-für kleine eingebettete Systeme bedürfen.
+Tabelle \ref{tab:songFeatures} erfüllen ohne Änderungen nicht ausreichend Anforderungen. Die Features 3 und 4 wurden in abgewandelter Form in der Helligkeitsverteilung verwendet.
+Die Features 2, 5 und 7 bis 9 wurden nicht getestet, da sie zu komplexe Berechnungen für kleine eingebettete Systeme bedürfen.
 \newline
 \newline
 Das \textit{Mean absolute value} Feature von Song et al. ermöglicht die einzelnen Handgesten zu unterscheiden, wenn das Feature auf verschiedene Zeitfenster dupliziert wird. Zusätzlich kann die Helligkeit
@@ -46,15 +46,20 @@ Eine Handgeste besteht aus einer Sequenz von Bildern. Diese wird in Zeitfenster 
 Rest teilbar mit der Anzahl der Zeitfenster, so werden die überschüssigen Bilder uniform auf die Zeitfenster verteilt. Anschließend wird jedes Zeitfenster zusammengefasst. Es gibt mehrere Möglichkeiten
 die einzelnen Bilder in einem Zeitfenster zusammenzufassen.
 \begin{itemize}
-    \item Wähle das Minimum bzw. Maximum.
-    \item Projiziere die Pixel der Extrema auf ein kartesisches Koordinatensystem und fasse die Punkte über eine Abstandsmetrik zusammen, z. B. über den euklidischen Abstand.
-    \item Unterteile die Pixel der Extrema in Quadranten und wähle den Quadranten, der die meisten Einträge hat.
+    \item Für jedes Zeitfenster wähle das Maximum bzw. das Minimum aus. Das heißt, jedes Zeitfenster wird von dem Pixel repräsentiert, welches den Maximalen bzw. Minimalen Wert hat.
+    \item Projiziere das Frame auf ein kartesisches Koordinatensystem, sodass der untere linke Pixel die Koordinaten $(0,0)$ hat und der obere rechte Pixel $(2,2)$. Wähle aus jeden Frame im
+          Zeitfenster den Pixel mit dem maximalen bzw. minimalen Wert aus. Fasse anschließend die Koordinaten der Punkte über eine Abstandsmetrik zusammen, um den Mittelpunkt zu ermitteln. Projiziere
+          den Mittelpunkt auf den nächsten diskreten Punkt im Koordinatensystem und gebe ihn als Wert den Durchschnitt der akkumulierten Pixel. Im weiteren Verlauf dieser Arbeit wird dies als geometrische
+          Helligkeitsverteilung bezeichnet.
+    \item Weise jedem Pixel zu einem oder mehrere Quadranten zu in einem Pixel. Dabei bilden benachbarte Pixel einen Quadranten mit einer maximalen Größe von vier. Für jeden Frame im Zeitfenster
+          wird der Pixel mit dem maximalen bzw. minimalen Wert ermittelt. Wähle den Quadranten aus, der die meisten Maxima bzw. Minima beinhaltet.
 \end{itemize}
-Außerdem können die Anzahl der Zeitfenster variiert werden und Pixel zu Gruppen zusammengefasst werden, d. h. Spalten und Zeilen. In der Variation dieses Features, das ausgewählt wurde, wird aber
-keine Gruppierung vorgenommen. Es werden sechs Zeitfenster extrahiert, die über die Projektion der Pixel der Extrema auf ein kartesisches System über den euklidischen Abstand zusammengefasst werden.
+Desweiteren können die Anzahl der Zeitfenster variiert werden und Pixel zu Gruppen zusammgenfasst werden. Das heißt, anstatt jeden Pixel im einzelnen zu betrachten, können Gruppen von Pixeln zueinander
+betrachtet werden, z. B. Spalten und Zeilen des Frames. Die evaluierte Helligkeitsverteilung in dieser Arbeit nimmt keine Gruppierung vor. Es werden sechs Zeitfenster extrahiert die geometrisch zusammengefasst
+werden.
 \newline
 \newline
-Es wird davon ausgegangen, dass dieses Feature invariant gegenüber unterschiedlichen Lichtverhältnissen ist, da nur relative Helligkeitsunterschiede Relevant sind und Kontraste irrelevant bei der
+Es wird davon ausgegangen, dass dieses Feature invariant gegenüber unterschiedlichen Lichtverhältnissen ist, da nur relative Helligkeitsunterschiede relevant sind und Kontraste irrelevant bei der
 Berechnung sind.
 
 \subsubsection{Schwerpunktverteilung}
@@ -77,14 +82,24 @@ die horizontale Komponente und $Y_Q = \frac{\sum_{i=0}^{2} q_{0,i} - \sum_{i=0}^
     \label{formular:pictureAsFormular}
 \end{align}
 Die Handgeste wird in Zeitfenster aufgeteilt. Jedes Zeitfenster beinhaltet gleich viele Bilder. Sollte die Anzahl der Bilder nicht ohne Rest mit der Anzahl der Zeitfenster teilbar sein, werden die
-überschüssigen Bilder uniform auf die Zeitfenster verteilt.
-\newline
-\newline
+überschüssigen Bilder auf die Zeitfenster verteilt. Listing \ref{lst:cocd_mapping} zeigt die Abbildung, die in der Implementierung verwendet wird für eine nicht teilbare Anzahl von Frames für
+fünf Zeitfenster.
+\begin{lstlisting}[label=lst:cocd_mapping,caption={Anzahl der Frames pro Zeitfenster, je nach Rest für genau 5 Zeitfenster.}, escapeinside={(*}{*)}]
+Sei X die Anzahl der Frames. Dann ist die Anzahl pro Fenster ohne Rest Y = (*$\lfloor \frac{X}{5} \rfloor$*).
+Jedes Zeitfenster enthält für die Reste 0, 1, 2, 3, 4 folgende Anzahl an Frames:
+0 => [Y,     Y,     Y,     Y, Y    ]
+1 => [Y + 1, Y,     Y,     Y, Y    ]
+2 => [Y + 1, Y,     Y,     Y, Y + 1]
+3 => [Y + 1, Y,     Y + 1, Y, Y + 1]
+4 => [Y + 1, Y + 1, Y + 1, Y, Y + 1]
+\end{lstlisting}
 Es wurden unterschiedliche Anzahlen an Zeitfenster getestet. Entschieden wurde sich letztlich um fünf Zeitfenster, da einerseits die Berechnung des Features mit zunehmender Zeitfensteranzahl komplexer wird
 (Kapitel \ref{sec:eval_speed}) und andererseits zu viele Zeitfenster redundant sein können.
 \newline
 \newline
-Die Schwerpunktverteilung ist durch das Dividieren mit $P$ invariant gegenüber Skalierung der Helligkeit, jedoch nicht gegenüber einem Offset. Alternativ kann $P$ weggelassen werden, damit ausschließlich
-mit Ganzzahlen gerechnet wird. Dadurch können größere Bäume generiert werden (Kapitel \ref{sec:eval_size}) und die Feature-Extrahierung ist schneller (Kapitel \ref{sec:eval_speed}). Die Schwerpunktverteilung
-mit Ganzzahlen ist durch das Weglassen von $P$ invariant gegenüber einen Offset $O$, da $\sum_{i=0}^{2}(q_{i,2} + O) - \sum_{i=0}^{2}(q_{i,0} + O)\ =\ \sum_{i=0}^{2} q_{i,2} - \sum_{i=0}^{2} q_{i,0} = X_Q$
-ist und analog für $Y_Q$. Der Ansatz mit den Ganzzahlen konstruiert Schwerpunkte in $[-3072, 3072]^2$ und der Ansatz mit Gleitkommazahlen konstruiert Schwerpunkte in $[-1, 1]^2$.
+Die Schwerpunktverteilung ist durch das Dividieren durch die Gesamthelligkeit $P$ invariant gegenüber Skalierung der Helligkeit, jedoch nicht gegenüber einem Offset. Alternativ kann
+die Division durch $P$ weggelassen werden, damit ausschließlich mit Ganzzahlen gerechnet wird. Dadurch können größere Bäume generiert werden, weil ganze Zahlen weniger Speicher benötigen als Fließkommazahlen
+(Kapitel \ref{sec:eval_size}), und die Feature-Extrahierung ist schneller (Kapitel \ref{sec:eval_speed}). Die Schwerpunktverteilung
+mit Ganzzahlen ist durch das Weglassen der Division durch $P$ invariant gegenüber einen Offset $O$, da $\sum_{i=0}^{2}(q_{i,2} + O) - \sum_{i=0}^{2}(q_{i,0} + O)\ =\ \sum_{i=0}^{2} q_{i,2} - \sum_{i=0}^{2} q_{i,0} = X_Q$
+ist und analog für $Y_Q$. Der Ansatz mit den Ganzzahlen konstruiert Schwerpunkte in $[-3069, 3069]^2$, da Sensorenwerte in $[0, 1023]$ liegen, und der Ansatz mit Gleitkommazahlen konstruiert
+Schwerpunkte in $[-1, 1]^2$, da mit der Gesamthelligkeit $P$ normalisiert wurde.
