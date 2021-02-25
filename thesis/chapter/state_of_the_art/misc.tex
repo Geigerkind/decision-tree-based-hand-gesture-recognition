@@ -6,8 +6,7 @@ Ansatz, der mit Hilfe eines tragbaren sEMG Recorders die elektrischen Signale de
 Damit erzielten sie eine Klassifizierungsgenauigkeit von 91\% unter zwölf verschiedenen Handgesten.
 \begin{table}[h!]
     \centering
-    \begin{tabular}{ c | c | c }
-        \hline
+    \begin{tabular}{ | c | c | c | }
         \hline
         1 & Mean absolute value & $\frac{1}{N}\sum^N_{t=1} |x_t|$ \\\hline
         2 & Simple square integral & $\sum^N_{t=1} |x_t|^2$ \\\hline
@@ -18,7 +17,6 @@ Damit erzielten sie eine Klassifizierungsgenauigkeit von 91\% unter zwölf versc
         7 & Zero crossing & $\sum^{N-1}_{t=1}diff(sgn(x_{t+1}),sgn(x_t))$ \\\hline
         8 & Slope sign change & $\sum^{N-2}_{t=1}diff(sgn(x_{t+1} - x_t),sgn(x_t - x_{t - 1}))$ \\\hline
         9 & Willison amplitude & $\sum^{N-1}_{t=1}u(|x_{t+1} - x_t| - threshold)$ \\
-        \hline
         \hline
     \end{tabular}
     \caption{Die von Song et al. genutzten Features \cite{song2019design}.}
@@ -51,6 +49,6 @@ vergangene Bewegungen dunkler.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{images/mhi_ex.png}
-    \caption{Die Übersetzung von einer Bildsequenz zu einem Motion History Image \cite{ahad2012motion}.}
+    \caption{Die Übersetzung von einer Bildsequenz zu einem Motion History Image. Übernommen aus der Arbeit von Ahad et al. \cite{ahad2012motion}.}
     \label{fig:mhi_ex}
 \end{figure}

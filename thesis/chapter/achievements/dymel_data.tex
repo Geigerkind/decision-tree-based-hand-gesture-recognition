@@ -16,8 +16,7 @@ wodurch mit zunehmender Distanz der Kontrast abgenommen hat. Bei \ref{subfig:lig
 Im weiteren Verlauf dieser Arbeit wird diese Datenmenge ohne Nullgesten \glqq Gestenmenge\grqq\ genannt. Die ersten 25\% werden zum Trainieren verwendet, die hinteren 75\% zum Testen. Die Testmenge
 wird im weiteren \glqq Gestentestmenge\grqq\ genannt. Da die Gestenmenge sehr groß ist, wird zum Trainieren relativ zu den bestehenden Trainingsdaten von Feng und Kubik nur ein kleiner Teil der
 Gestenmenge zum Trainieren verwendet, damit kein Bias erzeugt wird.
-\newline
-\newline
+\newpage
 \subfigbox{
 \subfigure[Geringe Helligkeit]{\label{subfig:light_low}\includegraphics[width=0.33\linewidth]{images/light_low.jpeg}}\hfill%
 \subfigure[Halbe Helligkeit]{\label{subfig:light_medium}\includegraphics[width=0.33\linewidth]{images/light_medium.jpeg}}\hfill%
@@ -29,8 +28,7 @@ wird und bei einer benachbarten Richtung ausgetreten wird. Die aufgenommen Nullg
 geendet wird. Die resultierenden Handgesten werden anschließend um 90°, 180° und 270° rotiert, um die equivalenten Nullgesten aus den anderen Richtungen zu inferieren. Insgesamt entstehen dadurch 19400
 Nullgesten. Im weiteren Verlauf dieser Arbeit wird diese Datenmenge mit ausschließlich Nullgesten \glqq Nullgestenmenge\grqq\ genannt. Die ersten 12,5\% werden zum Trainieren verwendet, die hinteren 87,5\% zum
 Testen. Die Testmenge wird im weiteren \glqq Nullgestentestmenge\grqq\ genannt.
-\newline
-\newline
+\newpage
 Aus der Gestentestmenge wurden Testmengen erstellt, die testen wie gut ein Modell sich gegenüber unterschiedlichen Lichtverhältnissen generalisiert hat. Die Testmenge \glqq Helligkeitstestmenge mit Offset und Skaliert\grqq\
 nutzt den Anteil der Gestentestmenge mit der Helligkeit \glqq Gering\grqq\ und ergänzt jeweils 16 Duplikate der Datenmenge mit einem Offset in der Helligkeit zwischen 0 und 800 und mit einer Skalierung
 zwischen 1 und 7. Die Testmenge \glqq Helligkeitstestmenge mit konstantem Kontrast\grqq\ nutzt den Anteil der Gestentestmenge mit der Helligkeit \glqq Halb\grqq\ und ergänzt 19 Duplikate. Diese Duplikate werden in 0,05 Schritten

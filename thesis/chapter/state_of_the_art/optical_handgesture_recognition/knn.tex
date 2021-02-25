@@ -1,4 +1,4 @@
-\section{Gestenerkennung mit künstliche neuronalen Netzen}
+\section{Handgestenerkennung mit künstliche neuronalen Netzen}
 Insgesamt gingen dieser Arbeit sieben Arbeiten voraus, von denen vier für diese Arbeit relevant waren \cite{engelhardtThesis, kubikThesis, klischThesis, gieseThesis}.
 Diese Arbeiten haben sich im Zusammenhang mit dieser Fallstudie mit künstlichen neuronalen Netzen beschäftigt. Es wurden rekurrente neuronale Netze (RNN), Feedforward neuronale Netze (FFNN) und
 Long-Short-Term Memory neuronale Netze (LSTMNN) näher betrachtet, sowie die Optimierung von FFNN.
@@ -14,9 +14,15 @@ des FFNN belief sich auf 11,54~ms, bei einer Programmgröße von 11~kB und 573~B
 \newline
 Kubik hat in seiner Arbeit den FFNN Ansatz von Engelhardt aufgegriffen. Er untersuchte Handgesten, die mit der Hand in verschiedenen Distanzen zur Kamera, unter guten und schlechten Lichtverhältnissen ausgeführt wurden.
 Neben der Facettenkamera untersuchte Kubik ebenfalls eine Lochkamera. Er stellte fest, dass diese aber wesentlich schwerer auszuleuchten ist, was sich auf die
-Klassifizierungsgenauigkeit auswirkte. Als Eingabe nutzte Kubik ebenfalls 180 Werte, die 20~Bilder repräsentieren. Um mit der variablen Länge von Handgesten umzugehen schlug Kubik vor, die Bildsequenzen auf 20~Bilder zu
+Klassifizierungsgenauigkeit auswirkte \cite{kubikThesis}.
+\newline
+\newline
+Als Eingabe nutzte Kubik ebenfalls 180 Werte, die 20~Bilder repräsentieren. Um mit der variablen Länge von Handgesten umzugehen schlug Kubik vor, die Bildsequenzen auf 20~Bilder zu
 skalieren (Kapitel \ref{sec:scaling}). Um die Skalierung durchzuführen, musste aber der Anfang und das Ende der Handgeste bekannt sein. Aus diesem Grund war es nötig Gestenkandidaten erkennen zu können (Kapitel
-\ref{sec:gesture_extraction}). Er stellte fest, dass dies die Gesamtlänge der Handgeste limitierte in Anbetracht des RAMs des Mikrocontrollers. Um die Klassifizierungsgenauigkeit zu erhöhen, verwendete Kubik zusätzlich
+\ref{sec:gesture_extraction}). Er stellte fest, dass dies die Gesamtlänge der Handgeste limitierte in Anbetracht des RAMs des Mikrocontrollers \cite{kubikThesis}.
+\newline
+\newline
+Um die Klassifizierungsgenauigkeit zu erhöhen, verwendete Kubik zusätzlich
 synthetische Trainingsdaten, die er aus der bestehenden Trainingsmenge durch Rotation generierte (Kapitel \ref{sec:synthetischeDaten}). Dies erhöhte die Klassifizierungsgenauigkeit erheblich. Kubik erstellte eine Testmenge
 (Kapitel \ref{sec:testdaten}) und evaluierte sein Modell damit. Im Allgemeinen stellte er fest, dass sich mit zunehmender Distanz zur Kamera die Klassifizierungsgenauigkeit verschlechtert. Dies erwies sich besonders als ein
 Problem für die Lochkamera. Bei guten Lichtverhältnissen konnte sein Ansatz mit der Facettenkamera bis 30~cm eine Klassifizierungsgenauigkeit von 97,2\% erzielen. Bei schlechten Lichtverhältnissen war die Klassifizierungsgenauigkeit
