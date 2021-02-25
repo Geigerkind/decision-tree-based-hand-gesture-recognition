@@ -34,10 +34,13 @@ plt.rcParams.update({'font.size': 30})
 
 plt.figure(figsize=(60, 45))
 figur, ax1 = plt.subplots()
-fig = df2.plot(ax=ax1, x="offset", y=["Helligkeitsverteilung", "Motion History",
-                                       "Schwerpunktverteilung mit Gleitkommazahlen",
+#fig = df2.plot(ax=ax1, x="scaling", y=["Helligkeitsverteilung", "Motion History",
+#                                       "Schwerpunktverteilung mit Gleitkommazahlen",
+#                                       "Schwerpunktverteilung mit Ganzzahlen", "Kombinierte Schwerpunktverteilung"])
+
+fig = df2.plot(ax=ax1, x="offset", y=["Schwerpunktverteilung mit Gleitkommazahlen",
                                        "Schwerpunktverteilung mit Ganzzahlen", "Kombinierte Schwerpunktverteilung"])
-ax1.set_xlabel("Skalierung")
+ax1.set_xlabel("Offset")
 ax1.set_ylabel("Klassifizierungsgenauigkeit")
 ax1.set_ylim([0, ax1.get_ylim()[1]])
 ax1.set_xlim([0, 800])
